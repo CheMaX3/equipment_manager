@@ -1,7 +1,7 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.TestDTO;
-import com.chemax.project.request.SectionEntity;
+import com.chemax.project.entities.SectionEntity;
 import com.chemax.project.request.SectionRequest;
 import com.chemax.project.service.TestService;
 import org.springframework.web.bind.annotation.*;

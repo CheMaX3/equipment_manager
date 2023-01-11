@@ -1,4 +1,4 @@
-package com.chemax.project.request;
+package com.chemax.project.entities;
 
 import javax.persistence.*;
 

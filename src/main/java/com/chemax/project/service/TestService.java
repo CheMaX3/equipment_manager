@@ -3,7 +3,7 @@ package com.chemax.project.service;
 import com.chemax.project.dto.TestDTO;
 import com.chemax.project.exceptions.EntityNotFoundException;
 import com.chemax.project.repository.TestRepository;
-import com.chemax.project.request.SectionEntity;
+import com.chemax.project.entities.SectionEntity;
 import com.chemax.project.request.SectionRequest;
 import org.springframework.stereotype.Service;
 
