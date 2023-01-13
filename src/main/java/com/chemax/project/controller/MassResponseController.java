@@ -1,7 +1,7 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.entities.SectionEntity;
-import com.chemax.project.service.TestService;
+import com.chemax.project.service.MainService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,9 +10,9 @@ import java.util.List;
 
 @RestController
 public class MassResponseController {
-    private final TestService service;
+    private final MainService service;
 
-    public MassResponseController (TestService service) {
+    public MassResponseController (MainService service) {
         this.service = service;
     }
 

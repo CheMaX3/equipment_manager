@@ -1,22 +1,21 @@
 package com.chemax.project.controller;
 
-import com.chemax.project.dto.TestDTO;
+import com.chemax.project.dto.SectionEntityDTO;
 import com.chemax.project.entities.SectionEntity;
 import com.chemax.project.request.SectionRequest;
-import com.chemax.project.service.TestService;
+import com.chemax.project.service.MainService;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/request")
-public class TestController {
-    private final TestService service;
+public class MainController {
+    private final MainService service;
 
-    public TestController(TestService service) {
+    public MainController(MainService service) {
         this.service = service;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/addSection")
     public SectionEntity createSectionEntity (@RequestBody SectionRequest request) {
         return service.createSectionEntity(request);
     }
@@ -27,8 +26,8 @@ public class TestController {
     }
 
     @GetMapping("/{id}")
-    public TestDTO getTestDTO (@PathVariable Integer id) {
-        return service.getTestDTO(id);
+    public SectionEntityDTO getSectionEntityDTO (@PathVariable Integer id) {
+        return service.getSectionEntityDTO(id);
     }
 
     @GetMapping("/delete/{id}")

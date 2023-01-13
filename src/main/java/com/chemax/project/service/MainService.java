@@ -1,8 +1,8 @@
 package com.chemax.project.service;
 
-import com.chemax.project.dto.TestDTO;
+import com.chemax.project.dto.SectionEntityDTO;
 import com.chemax.project.exceptions.EntityNotFoundException;
-import com.chemax.project.repository.TestRepository;
+import com.chemax.project.repository.BuildingsEntityRepository;
 import com.chemax.project.entities.SectionEntity;
 import com.chemax.project.request.SectionRequest;
 import org.springframework.stereotype.Service;
@@ -12,10 +12,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class TestService {
-    private final TestRepository repository;
+public class MainService {
+    private final BuildingsEntityRepository repository;
 
-    public TestService (TestRepository repository) {
+    public MainService(BuildingsEntityRepository repository) {
         this.repository = repository;
     }
 
@@ -64,20 +64,20 @@ public class TestService {
         return builtSectionEntity;
     }
 
-    public TestDTO getTestDTO (Integer id) {
+    public SectionEntityDTO getSectionEntityDTO (Integer id) {
         return convertEntityToDTO(getSectionEntity(id));
     }
 
-    private TestDTO convertEntityToDTO (SectionEntity entityToConvert) {
-        TestDTO testDTO = new TestDTO();
-        testDTO.setId(entityToConvert.getId());
-        testDTO.setSectionFullName(entityToConvert.getSectionFullName());
-        testDTO.setSectionShortName(entityToConvert.getSectionShortName());
-        testDTO.setSectionConversationalName(entityToConvert.getSectionConversationalName());
-        return testDTO;
+    private SectionEntityDTO convertEntityToDTO (SectionEntity entityToConvert) {
+        SectionEntityDTO sectionEntityDTO = new SectionEntityDTO();
+        sectionEntityDTO.setId(entityToConvert.getId());
+        sectionEntityDTO.setSectionFullName(entityToConvert.getSectionFullName());
+        sectionEntityDTO.setSectionShortName(entityToConvert.getSectionShortName());
+        sectionEntityDTO.setSectionConversationalName(entityToConvert.getSectionConversationalName());
+        return sectionEntityDTO;
     }
 
-    private SectionEntity convertDTOToEntity (TestDTO dtoToConvert) {
+    private SectionEntity convertDTOToEntity (SectionEntityDTO dtoToConvert) {
         SectionEntity sectionEntity = new SectionEntity();
         sectionEntity.setSectionFullName(dtoToConvert.getSectionFullName());
         sectionEntity.setSectionShortName(dtoToConvert.getSectionShortName());
