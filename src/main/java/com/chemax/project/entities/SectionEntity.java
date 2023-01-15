@@ -6,16 +6,21 @@ import java.util.List;
 @Entity
 @Table(name = "operational_section")
 public class SectionEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "id")
     private Integer id;
+
     @Column (name = "section_full_name")
     private String sectionFullName;
+
     @Column (name = "section_short_name")
     private String sectionShortName;
+
     @Column (name = "section_conversational_name")
     private String sectionConversationalName;
+
     @OneToMany(mappedBy = "sectionEntity")
     private List<AreaEntity> areaEntities;
 
