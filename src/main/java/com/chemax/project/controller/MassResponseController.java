@@ -1,6 +1,7 @@
 package com.chemax.project.controller;
 
-import com.chemax.project.entities.SectionEntity;
+import com.chemax.project.dto.AreaDTO;
+import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.service.MainService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,13 +17,18 @@ public class MassResponseController {
         this.service = service;
     }
 
-    @GetMapping("/showAll")
-    public List<SectionEntity> getAllSectionEntities() {
-        return service.getAllSectionEntities();
+    @GetMapping("/section/showAll")
+    public List<SectionDTO> getAllSectionDTOs() {
+        return service.getAllSectionDTOs();
     }
 
-    @GetMapping("/showAll/{count}")
-    public List<SectionEntity> getSectionEntitiesByCount(@PathVariable Integer count) {
-        return service.getSectionEntitiesByCount(count);
+    @GetMapping("/section/showAll/{count}")
+    public List<SectionDTO> getSectionDTOsByCount(@PathVariable Integer count) {
+        return service.getSectionDTOsByCount(count);
+    }
+
+    @GetMapping("/area/showAll/{count}")
+    public List<AreaDTO> getAreaDTOsByCount(@PathVariable Integer count) {
+        return service.getAreaDTOsByCount(count);
     }
 }

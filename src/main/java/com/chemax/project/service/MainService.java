@@ -11,6 +11,7 @@ import com.chemax.project.request.AreaRequest;
 import com.chemax.project.request.SectionRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,40 +26,66 @@ public class MainService {
         this.areaRepository = areaRepository;
     }
 
-    public SectionEntity createSectionEntity (SectionRequest request) {
+    public SectionDTO createSectionEntity (SectionRequest request) {
         SectionEntity sectionEntity = buildSectionEntityFromRequest(request);
-        return sectionRepository.save(sectionEntity);
+        sectionRepository.save(sectionEntity);
+        return convertSectionEntityToDTO(sectionEntity);
     }
 
-    public AreaEntity createAreaEntity(AreaRequest request) {
+    public AreaDTO createAreaEntity(AreaRequest request) {
         SectionEntity sectionEntity = sectionRepository.getReferenceById(request.getSectionId());
         AreaEntity areaEntity = buildAreaEntityFromRequest(request, sectionEntity);
-        return areaRepository.save(areaEntity);
+        areaRepository.save(areaEntity);
+        return convertAreaEntityToDTO(areaEntity);
     }
 
-    public SectionEntity getSectionEntity (Integer id) throws EntityNotFoundException {
+    private SectionEntity getSectionEntity (Integer id) throws EntityNotFoundException {
         Optional<SectionEntity> returnedEntity = sectionRepository.findById(id);
         return returnedEntity.orElseThrow(EntityNotFoundException::new);
     }
 
-    public AreaDTO getAreaDTO (Integer id) throws EntityNotFoundException {
-        try {
-            return convertAreaEntityToDTO(areaRepository.getReferenceById(id));
-        } catch (EntityNotFoundException nfe) {
-            throw nfe;
+    public SectionDTO getSectionDTO (Integer id) {
+        return convertSectionEntityToDTO(getSectionEntity(id));
+    }
+
+    private AreaEntity getAreaEntity (Integer id) throws EntityNotFoundException {
+        return areaRepository.getReferenceById(id);
+    }
+
+    public AreaDTO getAreaDTO (Integer id) {
+        return convertAreaEntityToDTO(getAreaEntity(id));
+    }
+
+    public List<SectionDTO> getAllSectionDTOs() {
+        List<SectionDTO> sectionDTOList = new ArrayList<>();
+        for (SectionEntity s: sectionRepository.findAll()) {
+            sectionDTOList.add(convertSectionEntityToDTO(s));
         }
+        return sectionDTOList;
     }
 
-    public List<SectionEntity> getAllSectionEntities() {
-        return sectionRepository.findAll();
+    public List<SectionDTO> getSectionDTOsByCount (Integer count) {
+        List<SectionDTO> sectionDTOList = new ArrayList<>();
+        for (SectionEntity s: sectionRepository.findAll()) {
+            sectionDTOList.add(convertSectionEntityToDTO(s));
+        }
+        return sectionDTOList.stream().limit(count).collect(Collectors.toList());
     }
 
-    public List<SectionEntity> getSectionEntitiesByCount (Integer count) {
-        return sectionRepository.findAll().stream().limit(count).collect(Collectors.toList());
+    public List<AreaDTO> getAreaDTOsByCount (Integer count) {
+        List<AreaDTO> areaDTOList = new ArrayList<>();
+        for (AreaEntity a: areaRepository.findAll()) {
+            areaDTOList.add((convertAreaEntityToDTO(a)));
+        }
+        return areaDTOList.stream().limit(count).collect(Collectors.toList());
     }
 
     public void deleteSectionEntity (Integer id) {
         sectionRepository.delete(getSectionEntity(id));
+    }
+
+    public void deleteAreaEntity (Integer id) {
+        areaRepository.delete(getAreaEntity(id));
     }
 
 
@@ -72,8 +99,25 @@ public class MainService {
             entityToChange.setSectionShortName(request.getSectionShortName());
         }
         entityToChange.setSectionConversationalName(Optional.ofNullable(request.getSectionConversationalName())
-                .orElse(request.getSectionConversationalName()));
+                .orElse(entityToChange.getSectionConversationalName()));
         sectionRepository.save(entityToChange);
+    }
+
+    public void updateAreaEntity (AreaRequest request, Integer id) {
+        AreaEntity areaEntity = areaRepository.getReferenceById(id);
+        areaEntity.setAreaFullName(Optional.ofNullable(request.getAreaFullName()).orElse(areaEntity.getAreaFullName()));
+        areaEntity.setAreaShortName(Optional.ofNullable(request.getAreaShortName()).orElse(areaEntity.getAreaShortName()));
+        areaEntity.setAreaConversationalName(Optional.ofNullable(request.getAreaConversationalName()).orElse(areaEntity.getAreaConversationalName()));
+        areaEntity.setSectionEntity(Optional.of(sectionRepository.getReferenceById(request.getSectionId())).orElse(areaEntity.getSectionEntity()));
+        areaRepository.save(areaEntity);
+    }
+
+    private SectionEntity buildSectionEntityFromRequest (SectionRequest request) {
+        SectionEntity builtSectionEntity = new SectionEntity();
+        builtSectionEntity.setSectionFullName(request.getSectionFullName());
+        builtSectionEntity.setSectionShortName(request.getSectionShortName());
+        builtSectionEntity.setSectionConversationalName((request.getSectionConversationalName()));
+        return builtSectionEntity;
     }
 
     private AreaEntity buildAreaEntityFromRequest(AreaRequest request, SectionEntity sectionEntity) {
@@ -85,40 +129,22 @@ public class MainService {
         return builtAreaEntity;
     }
 
-    private SectionEntity buildSectionEntityFromRequest (SectionRequest request) {
-        SectionEntity builtSectionEntity = new SectionEntity();
-        builtSectionEntity.setSectionFullName(request.getSectionFullName());
-        builtSectionEntity.setSectionShortName(request.getSectionShortName());
-        builtSectionEntity.setSectionConversationalName((request.getSectionConversationalName()));
-        return builtSectionEntity;
-    }
-
-    public SectionDTO getSectionEntityDTO (Integer id) {
-        return convertEntityToDTO(getSectionEntity(id));
-    }
-
-    private SectionDTO convertEntityToDTO (SectionEntity entityToConvert) {
+    private SectionDTO convertSectionEntityToDTO (SectionEntity sectionEntityToConvert) {
         SectionDTO sectionDTO = new SectionDTO();
-        sectionDTO.setId(entityToConvert.getId());
-        sectionDTO.setSectionFullName(entityToConvert.getSectionFullName());
-        sectionDTO.setSectionShortName(entityToConvert.getSectionShortName());
-        sectionDTO.setSectionConversationalName(entityToConvert.getSectionConversationalName());
+        sectionDTO.setId(sectionEntityToConvert.getId());
+        sectionDTO.setSectionFullName(sectionEntityToConvert.getSectionFullName());
+        sectionDTO.setSectionShortName(sectionEntityToConvert.getSectionShortName());
+        sectionDTO.setSectionConversationalName(sectionEntityToConvert.getSectionConversationalName());
         return sectionDTO;
     }
 
     private AreaDTO convertAreaEntityToDTO (AreaEntity areaEntity) {
         AreaDTO areaDTO = new AreaDTO();
+        areaDTO.setId(areaEntity.getId());
         areaDTO.setAreaFullName(areaEntity.getAreaFullName());
         areaDTO.setAreaShortName(areaEntity.getAreaShortName());
-        areaDTO.setAreaConversationalName(areaDTO.getAreaConversationalName());
+        areaDTO.setAreaConversationalName(areaEntity.getAreaConversationalName());
+        areaDTO.setSectionEntity(areaEntity.getSectionEntity());
         return areaDTO;
-    }
-
-    private SectionEntity convertDTOToEntity (SectionDTO dtoToConvert) {
-        SectionEntity sectionEntity = new SectionEntity();
-        sectionEntity.setSectionFullName(dtoToConvert.getSectionFullName());
-        sectionEntity.setSectionShortName(dtoToConvert.getSectionShortName());
-        sectionEntity.setSectionConversationalName(dtoToConvert.getSectionConversationalName());
-        return sectionEntity;
     }
 }

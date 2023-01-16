@@ -2,8 +2,6 @@ package com.chemax.project.controller;
 
 import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.dto.SectionDTO;
-import com.chemax.project.entities.AreaEntity;
-import com.chemax.project.entities.SectionEntity;
 import com.chemax.project.request.AreaRequest;
 import com.chemax.project.request.SectionRequest;
 import com.chemax.project.service.MainService;
@@ -18,38 +16,41 @@ public class MainController {
         this.service = service;
     }
 
-//    @CrossOrigin
     @PostMapping("/addSection")
-    public SectionEntity createSectionEntity (@RequestBody SectionRequest request) {
+    public SectionDTO createSectionEntity (@RequestBody SectionRequest request) {
         return service.createSectionEntity(request);
     }
 
     @PostMapping("/addArea")
-    public AreaEntity createAreaEntity (@RequestBody AreaRequest request) {
+    public AreaDTO createAreaEntity (@RequestBody AreaRequest request) {
         return service.createAreaEntity(request);
+    }
+
+    @GetMapping("/section/{id}")
+    public SectionDTO getSectionDTO (@PathVariable Integer id) {
+        return service.getSectionDTO(id);
     }
 
     @GetMapping("/area/{id}")
     public AreaDTO getAreaDTO (@PathVariable Integer id) {return service.getAreaDTO(id);}
 
-    @GetMapping("/entity/{id}")
-    public SectionEntity getSectionEntity (@PathVariable Integer id) {
-        return service.getSectionEntity(id);
-    }
-
-    @GetMapping("/{id}")
-    public SectionDTO getSectionEntityDTO (@PathVariable Integer id) {
-        return service.getSectionEntityDTO(id);
-    }
-
-    @GetMapping("/delete/{id}")
+    @GetMapping("/delete/section/{id}")
     public void deleteSectionEntity (@PathVariable Integer id) {
         service.deleteSectionEntity(id);
     }
 
-    @PutMapping ("/update/{id}")
+    @GetMapping("/delete/area/{id}")
+    public void deleteAreaEntity (@PathVariable Integer id) {service.deleteAreaEntity(id);}
+
+    @PutMapping ("/update/section/{id}")
     public void updateSectionEntity (@RequestBody SectionRequest request, @PathVariable Integer id) {
         service.updateSectionEntity(request, id);
+    }
+
+    @PutMapping ("/update/area/{id}")
+    public AreaDTO updateAreaDTO (@RequestBody AreaRequest request, @PathVariable Integer id) {
+        service.updateAreaEntity(request, id);
+        return service.getAreaDTO(id);
     }
 
 /*    @GetMapping("/webmorda/addSection")
