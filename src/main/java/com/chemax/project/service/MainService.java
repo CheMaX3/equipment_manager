@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -62,6 +63,14 @@ public class MainService {
             sectionDTOList.add(convertSectionEntityToDTO(s));
         }
         return sectionDTOList;
+    }
+
+    public List<AreaDTO> getAllAreaDTOs() {
+        List<AreaDTO> areaDTOList = new ArrayList<>();
+        for (AreaEntity a: areaRepository.findAll()) {
+            areaDTOList.add(convertAreaEntityToDTO(a));
+        }
+        return areaDTOList;
     }
 
     public List<SectionDTO> getSectionDTOsByCount (Integer count) {
@@ -135,6 +144,8 @@ public class MainService {
         sectionDTO.setSectionFullName(sectionEntityToConvert.getSectionFullName());
         sectionDTO.setSectionShortName(sectionEntityToConvert.getSectionShortName());
         sectionDTO.setSectionConversationalName(sectionEntityToConvert.getSectionConversationalName());
+        sectionDTO.setAreaDTOList(getAllAreaDTOs().stream().filter(areaDTO -> Objects.equals(areaDTO.getSectionID(), sectionEntityToConvert.getId()))
+                .collect(Collectors.toList()));
         return sectionDTO;
     }
 
@@ -144,7 +155,7 @@ public class MainService {
         areaDTO.setAreaFullName(areaEntity.getAreaFullName());
         areaDTO.setAreaShortName(areaEntity.getAreaShortName());
         areaDTO.setAreaConversationalName(areaEntity.getAreaConversationalName());
-        areaDTO.setSectionEntity(areaEntity.getSectionEntity());
+        areaDTO.setSectionID(areaEntity.getSectionEntity().getId());
         return areaDTO;
     }
 }
