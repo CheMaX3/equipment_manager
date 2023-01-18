@@ -1,6 +1,7 @@
 package com.chemax.project.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "operational_area")
@@ -20,6 +21,20 @@ public class AreaEntity {
     @Column (name = "conversational_name")
     private String areaConversationalName;
 
+    @ManyToOne
+    @JoinColumn(name = "section_id")
+    private SectionEntity sectionEntity;
+
+    @OneToMany
+    @JoinColumn(name = "areaEntity")
+    private List<EquipmentEntity> equipmentEntityList;
+
+    public AreaEntity(String areaFullName, String areaShortName, String areaConversationalName) {
+        this.areaFullName = areaFullName;
+        this.areaShortName = areaShortName;
+        this.areaConversationalName = areaConversationalName;
+    }
+
     public SectionEntity getSectionEntity() {
         return sectionEntity;
     }
@@ -28,14 +43,12 @@ public class AreaEntity {
         this.sectionEntity = sectionEntity;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "section_id")
-    private SectionEntity sectionEntity;
+    public List<EquipmentEntity> getEquipmentList() {
+        return equipmentEntityList;
+    }
 
-    public AreaEntity(String areaFullName, String areaShortName, String areaConversationalName) {
-        this.areaFullName = areaFullName;
-        this.areaShortName = areaShortName;
-        this.areaConversationalName = areaConversationalName;
+    public void setEquipmentList(List<EquipmentEntity> equipmentEntityList) {
+        this.equipmentEntityList = equipmentEntityList;
     }
 
     public AreaEntity(String fullName) {

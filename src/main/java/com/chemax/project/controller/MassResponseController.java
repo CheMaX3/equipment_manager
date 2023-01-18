@@ -1,6 +1,8 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.AreaDTO;
+import com.chemax.project.dto.EquipmentDTO;
+import com.chemax.project.dto.EquipmentTypeDTO;
 import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.service.MainService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,4 +33,10 @@ public class MassResponseController {
     public List<AreaDTO> getAreaDTOsByCount(@PathVariable Integer count) {
         return service.getAreaDTOsByCount(count);
     }
+
+    @GetMapping("/equipmentType/showAll/{count}")
+    public List<EquipmentTypeDTO> getEquipmentTypeDTOsByCount (@PathVariable Integer count) { return service.getEquipmentTypeDTOsByCount(count); }
+
+    @GetMapping("/equipment/showAll/{count}")
+    public List<EquipmentDTO> getEquipmentDTOsByCount (@PathVariable Integer count) { return service.getEquipmentDTOsByCount(count); }
 }

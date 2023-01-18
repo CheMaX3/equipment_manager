@@ -1,8 +1,13 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.AreaDTO;
+import com.chemax.project.dto.EquipmentDTO;
+import com.chemax.project.dto.EquipmentTypeDTO;
 import com.chemax.project.dto.SectionDTO;
+import com.chemax.project.entities.EquipmentEntity;
 import com.chemax.project.request.AreaRequest;
+import com.chemax.project.request.EquipmentRequest;
+import com.chemax.project.request.EquipmentTypeRequest;
 import com.chemax.project.request.SectionRequest;
 import com.chemax.project.service.MainService;
 import org.springframework.web.bind.annotation.*;
@@ -21,36 +26,71 @@ public class MainController {
         return service.createSectionEntity(request);
     }
 
-    @PostMapping("/addArea")
-    public AreaDTO createAreaEntity (@RequestBody AreaRequest request) {
-        return service.createAreaEntity(request);
-    }
-
     @GetMapping("/section/{id}")
     public SectionDTO getSectionDTO (@PathVariable Integer id) {
         return service.getSectionDTO(id);
     }
 
-    @GetMapping("/area/{id}")
-    public AreaDTO getAreaDTO (@PathVariable Integer id) {return service.getAreaDTO(id);}
-
-    @GetMapping("/delete/section/{id}")
+    @GetMapping("/section/delete/{id}")
     public void deleteSectionEntity (@PathVariable Integer id) {
         service.deleteSectionEntity(id);
     }
 
-    @GetMapping("/delete/area/{id}")
-    public void deleteAreaEntity (@PathVariable Integer id) {service.deleteAreaEntity(id);}
-
-    @PutMapping ("/update/section/{id}")
-    public void updateSectionEntity (@RequestBody SectionRequest request, @PathVariable Integer id) {
+    @PutMapping ("/section/update/{id}")
+    public SectionDTO updateSectionEntity (@RequestBody SectionRequest request, @PathVariable Integer id) {
         service.updateSectionEntity(request, id);
+        return getSectionDTO(id);
     }
 
-    @PutMapping ("/update/area/{id}")
-    public AreaDTO updateAreaDTO (@RequestBody AreaRequest request, @PathVariable Integer id) {
+    @PostMapping("/addArea")
+    public AreaDTO createAreaEntity (@RequestBody AreaRequest request) {
+        return service.createAreaEntity(request);
+    }
+
+    @GetMapping("/area/{id}")
+    public AreaDTO getAreaDTO (@PathVariable Integer id) {return service.getAreaDTO(id);}
+
+    @GetMapping("/area/delete/{id}")
+    public void deleteAreaEntity (@PathVariable Integer id) {service.deleteAreaEntity(id);}
+
+    @PutMapping ("/area/update/{id}")
+    public AreaDTO updateAreaEntity (@RequestBody AreaRequest request, @PathVariable Integer id) {
         service.updateAreaEntity(request, id);
-        return service.getAreaDTO(id);
+        return getAreaDTO(id);
+    }
+
+    @PostMapping("/addEquipmentType")
+    public EquipmentTypeDTO createEquipmentTypeEntity (@RequestBody EquipmentTypeRequest request) {
+        return service.createEquipmentTypeEntity(request);
+    }
+
+    @GetMapping("/equipmentType/{id}")
+    public EquipmentTypeDTO getEquipmentTypeDTO (@PathVariable Integer id) {return service.getEquipmentTypeDTO(id);}
+
+    @GetMapping("/equipmentType/delete/{id}")
+    public void deleteEquipmentTypeEntity (@PathVariable Integer id) {service.deleteEquipmentTypeEntity(id);}
+
+    @PutMapping ("/equipmentType/update/{id}")
+    public EquipmentTypeDTO updateEquipmentTypeEntity (@RequestBody EquipmentTypeRequest request, @PathVariable Integer id) {
+        service.updateEquipmentTypeEntity(request, id);
+        return getEquipmentTypeDTO(id);
+    }
+
+    @PostMapping("/addEquipment")
+    public EquipmentDTO createEquipmentEntity (@RequestBody EquipmentRequest request) {
+        return service.createEquipmentEntity(request);
+    }
+
+    @GetMapping("/equipment/{id}")
+    public EquipmentDTO getEquipmentDTO (@PathVariable Integer id) {return service.getEquipmentDTO(id);}
+
+    @GetMapping("/equipment/delete/{id}")
+    public void deleteEquipmentEntity (@PathVariable Integer id) {service.deleteEquipmentEntity(id);}
+
+    @PutMapping ("/equipment/update/{id}")
+    public EquipmentDTO updateEquipmentEntity (@RequestBody EquipmentRequest request, @PathVariable Integer id) {
+        service.updateEquipmentEntity(request, id);
+        return getEquipmentDTO(id);
     }
 
 /*    @GetMapping("/webmorda/addSection")
