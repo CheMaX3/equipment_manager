@@ -99,7 +99,7 @@ public class MainService {
         return areaRepository.getReferenceById(id);
     }
 
-    public AreaDTO getAreaDTO (Integer id) {
+    public AreaDTO getAreaDTO(Integer id) {
         return convertAreaEntityToDTO(getAreaEntity(id));
     }
 
@@ -123,26 +123,29 @@ public class MainService {
         areaRepository.delete(getAreaEntity(id));
     }
 
-    public void updateAreaEntity (AreaRequest request, Integer id) {
+    public void updateAreaEntity(AreaRequest request, Integer id) {
         AreaEntity areaEntity = areaRepository.getReferenceById(id);
         areaEntity.setAreaFullName(Optional.ofNullable(request.getAreaFullName()).orElse(areaEntity.getAreaFullName()));
         areaEntity.setAreaShortName(Optional.ofNullable(request.getAreaShortName()).orElse(areaEntity.getAreaShortName()));
         areaEntity.setAreaConversationalName(Optional.ofNullable(request.getAreaConversationalName()).orElse(areaEntity.getAreaConversationalName()));
-        areaEntity.setSectionEntity(Optional.ofNullable(sectionRepository.getReferenceById(request.getSectionId())).orElse(areaEntity.getSectionEntity()));
+
+        if (Objects.nonNull(request.getSectionId())) {
+            areaEntity.setSectionEntity(Optional.of(sectionRepository.getReferenceById(request.getSectionId())).orElse(areaEntity.getSectionEntity()));
+        }
         areaRepository.save(areaEntity);
     }
 
-    public EquipmentTypeDTO createEquipmentTypeEntity (EquipmentTypeRequest request) {
+    public EquipmentTypeDTO createEquipmentTypeEntity(EquipmentTypeRequest request) {
         EquipmentTypeEntity equipmentTypeEntity = buildEquipmentTypeEntityFromRequest(request);
         equipmentTypeRepository.save(equipmentTypeEntity);
         return convertEquipmentTypeEntityToDTO(equipmentTypeEntity);
     }
 
-    private EquipmentTypeEntity getEquipmentTypeEntity (Integer id) throws EntityNotFoundException {
+    private EquipmentTypeEntity getEquipmentTypeEntity(Integer id) throws EntityNotFoundException {
         return equipmentTypeRepository.getReferenceById(id);
     }
 
-    public EquipmentTypeDTO getEquipmentTypeDTO (Integer id) {
+    public EquipmentTypeDTO getEquipmentTypeDTO(Integer id) {
         return convertEquipmentTypeEntityToDTO(getEquipmentTypeEntity(id));
     }
 

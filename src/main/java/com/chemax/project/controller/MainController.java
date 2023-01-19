@@ -4,16 +4,23 @@ import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.dto.EquipmentDTO;
 import com.chemax.project.dto.EquipmentTypeDTO;
 import com.chemax.project.dto.SectionDTO;
-import com.chemax.project.entities.EquipmentEntity;
 import com.chemax.project.request.AreaRequest;
 import com.chemax.project.request.EquipmentRequest;
 import com.chemax.project.request.EquipmentTypeRequest;
 import com.chemax.project.request.SectionRequest;
 import com.chemax.project.service.MainService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 
-@RestController
+@Controller
 public class MainController {
     private final MainService service;
 
@@ -21,74 +28,99 @@ public class MainController {
         this.service = service;
     }
 
+    @GetMapping("/hello")
+    public String showIndex() {
+        return "index";
+    }
+
+    @GetMapping("/all")
+    public String getAll(Model model) {
+        List<SectionDTO> sectionDTOs = service.getAllSectionDTOs();
+        model.addAttribute("dtos", sectionDTOs);
+
+        return "list";
+    }
+
     @PostMapping("/addSection")
-    public SectionDTO createSectionEntity (@RequestBody SectionRequest request) {
+    public SectionDTO createSectionEntity(@RequestBody SectionRequest request) {
         return service.createSectionEntity(request);
     }
 
     @GetMapping("/section/{id}")
-    public SectionDTO getSectionDTO (@PathVariable Integer id) {
+    public SectionDTO getSectionDTO(@PathVariable Integer id) {
         return service.getSectionDTO(id);
     }
 
     @GetMapping("/section/delete/{id}")
-    public void deleteSectionEntity (@PathVariable Integer id) {
+    public void deleteSectionEntity(@PathVariable Integer id) {
         service.deleteSectionEntity(id);
     }
 
-    @PutMapping ("/section/update/{id}")
-    public SectionDTO updateSectionEntity (@RequestBody SectionRequest request, @PathVariable Integer id) {
+    @PutMapping("/section/update/{id}")
+    public SectionDTO updateSectionEntity(@RequestBody SectionRequest request, @PathVariable Integer id) {
         service.updateSectionEntity(request, id);
         return getSectionDTO(id);
     }
 
     @PostMapping("/addArea")
-    public AreaDTO createAreaEntity (@RequestBody AreaRequest request) {
+    public AreaDTO createAreaEntity(@RequestBody AreaRequest request) {
         return service.createAreaEntity(request);
     }
 
     @GetMapping("/area/{id}")
-    public AreaDTO getAreaDTO (@PathVariable Integer id) {return service.getAreaDTO(id);}
+    public AreaDTO getAreaDTO(@PathVariable Integer id) {
+        return service.getAreaDTO(id);
+    }
 
     @GetMapping("/area/delete/{id}")
-    public void deleteAreaEntity (@PathVariable Integer id) {service.deleteAreaEntity(id);}
+    public void deleteAreaEntity(@PathVariable Integer id) {
+        service.deleteAreaEntity(id);
+    }
 
-    @PutMapping ("/area/update/{id}")
-    public AreaDTO updateAreaEntity (@RequestBody AreaRequest request, @PathVariable Integer id) {
+    @PutMapping("/area/update/{id}")
+    public AreaDTO updateAreaEntity(@RequestBody AreaRequest request, @PathVariable Integer id) {
         service.updateAreaEntity(request, id);
         return getAreaDTO(id);
     }
 
     @PostMapping("/addEquipmentType")
-    public EquipmentTypeDTO createEquipmentTypeEntity (@RequestBody EquipmentTypeRequest request) {
+    public EquipmentTypeDTO createEquipmentTypeEntity(@RequestBody EquipmentTypeRequest request) {
         return service.createEquipmentTypeEntity(request);
     }
 
     @GetMapping("/equipmentType/{id}")
-    public EquipmentTypeDTO getEquipmentTypeDTO (@PathVariable Integer id) {return service.getEquipmentTypeDTO(id);}
+    public EquipmentTypeDTO getEquipmentTypeDTO(@PathVariable Integer id) {
+        return service.getEquipmentTypeDTO(id);
+    }
 
     @GetMapping("/equipmentType/delete/{id}")
-    public void deleteEquipmentTypeEntity (@PathVariable Integer id) {service.deleteEquipmentTypeEntity(id);}
+    public void deleteEquipmentTypeEntity(@PathVariable Integer id) {
+        service.deleteEquipmentTypeEntity(id);
+    }
 
-    @PutMapping ("/equipmentType/update/{id}")
-    public EquipmentTypeDTO updateEquipmentTypeEntity (@RequestBody EquipmentTypeRequest request, @PathVariable Integer id) {
+    @PutMapping("/equipmentType/update/{id}")
+    public EquipmentTypeDTO updateEquipmentTypeEntity(@RequestBody EquipmentTypeRequest request, @PathVariable Integer id) {
         service.updateEquipmentTypeEntity(request, id);
         return getEquipmentTypeDTO(id);
     }
 
     @PostMapping("/addEquipment")
-    public EquipmentDTO createEquipmentEntity (@RequestBody EquipmentRequest request) {
+    public EquipmentDTO createEquipmentEntity(@RequestBody EquipmentRequest request) {
         return service.createEquipmentEntity(request);
     }
 
     @GetMapping("/equipment/{id}")
-    public EquipmentDTO getEquipmentDTO (@PathVariable Integer id) {return service.getEquipmentDTO(id);}
+    public EquipmentDTO getEquipmentDTO(@PathVariable Integer id) {
+        return service.getEquipmentDTO(id);
+    }
 
     @GetMapping("/equipment/delete/{id}")
-    public void deleteEquipmentEntity (@PathVariable Integer id) {service.deleteEquipmentEntity(id);}
+    public void deleteEquipmentEntity(@PathVariable Integer id) {
+        service.deleteEquipmentEntity(id);
+    }
 
-    @PutMapping ("/equipment/update/{id}")
-    public EquipmentDTO updateEquipmentEntity (@RequestBody EquipmentRequest request, @PathVariable Integer id) {
+    @PutMapping("/equipment/update/{id}")
+    public EquipmentDTO updateEquipmentEntity(@RequestBody EquipmentRequest request, @PathVariable Integer id) {
         service.updateEquipmentEntity(request, id);
         return getEquipmentDTO(id);
     }
