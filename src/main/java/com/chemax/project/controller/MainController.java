@@ -4,7 +4,6 @@ import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.dto.EquipmentDTO;
 import com.chemax.project.dto.EquipmentTypeDTO;
 import com.chemax.project.dto.SectionDTO;
-import com.chemax.project.entities.EquipmentEntity;
 import com.chemax.project.request.AreaRequest;
 import com.chemax.project.request.EquipmentRequest;
 import com.chemax.project.request.EquipmentTypeRequest;

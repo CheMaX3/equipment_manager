@@ -32,7 +32,8 @@ public class MainService {
     private final EquipmentTypeEntityRepository equipmentTypeRepository;
     private final EquipmentEntityRepository equipmentRepository;
 
-    public MainService(SectionEntityRepository sectionRepository, AreaEntityRepository areaRepository, EquipmentTypeEntityRepository equipmentTypeRepository, EquipmentEntityRepository equipmentRepository) {
+    public MainService(SectionEntityRepository sectionRepository, AreaEntityRepository areaRepository, EquipmentTypeEntityRepository equipmentTypeRepository,
+                       EquipmentEntityRepository equipmentRepository) {
         this.sectionRepository = sectionRepository;
         this.areaRepository = areaRepository;
         this.equipmentTypeRepository = equipmentTypeRepository;
@@ -128,7 +129,11 @@ public class MainService {
         areaEntity.setAreaFullName(Optional.ofNullable(request.getAreaFullName()).orElse(areaEntity.getAreaFullName()));
         areaEntity.setAreaShortName(Optional.ofNullable(request.getAreaShortName()).orElse(areaEntity.getAreaShortName()));
         areaEntity.setAreaConversationalName(Optional.ofNullable(request.getAreaConversationalName()).orElse(areaEntity.getAreaConversationalName()));
-        areaEntity.setSectionEntity(Optional.ofNullable(sectionRepository.getReferenceById(request.getSectionId())).orElse(areaEntity.getSectionEntity()));
+        if (request.getSectionId() != null) {
+            areaEntity.setSectionEntity(sectionRepository.getReferenceById(request.getSectionId()));
+        } else {
+            areaEntity.setSectionEntity(areaEntity.getSectionEntity());
+        }
         areaRepository.save(areaEntity);
     }
 
@@ -166,11 +171,10 @@ public class MainService {
         equipmentTypeRepository.delete(getEquipmentTypeEntity(id));
     }
 
-    public EquipmentTypeDTO updateEquipmentTypeEntity (EquipmentTypeRequest request, Integer id) {
+    public void updateEquipmentTypeEntity (EquipmentTypeRequest request, Integer id) {
         EquipmentTypeEntity equipmentTypeEntity = equipmentTypeRepository.getReferenceById(id);
         equipmentTypeEntity.setMachineType(Optional.ofNullable(request.getMachineType()).orElse(equipmentTypeEntity.getMachineType()));
         equipmentTypeRepository.save(equipmentTypeEntity);
-        return getEquipmentTypeDTO(id);
     }
 
     public EquipmentDTO createEquipmentEntity(EquipmentRequest request) {
@@ -209,7 +213,7 @@ public class MainService {
         equipmentRepository.delete(getEquipmentEntity(id));
     }
 
-    public EquipmentDTO updateEquipmentEntity (EquipmentRequest request, Integer id) {
+    public void updateEquipmentEntity (EquipmentRequest request, Integer id) {
         EquipmentEntity equipmentEntity = equipmentRepository.getReferenceById(id);
         equipmentEntity.setMachineModel(Optional.ofNullable(request.getMachineModel()).orElse(equipmentEntity.getMachineModel()));
         equipmentEntity.setManufacturerCountry(Optional.ofNullable(request.getManufacturerCountry()).orElse(equipmentEntity.getManufacturerCountry()));
@@ -217,11 +221,14 @@ public class MainService {
         equipmentEntity.setManufacturingYear(Optional.ofNullable(request.getManufacturingYear()).orElse(equipmentEntity.getManufacturingYear()));
         equipmentEntity.setMachineNumber(Optional.ofNullable(request.getMachineNumber()).orElse(equipmentEntity.getMachineNumber()));
         equipmentEntity.setDetails(Optional.ofNullable(request.getDetails()).orElse(equipmentEntity.getDetails()));
-        equipmentEntity.setAreaEntity(Optional.of(areaRepository.getReferenceById(request.getAreaId())).orElse(equipmentEntity.getAreaEntity()));
-        equipmentEntity.setEquipmentType(Optional.of(equipmentTypeRepository.getReferenceById(request.getMachineTypeId())).
-                orElse(equipmentEntity.getEquipmentTypeEntity()));
+        if (Objects.nonNull(request.getAreaId())) {
+            equipmentEntity.setAreaEntity(Optional.of(areaRepository.getReferenceById(request.getAreaId())).orElse(equipmentEntity.getAreaEntity()));
+        }
+        if (Objects.nonNull(request.getMachineTypeId())) {
+            equipmentEntity.setEquipmentType(Optional.of(equipmentTypeRepository.getReferenceById(request.getMachineTypeId()))
+                    .orElse(equipmentEntity.getEquipmentTypeEntity()));
+        }
         equipmentRepository.save(equipmentEntity);
-        return getEquipmentDTO(id);
     }
 
     private SectionEntity buildSectionEntityFromRequest (SectionRequest request) {
@@ -259,6 +266,8 @@ public class MainService {
         areaDTO.setAreaShortName(areaEntity.getAreaShortName());
         areaDTO.setAreaConversationalName(areaEntity.getAreaConversationalName());
         areaDTO.setSectionID(areaEntity.getSectionEntity().getId());
+        areaDTO.setEquipmentDTOList(getAllEquipmentDTOs().stream().filter(equipmentDTO -> Objects.equals(equipmentDTO.getAreaId(), areaEntity.getId()))
+                .collect(Collectors.toList()));
         return areaDTO;
     }
 
@@ -272,6 +281,8 @@ public class MainService {
         EquipmentTypeDTO equipmentTypeDTO = new EquipmentTypeDTO();
         equipmentTypeDTO.setId(equipmentTypeEntityToConvert.getId());
         equipmentTypeDTO.setMachineType(equipmentTypeEntityToConvert.getMachineType());
+        equipmentTypeDTO.setEquipmentDTOList(getAllEquipmentDTOs().stream()
+                .filter(equipmentDTO -> Objects.equals(equipmentDTO.getMachineTypeId(),equipmentTypeEntityToConvert.getId())).collect(Collectors.toList()));
         return equipmentTypeDTO;
     }
 
@@ -301,6 +312,4 @@ public class MainService {
         equipmentDTO.setMachineTypeId(equipmentEntity.getEquipmentTypeEntity().getId());
         return equipmentDTO;
         }
-
-
 }

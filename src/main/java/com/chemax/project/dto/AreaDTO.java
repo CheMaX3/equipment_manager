@@ -2,6 +2,8 @@ package com.chemax.project.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class AreaDTO {
     private Integer id;
@@ -9,4 +11,5 @@ public class AreaDTO {
     private String areaShortName;
     private String areaConversationalName;
     private Integer sectionID;
+    private List<EquipmentDTO> equipmentDTOList;
 }
