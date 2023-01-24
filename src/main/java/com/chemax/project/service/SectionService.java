@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 @Service
 public class SectionService {
     private final SectionEntityRepository sectionRepository;
-    private final List<AreaDTO> areaDTOList;
+    private final AreaService areaService;
 
-    public SectionService(SectionEntityRepository sectionRepository, List<AreaDTO> areaDTOList) {
+    public SectionService(SectionEntityRepository sectionRepository, AreaService areaService) {
         this.sectionRepository = sectionRepository;
-        this.areaDTOList = areaDTOList;
+        this.areaService = areaService;
     }
 
     public SectionDTO createSectionEntity(SectionRequest request) {
@@ -87,7 +87,7 @@ public class SectionService {
         sectionDTO.setSectionFullName(sectionEntityToConvert.getSectionFullName());
         sectionDTO.setSectionShortName(sectionEntityToConvert.getSectionShortName());
         sectionDTO.setSectionConversationalName(sectionEntityToConvert.getSectionConversationalName());
-        sectionDTO.setAreaDTOList(areaDTOList.stream().filter(areaDTO -> Objects.equals(areaDTO.getSectionID(), sectionEntityToConvert.getId()))
+        sectionDTO.setAreaDTOList(areaService.getAllAreaDTOs().stream().filter(areaDTO -> Objects.equals(areaDTO.getSectionID(), sectionEntityToConvert.getId()))
                 .collect(Collectors.toList()));
         return sectionDTO;
     }

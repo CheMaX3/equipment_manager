@@ -21,13 +21,13 @@ public class AreaService {
 
     private final AreaEntityRepository areaRepository;
     private final SectionEntityRepository sectionRepository;
-    private final List<EquipmentDTO> equipmentDTOList;
+    private final EquipmentService equipmentService;
 
 
-    public AreaService(AreaEntityRepository areaRepository, SectionEntityRepository sectionRepository, List<EquipmentDTO> equipmentDTOList) {
+    public AreaService(AreaEntityRepository areaRepository, SectionEntityRepository sectionRepository, EquipmentService equipmentService) {
         this.areaRepository = areaRepository;
         this.sectionRepository = sectionRepository;
-        this.equipmentDTOList = equipmentDTOList;
+        this.equipmentService = equipmentService;
     }
 
     public AreaDTO createAreaEntity(AreaRequest request) {
@@ -94,7 +94,7 @@ public class AreaService {
         areaDTO.setAreaShortName(areaEntity.getAreaShortName());
         areaDTO.setAreaConversationalName(areaEntity.getAreaConversationalName());
         areaDTO.setSectionID(areaEntity.getSectionEntity().getId());
-        areaDTO.setEquipmentDTOList(equipmentDTOList.stream().filter(equipmentDTO -> Objects.equals(equipmentDTO.getAreaId(), areaEntity.getId()))
+        areaDTO.setEquipmentDTOList(equipmentService.getAllEquipmentDTOs().stream().filter(equipmentDTO -> Objects.equals(equipmentDTO.getAreaId(), areaEntity.getId()))
                 .collect(Collectors.toList()));
         return areaDTO;
     }

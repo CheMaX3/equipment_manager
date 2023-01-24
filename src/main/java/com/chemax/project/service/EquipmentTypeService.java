@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 public class EquipmentTypeService {
 
     private final EquipmentTypeEntityRepository equipmentTypeRepository;
-    private final List<EquipmentDTO> equipmentDTOList;
+    private final EquipmentService equipmentService;
 
-    public EquipmentTypeService(EquipmentTypeEntityRepository equipmentTypeRepository, List<EquipmentDTO> equipmentDTOList) {
+    public EquipmentTypeService(EquipmentTypeEntityRepository equipmentTypeRepository, EquipmentService equipmentService) {
         this.equipmentTypeRepository = equipmentTypeRepository;
-        this.equipmentDTOList = equipmentDTOList;
+        this.equipmentService = equipmentService;
     }
 
 
@@ -76,7 +76,7 @@ public class EquipmentTypeService {
         EquipmentTypeDTO equipmentTypeDTO = new EquipmentTypeDTO();
         equipmentTypeDTO.setId(equipmentTypeEntityToConvert.getId());
         equipmentTypeDTO.setMachineType(equipmentTypeEntityToConvert.getMachineType());
-        equipmentTypeDTO.setEquipmentDTOList(equipmentDTOList.stream()
+        equipmentTypeDTO.setEquipmentDTOList(equipmentService.getAllEquipmentDTOs().stream()
                 .filter(equipmentDTO -> Objects.equals(equipmentDTO.getMachineTypeId(), equipmentTypeEntityToConvert.getId())).collect(Collectors.toList()));
         return equipmentTypeDTO;
     }
