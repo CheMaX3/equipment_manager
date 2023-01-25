@@ -4,6 +4,7 @@ import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.entities.SectionEntity;
 import com.chemax.project.exceptions.EntityNotFoundException;
+import com.chemax.project.exceptions.NeedToMoveEntityException;
 import com.chemax.project.repository.SectionEntityRepository;
 import com.chemax.project.request.SectionRequest;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,13 @@ public class SectionService {
     }
 
     public void deleteSectionEntity(Integer id) {
-        sectionRepository.delete(getSectionEntity(id));
+
+        try {
+            sectionRepository.delete(getSectionEntity(id));
+        }
+        catch (NeedToMoveEntityException ex) {
+            System.out.println("Актуализируйте расположение участка перед удалением");
+        }
     }
 
     public void updateSectionEntity(SectionRequest request, Integer id) {

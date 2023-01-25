@@ -5,6 +5,7 @@ import com.chemax.project.dto.EquipmentDTO;
 import com.chemax.project.entities.AreaEntity;
 import com.chemax.project.entities.SectionEntity;
 import com.chemax.project.exceptions.EntityNotFoundException;
+import com.chemax.project.exceptions.NeedToMoveEntityException;
 import com.chemax.project.repository.AreaEntityRepository;
 import com.chemax.project.repository.SectionEntityRepository;
 import com.chemax.project.request.AreaRequest;
@@ -62,7 +63,12 @@ public class AreaService {
     }
 
     public void deleteAreaEntity (Integer id) {
-        areaRepository.delete(getAreaEntity(id));
+        try {
+            areaRepository.delete(getAreaEntity(id));
+        }
+        catch (NeedToMoveEntityException ex) {
+            System.out.println("Актуализируйте расположение оборудования с удаляемого участка и попробуйте снова");
+        }
     }
 
     public void updateAreaEntity (AreaRequest request, Integer id) {
