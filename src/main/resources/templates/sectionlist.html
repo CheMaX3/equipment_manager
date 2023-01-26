@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+   <meta charset="UTF-8">
+   <title>Перечень цехов</title>
+</head>
+<body>
+<div>
+   <table border="1">
+      <tr>
+         <th>Id</th>
+         <th>FullName</th>
+         <th>ShortName</th>
+         <th>ConversationalName</th>
+      </tr>
+      <tr th:each ="dto : ${sectiondtos}">
+         <td th:utext="${dto.id}">...</td>
+         <td th:utext="${dto.sectionFullName}">...</td>
+         <td th:utext="${dto.sectionShortName}">...</td>
+         <td th:utext="${dto.sectionConversationalName}">...</td>
+      </tr>
+
+   </table>
+</div>
+</body>
+</html>

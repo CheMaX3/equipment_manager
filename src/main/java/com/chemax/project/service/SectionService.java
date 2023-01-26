@@ -1,9 +1,10 @@
 package com.chemax.project.service;
 
-import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.entities.SectionEntity;
 import com.chemax.project.exceptions.EntityNotFoundException;
+import com.chemax.project.exceptions.NeedToMoveEntityException;
+import com.chemax.project.repository.AreaEntityRepository;
 import com.chemax.project.repository.SectionEntityRepository;
 import com.chemax.project.request.SectionRequest;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,12 @@ import java.util.stream.Collectors;
 @Service
 public class SectionService {
     private final SectionEntityRepository sectionRepository;
+    private final AreaEntityRepository areaEntityRepository;
     private final AreaService areaService;
 
-    public SectionService(SectionEntityRepository sectionRepository, AreaService areaService) {
+    public SectionService(SectionEntityRepository sectionRepository, AreaEntityRepository areaEntityRepository, AreaService areaService) {
         this.sectionRepository = sectionRepository;
+        this.areaEntityRepository = areaEntityRepository;
         this.areaService = areaService;
     }
 
