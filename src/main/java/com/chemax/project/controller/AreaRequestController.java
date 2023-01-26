@@ -1,8 +1,10 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.AreaDTO;
+import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.request.AreaRequest;
 import com.chemax.project.service.AreaService;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +15,13 @@ public class AreaRequestController {
 
     public AreaRequestController(AreaService service) {
         this.service = service;
+    }
+
+    @GetMapping("/allarea")
+    public String getAll (Model model) {
+        List<AreaDTO> areaDTOList = service.getAllAreaDTOs();
+        model.addAttribute("areadtos", areaDTOList);
+        return "arealist";
     }
 
     @PostMapping("/addArea")
