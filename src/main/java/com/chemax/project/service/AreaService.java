@@ -1,7 +1,6 @@
 package com.chemax.project.service;
 
 import com.chemax.project.dto.AreaDTO;
-import com.chemax.project.dto.EquipmentDTO;
 import com.chemax.project.entities.AreaEntity;
 import com.chemax.project.entities.SectionEntity;
 import com.chemax.project.exceptions.EntityNotFoundException;
@@ -54,6 +53,17 @@ public class AreaService {
         return areaDTOList;
     }
 
+    public List<AreaDTO> getAllAreaThisSectionDTOs(Integer id) {
+        List<AreaDTO> areaDTOList = getAllAreaDTOs();
+        List<AreaDTO> areaThisSectionDTOList = new ArrayList<>();
+        for (AreaDTO a: areaDTOList) {
+            if (Objects.equals(a.getSectionID(), id)) {
+                areaThisSectionDTOList.add(a);
+            }
+        }
+        return areaThisSectionDTOList;
+    }
+
     public List<AreaDTO> getAreaDTOsByCount (Integer count) {
         List<AreaDTO> areaDTOList = new ArrayList<>();
         for (AreaEntity a: areaRepository.findAll()) {
@@ -102,6 +112,7 @@ public class AreaService {
         areaDTO.setSectionID(areaEntity.getSectionEntity().getId());
         areaDTO.setEquipmentDTOList(equipmentService.getAllEquipmentDTOs().stream().filter(equipmentDTO -> Objects.equals(equipmentDTO.getAreaId(), areaEntity.getId()))
                 .collect(Collectors.toList()));
+        areaDTO.setSectionFullName(sectionRepository.getReferenceById(areaDTO.getSectionID()).getSectionFullName());
         return areaDTO;
     }
 

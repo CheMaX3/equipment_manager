@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Перечень оборудования</title>
+</head>
+<body>
+<div>
+    <table border="1">
+        <tr>
+            <th>Id</th>
+            <th>Модель</th>
+            <th>Страна производства</th>
+            <th>Фирма-производитель</th>
+            <th>Год производства</th>
+            <th>Заводской/серийный номер</th>
+            <th>Дополнительная информация</th>
+            <th>Id типа оборудования</th>
+            <th>Id участка</th>
+        </tr>
+        <tr th:each ="dto : ${equipmentDTOs}">
+            <td th:utext="${dto.id}">...</td>
+            <td th:utext="${dto.machineModel}">...</td>
+            <td th:utext="${dto.manufacturerCountry}">...</td>
+            <td th:utext="${dto.manufacturer}">...</td>
+            <td th:utext="${dto.manufacturingYear}">...</td>
+            <td th:utext="${dto.machineNumber}">...</td>
+            <td th:utext="${dto.details}">...</td>
+            <td th:utext="${dto.machineTypeId}">...</td>
+            <td th:utext="${dto.areaId}">...</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

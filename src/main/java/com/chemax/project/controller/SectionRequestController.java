@@ -17,16 +17,11 @@ public class SectionRequestController {
         this.service = service;
     }
 
-    @GetMapping("/hello")
-    public String showIndex() {
-        return "index";
-    }
-
-    @GetMapping("/allsection")
+    @GetMapping("/allSection")
     public String getAll (Model model) {
         List<SectionDTO> sectionDTOList = service.getAllSectionDTOs();
-        model.addAttribute("sectiondtos", sectionDTOList);
-        return "sectionlist";
+        model.addAttribute("sectionDTOs", sectionDTOList);
+        return "sectionList";
     }
 
     @PostMapping("/addSection")

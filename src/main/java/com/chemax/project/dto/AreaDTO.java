@@ -11,5 +11,6 @@ public class AreaDTO {
     private String areaShortName;
     private String areaConversationalName;
     private Integer sectionID;
+    private String sectionFullName;
     private List<EquipmentDTO> equipmentDTOList;
 }

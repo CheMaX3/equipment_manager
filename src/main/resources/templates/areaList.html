@@ -9,19 +9,20 @@
   <table border="1">
     <tr>
       <th>Id</th>
-      <th>FullName</th>
-      <th>ShortName</th>
-      <th>ConversationalName</th>
-      <th>SectionId</th>
+      <th>Полное название</th>
+      <th>Короткое название</th>
+      <th>Разговорное название</th>
+      <th>ID цеха</th>
+      <th>Полное название цеха</th>
     </tr>
-    <tr th:each ="dto : ${areadtos}">
+    <tr th:each ="dto : ${areaDTOs}">
       <td th:utext="${dto.id}">...</td>
       <td th:utext="${dto.areaFullName}">...</td>
       <td th:utext="${dto.areaShortName}">...</td>
       <td th:utext="${dto.areaConversationalName}">...</td>
-      <td th:utext="${dto.sectionId}">...</td>
+      <td th:utext="${dto.sectionID}">...</td>
+      <td th:utext="${dto.sectionFullName}">...</td>
     </tr>
-
   </table>
 </div>
 </body>
