@@ -9,17 +9,17 @@
    <table border="1">
       <tr>
          <th>Id</th>
-         <th>FullName</th>
-         <th>ShortName</th>
-         <th>ConversationalName</th>
+         <th>Полное название</th>
+         <th>Короткое название</th>
+         <th>Разговорное название</th>
       </tr>
-      <tr th:each ="dto : ${sectiondtos}">
+
+         <tr th:each ="dto : ${sectionDTOs}">
          <td th:utext="${dto.id}">...</td>
-         <td th:utext="${dto.sectionFullName}">...</td>
+         <td th:utext="${dto.sectionFullName}"></td>
          <td th:utext="${dto.sectionShortName}">...</td>
          <td th:utext="${dto.sectionConversationalName}">...</td>
       </tr>
-
    </table>
 </div>
 </body>

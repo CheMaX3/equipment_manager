@@ -7,8 +7,17 @@
 <body>
 <div>Выберите требуемый раздел</div>
 <br>
-<a th:href="@{/allsection}">Цеха</a>
+<a th:href="@{/allSection}">Цеха</a>
+<select onchange="top.location=this.value">
+   <option value="http://localhost:8080/hello">Выберите цех</option>
+   <option value="http://localhost:8080/allArea">Участки</option>
+   <option value="http://localhost:8080/allEquipmentType">Группы оборудования</option>
+</select>
 <br>
-<a th:href="@{/allarea}">Участки</a>
+<a th:href="@{/allArea}">Участки</a>
+<br>
+<a th:href="@{/allEquipmentType}">Типы оборудования</a>
+<br>
+<a th:href="@{/allEquipment}">Оборудование</a>
 </body>
 </html>

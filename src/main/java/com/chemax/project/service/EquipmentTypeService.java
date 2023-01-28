@@ -40,7 +40,7 @@ public class EquipmentTypeService {
         return convertEquipmentTypeEntityToDTO(getEquipmentTypeEntity(id));
     }
 
-    private List<EquipmentTypeDTO> getAllEquipmentTypeDTOs() {
+    public List<EquipmentTypeDTO> getAllEquipmentTypeDTOs() {
         List<EquipmentTypeDTO> equipmentTypeDTOList = new ArrayList<>();
         for (EquipmentTypeEntity et: equipmentTypeRepository.findAll()) {
             equipmentTypeDTOList.add(convertEquipmentTypeEntityToDTO(et));

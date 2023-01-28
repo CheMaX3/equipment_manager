@@ -1,16 +1,26 @@
 package com.chemax.project.controller;
 
+import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.dto.EquipmentDTO;
 import com.chemax.project.request.EquipmentRequest;
 import com.chemax.project.service.EquipmentService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
-@RestController
+@Controller
 public class EquipmentRequestController {
     private final EquipmentService service;
+
+    @GetMapping("/allEquipment")
+    public String getAll (Model model) {
+        List<EquipmentDTO> equipmentDTOList = service.getAllEquipmentDTOs();
+        model.addAttribute("equipmentDTOs", equipmentDTOList);
+        return "equipmentList";
+    }
 
     public EquipmentRequestController(EquipmentService service) {
         this.service = service;

@@ -1,15 +1,15 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.AreaDTO;
-import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.request.AreaRequest;
 import com.chemax.project.service.AreaService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class AreaRequestController {
     private final AreaService service;
 
@@ -17,11 +17,18 @@ public class AreaRequestController {
         this.service = service;
     }
 
-    @GetMapping("/allarea")
+    @GetMapping("/allArea")
     public String getAll (Model model) {
         List<AreaDTO> areaDTOList = service.getAllAreaDTOs();
-        model.addAttribute("areadtos", areaDTOList);
-        return "arealist";
+        model.addAttribute("areaDTOs", areaDTOList);
+        return "areaList";
+    }
+
+    @GetMapping("/allAreaThisSection")
+    public String getAllThisSection (Model model) {
+        List<AreaDTO> areaThisSectionDTOList = service.getAllAreaDTOs();
+        model.addAttribute("areaDTOs", areaThisSectionDTOList);
+        return "areaThisSectionList";
     }
 
     @PostMapping("/addArea")
