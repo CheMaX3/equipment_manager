@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Перечень участков</title>
+</head>
+<body>
+<div>
+    <table border="1">
+        <tr>
+            <th>Id</th>
+            <th>Полное название</th>
+            <th>Короткое название</th>
+            <th>Разговорное название</th>
+            <th>ID цеха</th>
+            <th>Полное название цеха</th>
+        </tr>
+        <tr th:each ="dto : ${areaDTOs}">
+            <td th:utext="${dto.id}">...</td>
+            <td th:utext="${dto.areaFullName}">...</td>
+            <td th:utext="${dto.areaShortName}">...</td>
+            <td th:utext="${dto.areaConversationalName}">...</td>
+            <td th:utext="${dto.sectionID}">...</td>
+            <td th:utext="${dto.sectionFullName}">...</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

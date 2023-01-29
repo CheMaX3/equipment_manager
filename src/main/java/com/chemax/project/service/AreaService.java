@@ -53,15 +53,15 @@ public class AreaService {
         return areaDTOList;
     }
 
-    public List<AreaDTO> getAllAreaThisSectionDTOs(Integer id) {
+    public List<AreaDTO> getAllAreaSelectedSectionDTOs(Integer id) {
         List<AreaDTO> areaDTOList = getAllAreaDTOs();
-        List<AreaDTO> areaThisSectionDTOList = new ArrayList<>();
+        List<AreaDTO> areaSelectedSectionDTOList = new ArrayList<>();
         for (AreaDTO a: areaDTOList) {
             if (Objects.equals(a.getSectionID(), id)) {
-                areaThisSectionDTOList.add(a);
+                areaSelectedSectionDTOList.add(a);
             }
         }
-        return areaThisSectionDTOList;
+        return areaSelectedSectionDTOList;
     }
 
     public List<AreaDTO> getAreaDTOsByCount (Integer count) {

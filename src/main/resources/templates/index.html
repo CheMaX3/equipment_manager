@@ -2,17 +2,12 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
    <meta charset="UTF-8">
-   <title>Title</title>
+   <title>ПК-ПИК</title>
 </head>
 <body>
 <div>Выберите требуемый раздел</div>
 <br>
 <a th:href="@{/allSection}">Цеха</a>
-<select onchange="top.location=this.value">
-   <option value="http://localhost:8080/hello">Выберите цех</option>
-   <option value="http://localhost:8080/allArea">Участки</option>
-   <option value="http://localhost:8080/allEquipmentType">Группы оборудования</option>
-</select>
 <br>
 <a th:href="@{/allArea}">Участки</a>
 <br>
