@@ -1,5 +1,6 @@
 package com.chemax.project.service;
 
+import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.dto.EquipmentDTO;
 import com.chemax.project.entities.AreaEntity;
 import com.chemax.project.entities.EquipmentEntity;
@@ -61,6 +62,28 @@ public class EquipmentService {
             equipmentDTOList.add(convertEquipmentEntityToDTO(e));
         }
         return equipmentDTOList.stream().limit(count).collect(Collectors.toList());
+    }
+
+    public List<EquipmentDTO> getAllEquipmentSelectedAreaDTOs(Integer id) {
+        List<EquipmentDTO> equipmentDTOList = getAllEquipmentDTOs();
+        List<EquipmentDTO> equipmentSelectedAreaDTOList = new ArrayList<>();
+        for (EquipmentDTO e : equipmentDTOList) {
+            if (Objects.equals(e.getAreaId(), id)) {
+                equipmentSelectedAreaDTOList.add(e);
+            }
+        }
+        return equipmentSelectedAreaDTOList;
+    }
+
+    public List<EquipmentDTO> getAllEquipmentSelectedMachineTypeDTOs(Integer id) {
+        List<EquipmentDTO> equipmentDTOList = getAllEquipmentDTOs();
+        List<EquipmentDTO> equipmentSelectedMachineTypeDTOList = new ArrayList<>();
+        for (EquipmentDTO e : equipmentDTOList) {
+            if (Objects.equals(e.getMachineTypeId(), id)) {
+                equipmentSelectedMachineTypeDTOList.add(e);
+            }
+        }
+        return equipmentSelectedMachineTypeDTOList;
     }
 
     public void deleteEquipmentEntity (Integer id) {

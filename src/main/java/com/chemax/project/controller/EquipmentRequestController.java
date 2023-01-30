@@ -22,6 +22,20 @@ public class EquipmentRequestController {
         return "equipmentList";
     }
 
+    @GetMapping("/allEquipmentByAreaId")
+    public String getAllEquipmentSelectedArea (Model model, @RequestParam Integer id) {
+        List<EquipmentDTO> equipmentSelectedAreaDTOList = service.getAllEquipmentSelectedAreaDTOs(id);
+        model.addAttribute("equipmentDTOs", equipmentSelectedAreaDTOList);
+        return "equipmentList";
+    }
+
+    @GetMapping("/allEquipmentByMachineTypeId")
+    public String getAllEquipmentSelectedMachineType (Model model, @RequestParam Integer id) {
+        List<EquipmentDTO> equipmentSelectedMachineTypeDTOList = service.getAllEquipmentSelectedMachineTypeDTOs(id);
+        model.addAttribute("equipmentDTOs", equipmentSelectedMachineTypeDTOList);
+        return "equipmentList";
+    }
+
     public EquipmentRequestController(EquipmentService service) {
         this.service = service;
     }

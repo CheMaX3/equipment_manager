@@ -1,6 +1,7 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.SectionDTO;
+import com.chemax.project.entities.SectionEntity;
 import com.chemax.project.request.SectionRequest;
 import com.chemax.project.service.SectionService;
 import org.springframework.stereotype.Controller;
@@ -24,9 +25,22 @@ public class SectionRequestController {
         return "sectionList";
     }
 
-    @PostMapping("/addSection")
-    public SectionDTO createSectionEntity(@RequestBody SectionRequest request) {
-        return service.createSectionEntity(request);
+    @RequestMapping(value = "/addSection", method = RequestMethod.GET)
+    public String showSectionRequestPage(Model model) {
+        SectionRequest sectionRequest = new SectionRequest();
+        model.addAttribute("sectionRequest", sectionRequest);
+        return "addSection";
+    }
+
+
+    @RequestMapping(value = "/addSection", method = RequestMethod.POST)
+    public String createSectionEntity(Model model, @ModelAttribute("sectionRequest") SectionRequest sectionRequest) {
+        String sectionFullName = sectionRequest.getSectionFullName();
+        String sectionShortName = sectionRequest.getSectionShortName();
+        String sectionConversationalName = sectionRequest.getSectionConversationalName();
+        
+//        SectionDTO sectionDTO = service.createSectionEntity(sectionRequest);
+        return "createSectionForm";
     }
 
     @GetMapping("/section/{id}")
@@ -39,8 +53,8 @@ public class SectionRequestController {
         service.deleteSectionEntity(id);
     }
 
-    @PutMapping("/section/update/{id}")
-    public SectionDTO updateSectionEntity(@RequestBody SectionRequest request, @PathVariable Integer id) {
+    @PutMapping("/section/update")
+    public SectionDTO updateSectionEntity(Model model, @RequestBody SectionRequest request, @RequestParam Integer id) {
         service.updateSectionEntity(request, id);
         return getSectionDTO(id);
     }

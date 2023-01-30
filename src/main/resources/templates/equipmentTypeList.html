@@ -13,7 +13,9 @@
     </tr>
     <tr th:each ="dto : ${equipmentTypeDTOs}">
       <td th:utext="${dto.id}">...</td>
-      <td th:utext="${dto.machineType}">...</td>
+      <td>
+        <a th:href="@{/allEquipmentByMachineTypeId(id=${dto.id})}" th:utext="${dto.machineType}"> </a>
+      </td>
     </tr>
   </table>
 </div>

@@ -17,7 +17,15 @@
          <tr th:each ="dto : ${sectionDTOs}">
          <td th:utext="${dto.id}">...</td>
          <td>
-            <a th:href="@{/allAreaBySectionId/(${dto.id})}" th:utext="${dto.sectionFullName}"></a>
+            <a th:href="@{/allAreaBySectionId(id=${dto.id})}" th:utext="${dto.sectionFullName}"></a>
+            <select onchange="top.location=this.value">
+               <option value="">--Выберите необходимое действие--</option>
+               <option th:value="@{/addSection}">Создать новый цех</option>
+               <option th:value="@{/allAreaBySectionId(id=${dto.id})}">Показать список участков</option>
+               <option th:value="@{/section/update(id=${dto.id})}">Редактировать цех</option>
+               <option value="">Удалить цех</option>
+               <option value="">Добавить/переместить участок</option>
+            </select>
          </td>
          <td th:utext="${dto.sectionShortName}">...</td>
          <td th:utext="${dto.sectionConversationalName}">...</td>

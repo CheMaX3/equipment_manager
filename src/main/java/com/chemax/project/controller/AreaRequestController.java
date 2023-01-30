@@ -24,15 +24,12 @@ public class AreaRequestController {
         return "areaList";
     }
 
-    @GetMapping("/allAreaBySectionId/{id}")
-    public String getAllAreaSelectedSection (Model model, @PathVariable Integer id) {
+    @GetMapping("/allAreaBySectionId")
+    public String getAllAreaSelectedSection (Model model, @RequestParam Integer id) {
         List<AreaDTO> areaSelectedSectionDTOList = service.getAllAreaSelectedSectionDTOs(id);
         model.addAttribute("areaDTOs", areaSelectedSectionDTOList);
         return "areaList";
     }
-
-    @GetMapping("/area/getAllAreaBySectionId")
-
 
     @PostMapping("/addArea")
     public AreaDTO createAreaEntity (@RequestBody AreaRequest request) {

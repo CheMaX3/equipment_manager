@@ -17,7 +17,9 @@
     </tr>
     <tr th:each ="dto : ${areaDTOs}">
       <td th:utext="${dto.id}">...</td>
-      <td th:utext="${dto.areaFullName}">...</td>
+      <td>
+          <a th:href="@{/allEquipmentByAreaId(id=${dto.id})}" th:utext="${dto.areaFullName}"></a>
+      </td>
       <td th:utext="${dto.areaShortName}">...</td>
       <td th:utext="${dto.areaConversationalName}">...</td>
       <td th:utext="${dto.sectionID}">...</td>
