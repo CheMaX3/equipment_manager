@@ -90,20 +90,26 @@ public class EquipmentService {
         equipmentRepository.delete(getEquipmentEntity(id));
     }
 
-    public void updateEquipmentEntity (EquipmentRequest request, Integer id) {
+    public void updateEquipmentEntity (EquipmentDTO equipmentDTO, Integer id) {
         EquipmentEntity equipmentEntity = equipmentRepository.getReferenceById(id);
-        equipmentEntity.setMachineModel(Optional.ofNullable(request.getMachineModel()).orElse(equipmentEntity.getMachineModel()));
-        equipmentEntity.setManufacturerCountry(Optional.ofNullable(request.getManufacturerCountry()).orElse(equipmentEntity.getManufacturerCountry()));
-        equipmentEntity.setManufacturer(Optional.ofNullable(request.getManufacturer()).orElse(equipmentEntity.getManufacturer()));
-        equipmentEntity.setManufacturingYear(Optional.ofNullable(request.getManufacturingYear()).orElse(equipmentEntity.getManufacturingYear()));
-        equipmentEntity.setMachineNumber(Optional.ofNullable(request.getMachineNumber()).orElse(equipmentEntity.getMachineNumber()));
-        equipmentEntity.setDetails(Optional.ofNullable(request.getDetails()).orElse(equipmentEntity.getDetails()));
-        if (Objects.nonNull(request.getAreaId())) {
-            equipmentEntity.setAreaEntity(Optional.of(areaRepository.getReferenceById(request.getAreaId())).orElse(equipmentEntity.getAreaEntity()));
+        equipmentEntity.setMachineModel(Optional.ofNullable(equipmentDTO.getMachineModel()).orElse(equipmentEntity
+                .getMachineModel()));
+        equipmentEntity.setManufacturerCountry(Optional.ofNullable(equipmentDTO.getManufacturerCountry())
+                .orElse(equipmentEntity.getManufacturerCountry()));
+        equipmentEntity.setManufacturer(Optional.ofNullable(equipmentDTO.getManufacturer()).orElse(equipmentEntity
+                .getManufacturer()));
+        equipmentEntity.setManufacturingYear(Optional.ofNullable(equipmentDTO.getManufacturingYear())
+                .orElse(equipmentEntity.getManufacturingYear()));
+        equipmentEntity.setMachineNumber(Optional.ofNullable(equipmentDTO.getMachineNumber()).orElse(equipmentEntity
+                .getMachineNumber()));
+        equipmentEntity.setDetails(Optional.ofNullable(equipmentDTO.getDetails()).orElse(equipmentEntity.getDetails()));
+        if (Objects.nonNull(equipmentDTO.getAreaId())) {
+            equipmentEntity.setAreaEntity(Optional.of(areaRepository.getReferenceById(equipmentDTO.getAreaId()))
+                    .orElse(equipmentEntity.getAreaEntity()));
         }
-        if (Objects.nonNull(request.getMachineTypeId())) {
-            equipmentEntity.setEquipmentType(Optional.of(equipmentTypeRepository.getReferenceById(request.getMachineTypeId()))
-                    .orElse(equipmentEntity.getEquipmentTypeEntity()));
+        if (Objects.nonNull(equipmentDTO.getMachineTypeId())) {
+            equipmentEntity.setEquipmentType(Optional.of(equipmentTypeRepository.getReferenceById(equipmentDTO
+                            .getMachineTypeId())).orElse(equipmentEntity.getEquipmentTypeEntity()));
         }
         equipmentRepository.save(equipmentEntity);
     }

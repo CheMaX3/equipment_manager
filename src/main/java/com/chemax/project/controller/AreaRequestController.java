@@ -1,9 +1,7 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.AreaDTO;
-import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.request.AreaRequest;
-import com.chemax.project.request.SectionRequest;
 import com.chemax.project.service.AreaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,9 +44,6 @@ public class AreaRequestController {
         return "redirect:/allArea";
     }
 
-    @GetMapping("/area/{id}")
-    public AreaDTO getAreaDTO (@PathVariable Integer id) {return service.getAreaDTO(id);}
-
     @GetMapping("/area/delete")
     public String deleteAreaEntity(@RequestParam Integer id) {
         service.deleteAreaEntity(id);
@@ -66,10 +61,5 @@ public class AreaRequestController {
     public String updateAreaEntity (@ModelAttribute("areaDTO") AreaDTO areaDTO, @RequestParam Integer id) {
         service.updateAreaEntity(areaDTO, id);
         return "redirect:/allArea";
-    }
-
-    @GetMapping("/area/showAll/{count}")
-    public List<AreaDTO> getAreaDTOsByCount(@PathVariable Integer count) {
-        return service.getAreaDTOsByCount(count);
     }
 }

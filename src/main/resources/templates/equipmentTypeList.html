@@ -14,10 +14,18 @@
     <tr th:each ="dto : ${equipmentTypeDTOs}">
       <td th:utext="${dto.id}">...</td>
       <td>
-        <a th:href="@{/allEquipmentByMachineTypeId(id=${dto.id})}" th:utext="${dto.machineType}"> </a>
+        <a th:utext="${dto.machineType}"></a>
+        <select onchange="top.location=this.value">
+          <option value="">--Выберите необходимое действие--</option>
+          <option th:value="@{/allEquipmentByMachineTypeId(id=${dto.id})}">Показать список оборудования этого типа</option>
+          <option th:value="@{/equipmentType/update(id=${dto.id})}">Редактировать тип</option>
+          <option th:value="@{/equipmentType/delete(id=${dto.id})}">Удалить тип</option>
+        </select>
       </td>
     </tr>
   </table>
+  </br>
+  <a th:href="@{/addEquipmentType}">Добавить новый тип</a>
 </div>
 </body>
 </html>

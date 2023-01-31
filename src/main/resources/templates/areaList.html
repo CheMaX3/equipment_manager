@@ -18,7 +18,7 @@
     <tr th:each ="dto : ${areaDTOs}">
       <td th:utext="${dto.id}">...</td>
       <td>
-          <a th:href="@{/allEquipmentByAreaId(id=${dto.id})}" th:utext="${dto.areaFullName}"></a>
+          <a th:utext="${dto.areaFullName}"></a>
             <select onchange="top.location=this.value">
               <option value="">--Выберите необходимое действие--</option>
               <option th:value="@{/allEquipmentByAreaId(id=${dto.id})}">Показать список оборудования на участке</option>

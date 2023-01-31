@@ -20,7 +20,14 @@
         </tr>
         <tr th:each ="dto : ${equipmentDTOs}">
             <td th:utext="${dto.id}">...</td>
-            <td th:utext="${dto.machineModel}">...</td>
+            <td>
+                <a th:utext="${dto.machineModel}"></a>
+                <select onchange="top.location=this.value">
+                    <option value="">--Выберите необходимое действие--</option>
+                    <option th:value="@{/equipment/update(id=${dto.id})}">Внести изменения</option>
+                    <option th:value="@{/equipment/delete(id=${dto.id})}">Удалить единицу оборудования</option>
+                </select>
+            </td>
             <td th:utext="${dto.manufacturerCountry}">...</td>
             <td th:utext="${dto.manufacturer}">...</td>
             <td th:utext="${dto.manufacturingYear}">...</td>
@@ -30,6 +37,8 @@
             <td th:utext="${dto.areaId}">...</td>
         </tr>
     </table>
+    </br>
+    <a th:href="@{/addEquipment}">Добавить новую единицу оборудования</a>
 </div>
 </body>
 </html>
