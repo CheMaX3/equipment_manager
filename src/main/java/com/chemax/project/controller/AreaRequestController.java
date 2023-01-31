@@ -1,7 +1,9 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.AreaDTO;
+import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.request.AreaRequest;
+import com.chemax.project.request.SectionRequest;
 import com.chemax.project.service.AreaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,21 +33,39 @@ public class AreaRequestController {
         return "areaList";
     }
 
-    @PostMapping("/addArea")
-    public AreaDTO createAreaEntity (@RequestBody AreaRequest request) {
-        return service.createAreaEntity(request);
+    @RequestMapping(value = "/addArea", method = RequestMethod.GET)
+    public String showAddAreaPage(Model model) {
+        AreaRequest areaRequest = new AreaRequest();
+        model.addAttribute("areaRequest", areaRequest);
+        return "areaRequestPage";
+    }
+
+    @RequestMapping(value = "/addArea", method = RequestMethod.POST)
+    public String createAreaEntity(@ModelAttribute("areaRequest") AreaRequest areaRequest) {
+        service.createAreaEntity(areaRequest);
+        return "redirect:/allArea";
     }
 
     @GetMapping("/area/{id}")
     public AreaDTO getAreaDTO (@PathVariable Integer id) {return service.getAreaDTO(id);}
 
-    @GetMapping("/area/delete/{id}")
-    public void deleteAreaEntity (@PathVariable Integer id) {service.deleteAreaEntity(id);}
+    @GetMapping("/area/delete")
+    public String deleteAreaEntity(@RequestParam Integer id) {
+        service.deleteAreaEntity(id);
+        return "redirect:/allArea";
+    }
 
-    @PutMapping ("/area/update/{id}")
-    public AreaDTO updateAreaEntity (@RequestBody AreaRequest request, @PathVariable Integer id) {
-        service.updateAreaEntity(request, id);
-        return getAreaDTO(id);
+    @RequestMapping(value = "/area/update", method = RequestMethod.GET)
+    public String showUpdateAreaPage (Model model, @RequestParam Integer id) {
+        AreaDTO areaDTO = service.getAreaDTO(id);
+        model.addAttribute("areaDTO", areaDTO);
+        return "areaUpdateRequestPage";
+    }
+
+    @RequestMapping(value = "/area/update", method = RequestMethod.POST)
+    public String updateAreaEntity (@ModelAttribute("areaDTO") AreaDTO areaDTO, @RequestParam Integer id) {
+        service.updateAreaEntity(areaDTO, id);
+        return "redirect:/allArea";
     }
 
     @GetMapping("/area/showAll/{count}")

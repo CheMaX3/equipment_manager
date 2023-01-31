@@ -1,5 +1,6 @@
 package com.chemax.project.request;
 
+
 public class SectionRequest {
     private String sectionFullName;
     private String sectionShortName;

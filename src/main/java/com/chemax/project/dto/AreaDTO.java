@@ -10,7 +10,7 @@ public class AreaDTO {
     private String areaFullName;
     private String areaShortName;
     private String areaConversationalName;
-    private Integer sectionID;
+    private Integer sectionId;
     private String sectionFullName;
     private List<EquipmentDTO> equipmentDTOList;
 }

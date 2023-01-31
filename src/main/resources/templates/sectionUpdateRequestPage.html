@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменение существующего цеха</title>
+</head>
+<body>
+<form th:action="@{/section/update(id=${sectionDTO.id})}" th:object="${sectionDTO}" th:method="POST">
+    Полное название
+    <input type="text" th:field="*{sectionFullName}" required>
+    </br>
+    Короткое название
+    <input type="text" th:field="*{sectionShortName}">
+    </br>
+    Разговорное название
+    <input type="text" th:field="*{sectionConversationalName}">
+    </br>
+    <input type="submit" value="Внести изменения">
+</form>
+</body>
+</html>

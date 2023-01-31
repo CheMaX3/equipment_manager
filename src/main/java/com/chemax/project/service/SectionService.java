@@ -3,6 +3,7 @@ package com.chemax.project.service;
 import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.entities.SectionEntity;
 import com.chemax.project.exceptions.EntityNotFoundException;
+import com.chemax.project.exceptions.NeedToMoveEntityException;
 import com.chemax.project.repository.SectionEntityRepository;
 import com.chemax.project.request.SectionRequest;
 import org.springframework.stereotype.Service;
@@ -55,19 +56,24 @@ public class SectionService {
     }
 
     public void deleteSectionEntity(Integer id) {
-        sectionRepository.delete(getSectionEntity(id));
+        SectionEntity sectionEntityToDelete = sectionRepository.getReferenceById(id);
+        if (sectionEntityToDelete.getAreaEntities().isEmpty()) {
+            sectionRepository.delete(getSectionEntity(id));
+        } else {
+            throw new NeedToMoveEntityException();
+        }
     }
 
-    public void updateSectionEntity(SectionRequest request, Integer id) {
+    public void updateSectionEntity(SectionDTO sectionDTO, Integer id) {
         Optional<SectionEntity> returnedEntity = sectionRepository.findById(id);
         SectionEntity entityToChange = returnedEntity.orElseThrow(EntityNotFoundException::new);
-        if (request.getSectionFullName() != null) {
-            entityToChange.setSectionFullName(request.getSectionFullName());
+        if (sectionDTO.getSectionFullName() != null) {
+            entityToChange.setSectionFullName(sectionDTO.getSectionFullName());
         }
-        if (request.getSectionShortName() != null) {
-            entityToChange.setSectionShortName(request.getSectionShortName());
+        if (sectionDTO.getSectionShortName() != null) {
+            entityToChange.setSectionShortName(sectionDTO.getSectionShortName());
         }
-        entityToChange.setSectionConversationalName(Optional.ofNullable(request.getSectionConversationalName())
+        entityToChange.setSectionConversationalName(Optional.ofNullable(sectionDTO.getSectionConversationalName())
                 .orElse(entityToChange.getSectionConversationalName()));
         sectionRepository.save(entityToChange);
     }
@@ -86,7 +92,7 @@ public class SectionService {
         sectionDTO.setSectionFullName(sectionEntityToConvert.getSectionFullName());
         sectionDTO.setSectionShortName(sectionEntityToConvert.getSectionShortName());
         sectionDTO.setSectionConversationalName(sectionEntityToConvert.getSectionConversationalName());
-        sectionDTO.setAreaDTOList(areaService.getAllAreaDTOs().stream().filter(areaDTO -> Objects.equals(areaDTO.getSectionID(), sectionEntityToConvert.getId()))
+        sectionDTO.setAreaDTOList(areaService.getAllAreaDTOs().stream().filter(areaDTO -> Objects.equals(areaDTO.getSectionId(), sectionEntityToConvert.getId()))
                 .collect(Collectors.toList()));
         return sectionDTO;
     }

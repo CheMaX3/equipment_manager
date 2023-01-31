@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Внесение изменений</title>
+    <title>Создание нового цеха</title>
 </head>
 <body>
 <form th:action="@{/addSection}" th:object="${sectionRequest}" th:method="POST">
@@ -13,7 +13,7 @@
         <input type="text" th:field="*{sectionShortName}">
     </br>
         Разговорное название
-        <input type="text" th:field="*sectionConversationalName">
+        <input type="text" th:field="*{sectionConversationalName}">
     </br>
         <input type="submit" value="Создать">
 </form>
