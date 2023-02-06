@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+  <meta charset="UTF-8">
+  <title>Внести изменения в профиль пользователя</title>
+  <body>
+        <form th:action="@{/admin/update(id=${userProfile.id})}" th:object="${userProfile}" th:method="POST">
+          Username
+          <input type="text" th:field="*{username}" required>
+          </br>
+          Password
+          <input type="text" th:field="*{password}">
+          </br>
+          Roles
+          <input type="text" th:field="*{roles}">
+          </br>
+          Add role
+          <select name="roles">
+            <option value="1">User</option>
+            <option value="2">Admin</option>
+          </select>
+          </br>
+          <input type="submit" value="Внести изменения">
+        </form>
+  </body>
+</html>

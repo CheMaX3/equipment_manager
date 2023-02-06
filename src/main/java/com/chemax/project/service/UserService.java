@@ -1,5 +1,8 @@
 package com.chemax.project.service;
 
+import com.chemax.project.dto.AreaDTO;
+import com.chemax.project.dto.UserProfile;
+import com.chemax.project.entities.AreaEntity;
 import com.chemax.project.entities.Role;
 import com.chemax.project.entities.User;
 import com.chemax.project.repository.RoleRepository;
@@ -57,8 +60,7 @@ public class UserService implements UserDetailsService {
         }
 
         user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setPassword(user.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
@@ -74,6 +76,24 @@ public class UserService implements UserDetailsService {
     public List<User> usergetList(Integer idMin) {
         return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
                 .setParameter("paramId", idMin).getResultList();
+    }
+
+    public UserProfile getUserProfile (Integer id) {
+        UserProfile userProfile = new UserProfile();
+        User user = findUserById(id);
+        userProfile.setId(user.getId());
+        userProfile.setUsername(user.getUsername());
+        userProfile.setPassword(user.getPassword());
+        userProfile.setRoles(user.getRoles());
+        return userProfile;
+    }
+
+    public void updateUserProfile (UserProfile userProfile, Integer id) {
+        User user = userRepository.getReferenceById(id);
+        user.setUsername(Optional.ofNullable(userProfile.getUsername()).orElse(user.getUsername()));
+        user.setPassword(Optional.ofNullable(userProfile.getPassword()).orElse(user.getPassword()));
+        user.setRoles(Optional.ofNullable(userProfile.getRoles()).orElse(user.getRoles()));
+        userRepository.save(user);
     }
 
 }

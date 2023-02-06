@@ -9,4 +9,7 @@ public class LoginController {
     public String showLoginPage() {
         return "login";
     }
+
+    @GetMapping("/loginSuccess")
+    public String showSuccessLoginPage() {return "loginSuccess";}
 }

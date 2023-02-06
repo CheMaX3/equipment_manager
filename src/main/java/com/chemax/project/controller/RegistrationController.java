@@ -1,14 +1,13 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.entities.User;
+import com.chemax.project.request.SectionRequest;
 import com.chemax.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RegistrationController {
@@ -16,28 +15,16 @@ public class RegistrationController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/registration")
-    public String registration(Model model) {
-        model.addAttribute("userForm", new User());
-
-        return "registration";
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    public String showRegistrationPage(Model model) {
+        User userForm = new User();
+        model.addAttribute("userForm", userForm);
+        return "registrationPage";
     }
 
-    @PostMapping("/registration")
-    public String addUser(@ModelAttribute("userForm")User userForm, BindingResult bindingResult, Model model) {
-
-        if (bindingResult.hasErrors()) {
-            return "registration";
-        }
-//        if (!userForm.getPassword().equals(userForm.getPasswordConfirm())){
-//            model.addAttribute("passwordError", "Пароли не совпадают");
-//            return "registration";
-//        }
-//        if (!userService.saveUser(userForm)){
-//            model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
-//            return "registration";
-//        }
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    public String addUser(@ModelAttribute("userForm")User userForm, Model model) {
         userService.saveUser(userForm);
-        return "redirect:/";
+        return "redirect:/login";
     }
 }

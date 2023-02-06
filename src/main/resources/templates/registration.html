@@ -1,38 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:form="http://www.springframework.org/tags/form " xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Регистрация</title>
 </head>
 
 <body>
-<!--<div>-->
-<!--    <form method="POST" action="/login">-->
-<!--        <h2>Вход в систему</h2>-->
-<!--        <div>-->
-<!--            <input name="username" type="text" placeholder="Username"-->
-<!--                   autofocus="true"/>-->
-<!--            <input name="password" type="password" placeholder="Password"/>-->
-<!--            <button type="submit">Log In</button>-->
-<!--            <h4><a href="/registration">Зарегистрироваться</a></h4>-->
-<!--        </div>-->
-<!--    </form>-->
-<!--</div>-->
 <div>
     <form method="POST" action="/registration" modelAttribute="userForm">
         <h2>Регистрация</h2>
         <div>
-            <input type="text" th:path="username" placeholder="Username"/>
-<!--            <form:errors path="username" th:object="${usernameError}"/>-->
-
+            <input type="text" th:field="*{username}" placeholder="Username"/>
         </div>
         <div>
-            <input type="password" th:path="password" placeholder="Password"/>
+            <input type="password" th:field="*{password}" placeholder="Password"/>
         </div>
         <div>
-            <input type="password" th:path="passwordConfirm"
+            <input type="password" th:field="*{passwordConfirm}"
                         placeholder="Confirm your password"/>
-<!--            <form:errors path="password" th:object="${passwordError}"/>-->
         </div>
         <button type="submit">Зарегистрироваться</button>
     </form>

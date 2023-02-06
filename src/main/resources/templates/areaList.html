@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Перечень участков</title>
@@ -32,8 +32,12 @@
       <td th:utext="${dto.sectionFullName}">...</td>
     </tr>
   </table>
+  <div sec:authorize="hasRole('ADMIN')">
   </br>
   <a th:href="@{/addArea}">Создать новый участок</a>
+  </div>
+  </br>
+  <a th:href="@{/hello}">Перейти на главную страницу</a>
 </div>
 </body>
 </html>
