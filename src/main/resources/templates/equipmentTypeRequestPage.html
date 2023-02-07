@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление нового типа оборудования</title>
+</head>
+<body>
+<form th:action="@{/addEquipmentType}" th:object="${equipmentTypeRequest}" th:method="POST">
+    Тип оборудования
+    <input type="text" th:field="*{machineType}" required>
+    </br>
+    <input type="submit" value="Создать">
+</form>
+</body>
+</html>

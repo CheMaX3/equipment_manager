@@ -24,34 +24,35 @@ public class SectionRequestController {
         return "sectionList";
     }
 
-    @PostMapping("/addSection")
-    public SectionDTO createSectionEntity(@RequestBody SectionRequest request) {
-        return service.createSectionEntity(request);
+    @RequestMapping(value = "/addSection", method = RequestMethod.GET)
+    public String showAddSectionPage(Model model) {
+        SectionRequest sectionRequest = new SectionRequest();
+        model.addAttribute("sectionRequest", sectionRequest);
+        return "sectionRequestPage";
     }
 
-    @GetMapping("/section/{id}")
-    public SectionDTO getSectionDTO(@PathVariable Integer id) {
-        return service.getSectionDTO(id);
+    @RequestMapping(value = "/addSection", method = RequestMethod.POST)
+    public String createSectionEntity(@ModelAttribute("sectionRequest") SectionRequest sectionRequest) {
+        service.createSectionEntity(sectionRequest);
+        return "redirect:/allSection";
     }
 
-    @GetMapping("/section/delete/{id}")
-    public void deleteSectionEntity(@PathVariable Integer id) {
+    @GetMapping("/section/delete")
+    public String deleteSectionEntity(@RequestParam Integer id) {
         service.deleteSectionEntity(id);
+        return "redirect:/allSection";
     }
 
-    @PutMapping("/section/update/{id}")
-    public SectionDTO updateSectionEntity(@RequestBody SectionRequest request, @PathVariable Integer id) {
-        service.updateSectionEntity(request, id);
-        return getSectionDTO(id);
+    @RequestMapping(value = "/section/update", method = RequestMethod.GET)
+    public String showUpdateSectionPage (Model model, @RequestParam Integer id) {
+        SectionDTO sectionDTO = service.getSectionDTO(id);
+        model.addAttribute("sectionDTO", sectionDTO);
+        return "sectionUpdateRequestPage";
     }
 
-    @GetMapping("/section/showAll")
-    public List<SectionDTO> getAllSectionDTOs() {
-        return service.getAllSectionDTOs();
-    }
-
-    @GetMapping("/section/showAll/{count}")
-    public List<SectionDTO> getSectionDTOsByCount(@PathVariable Integer count) {
-        return service.getSectionDTOsByCount(count);
+    @RequestMapping(value = "/section/update", method = RequestMethod.POST)
+    public String updateSectionEntity (@ModelAttribute("sectionDTO") SectionDTO sectionDTO, @RequestParam Integer id) {
+        service.updateSectionEntity(sectionDTO, id);
+        return "redirect:/allSection";
     }
 }

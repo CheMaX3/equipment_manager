@@ -17,13 +17,23 @@
     </tr>
     <tr th:each ="dto : ${areaDTOs}">
       <td th:utext="${dto.id}">...</td>
-      <td th:utext="${dto.areaFullName}">...</td>
+      <td>
+          <a th:utext="${dto.areaFullName}"></a>
+            <select onchange="top.location=this.value">
+              <option value="">--Выберите необходимое действие--</option>
+              <option th:value="@{/allEquipmentByAreaId(id=${dto.id})}">Показать список оборудования на участке</option>
+              <option th:value="@{/area/update(id=${dto.id})}">Редактировать участок</option>
+              <option th:value="@{/area/delete(id=${dto.id})}">Удалить участок</option>
+            </select>
+      </td>
       <td th:utext="${dto.areaShortName}">...</td>
       <td th:utext="${dto.areaConversationalName}">...</td>
-      <td th:utext="${dto.sectionID}">...</td>
+      <td th:utext="${dto.sectionId}">...</td>
       <td th:utext="${dto.sectionFullName}">...</td>
     </tr>
   </table>
+  </br>
+  <a th:href="@{/addArea}">Создать новый участок</a>
 </div>
 </body>
 </html>

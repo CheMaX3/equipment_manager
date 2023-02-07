@@ -57,7 +57,7 @@ public class AreaService {
         List<AreaDTO> areaDTOList = getAllAreaDTOs();
         List<AreaDTO> areaSelectedSectionDTOList = new ArrayList<>();
         for (AreaDTO a: areaDTOList) {
-            if (Objects.equals(a.getSectionID(), id)) {
+            if (Objects.equals(a.getSectionId(), id)) {
                 areaSelectedSectionDTOList.add(a);
             }
         }
@@ -73,21 +73,21 @@ public class AreaService {
     }
 
     public void deleteAreaEntity (Integer id) {
-        try {
+        AreaEntity areaEntityToDelete = areaRepository.getReferenceById(id);
+        if (areaEntityToDelete.getEquipmentList().isEmpty()) {
             areaRepository.delete(getAreaEntity(id));
-        }
-        catch (NeedToMoveEntityException ex) {
-            System.out.println("Актуализируйте расположение оборудования с удаляемого участка и попробуйте снова");
+        } else {
+            throw new NeedToMoveEntityException();
         }
     }
 
-    public void updateAreaEntity (AreaRequest request, Integer id) {
+    public void updateAreaEntity (AreaDTO areaDTO, Integer id) {
         AreaEntity areaEntity = areaRepository.getReferenceById(id);
-        areaEntity.setAreaFullName(Optional.ofNullable(request.getAreaFullName()).orElse(areaEntity.getAreaFullName()));
-        areaEntity.setAreaShortName(Optional.ofNullable(request.getAreaShortName()).orElse(areaEntity.getAreaShortName()));
-        areaEntity.setAreaConversationalName(Optional.ofNullable(request.getAreaConversationalName()).orElse(areaEntity.getAreaConversationalName()));
-        if (request.getSectionId() != null) {
-            areaEntity.setSectionEntity(sectionRepository.getReferenceById(request.getSectionId()));
+        areaEntity.setAreaFullName(Optional.ofNullable(areaDTO.getAreaFullName()).orElse(areaEntity.getAreaFullName()));
+        areaEntity.setAreaShortName(Optional.ofNullable(areaDTO.getAreaShortName()).orElse(areaEntity.getAreaShortName()));
+        areaEntity.setAreaConversationalName(Optional.ofNullable(areaDTO.getAreaConversationalName()).orElse(areaEntity.getAreaConversationalName()));
+        if (areaDTO.getSectionId() != null) {
+            areaEntity.setSectionEntity(sectionRepository.getReferenceById(areaDTO.getSectionId()));
         } else {
             areaEntity.setSectionEntity(areaEntity.getSectionEntity());
         }
@@ -109,10 +109,10 @@ public class AreaService {
         areaDTO.setAreaFullName(areaEntity.getAreaFullName());
         areaDTO.setAreaShortName(areaEntity.getAreaShortName());
         areaDTO.setAreaConversationalName(areaEntity.getAreaConversationalName());
-        areaDTO.setSectionID(areaEntity.getSectionEntity().getId());
+        areaDTO.setSectionId(areaEntity.getSectionEntity().getId());
         areaDTO.setEquipmentDTOList(equipmentService.getAllEquipmentDTOs().stream().filter(equipmentDTO -> Objects.equals(equipmentDTO.getAreaId(), areaEntity.getId()))
                 .collect(Collectors.toList()));
-        areaDTO.setSectionFullName(sectionRepository.getReferenceById(areaDTO.getSectionID()).getSectionFullName());
+        areaDTO.setSectionFullName(sectionRepository.getReferenceById(areaDTO.getSectionId()).getSectionFullName());
         return areaDTO;
     }
 

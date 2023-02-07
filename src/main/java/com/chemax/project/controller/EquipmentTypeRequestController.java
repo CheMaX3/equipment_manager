@@ -1,7 +1,5 @@
 package com.chemax.project.controller;
 
-
-import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.dto.EquipmentTypeDTO;
 import com.chemax.project.request.EquipmentTypeRequest;
 import com.chemax.project.service.EquipmentTypeService;
@@ -15,6 +13,10 @@ import java.util.List;
 public class EquipmentTypeRequestController {
     private final EquipmentTypeService service;
 
+    public EquipmentTypeRequestController(EquipmentTypeService service) {
+        this.service = service;
+    }
+
     @GetMapping("/allEquipmentType")
     public String getAll (Model model) {
         List<EquipmentTypeDTO> equipmentTypeDTOList = service.getAllEquipmentTypeDTOs();
@@ -22,28 +24,37 @@ public class EquipmentTypeRequestController {
         return "equipmentTypeList";
     }
 
-    public EquipmentTypeRequestController(EquipmentTypeService service) {
-        this.service = service;
+    @RequestMapping(value = "/addEquipmentType", method = RequestMethod.GET)
+    public String showAddEquipmentTypePage(Model model) {
+        EquipmentTypeRequest equipmentTypeRequest = new EquipmentTypeRequest();
+        model.addAttribute("equipmentTypeRequest", equipmentTypeRequest);
+        return "equipmentTypeRequestPage";
     }
 
-    @PostMapping("/addEquipmentType")
-    public EquipmentTypeDTO createEquipmentTypeEntity (@RequestBody EquipmentTypeRequest request) {
-        return service.createEquipmentTypeEntity(request);
+    @RequestMapping(value = "/addEquipmentType", method = RequestMethod.POST)
+    public String createEquipmentTypeEntity(@ModelAttribute("equipmentTypeRequest")
+                                                        EquipmentTypeRequest equipmentTypeRequest) {
+        service.createEquipmentTypeEntity(equipmentTypeRequest);
+        return "redirect:/allEquipmentType";
     }
 
-    @GetMapping("/equipmentType/{id}")
-    public EquipmentTypeDTO getEquipmentTypeDTO (@PathVariable Integer id) {return service.getEquipmentTypeDTO(id);}
-
-    @GetMapping("/equipmentType/delete/{id}")
-    public void deleteEquipmentTypeEntity (@PathVariable Integer id) {service.deleteEquipmentTypeEntity(id);}
-
-    @PutMapping ("/equipmentType/update/{id}")
-    public EquipmentTypeDTO updateEquipmentTypeEntity (@RequestBody EquipmentTypeRequest request, @PathVariable Integer id) {
-        service.updateEquipmentTypeEntity(request, id);
-        return getEquipmentTypeDTO(id);
+    @GetMapping("/equipmentType/delete")
+    public String deleteEquipmentTypeEntity(@RequestParam Integer id) {
+        service.deleteEquipmentTypeEntity(id);
+        return "redirect:/allEquipmentType";
     }
 
-    @GetMapping("/equipmentType/showAll/{count}")
-    public List<EquipmentTypeDTO> getEquipmentTypeDTOsByCount (@PathVariable Integer count) { return service.getEquipmentTypeDTOsByCount(count); }
+    @RequestMapping(value = "/equipmentType/update", method = RequestMethod.GET)
+    public String showUpdateEquipmentTypePage (Model model, @RequestParam Integer id) {
+        EquipmentTypeDTO equipmentTypeDTO = service.getEquipmentTypeDTO(id);
+        model.addAttribute("equipmentTypeDTO", equipmentTypeDTO);
+        return "equipmentTypeUpdateRequestPage";
+    }
 
+    @RequestMapping(value = "/equipmentType/update", method = RequestMethod.POST)
+    public String updateEquipmentTypeEntity (@ModelAttribute("equipmentTypeDTO") EquipmentTypeDTO equipmentTypeDTO,
+                                             @RequestParam Integer id) {
+        service.updateEquipmentTypeEntity(equipmentTypeDTO, id);
+        return "redirect:/allEquipmentType";
+    }
 }

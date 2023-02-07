@@ -24,35 +24,42 @@ public class AreaRequestController {
         return "areaList";
     }
 
-    @GetMapping("/allAreaBySectionId/{id}")
-    public String getAllAreaSelectedSection (Model model, @PathVariable Integer id) {
+    @GetMapping("/allAreaBySectionId")
+    public String getAllAreaSelectedSection (Model model, @RequestParam Integer id) {
         List<AreaDTO> areaSelectedSectionDTOList = service.getAllAreaSelectedSectionDTOs(id);
         model.addAttribute("areaDTOs", areaSelectedSectionDTOList);
         return "areaList";
     }
 
-    @GetMapping("/area/getAllAreaBySectionId")
-
-
-    @PostMapping("/addArea")
-    public AreaDTO createAreaEntity (@RequestBody AreaRequest request) {
-        return service.createAreaEntity(request);
+    @RequestMapping(value = "/addArea", method = RequestMethod.GET)
+    public String showAddAreaPage(Model model) {
+        AreaRequest areaRequest = new AreaRequest();
+        model.addAttribute("areaRequest", areaRequest);
+        return "areaRequestPage";
     }
 
-    @GetMapping("/area/{id}")
-    public AreaDTO getAreaDTO (@PathVariable Integer id) {return service.getAreaDTO(id);}
-
-    @GetMapping("/area/delete/{id}")
-    public void deleteAreaEntity (@PathVariable Integer id) {service.deleteAreaEntity(id);}
-
-    @PutMapping ("/area/update/{id}")
-    public AreaDTO updateAreaEntity (@RequestBody AreaRequest request, @PathVariable Integer id) {
-        service.updateAreaEntity(request, id);
-        return getAreaDTO(id);
+    @RequestMapping(value = "/addArea", method = RequestMethod.POST)
+    public String createAreaEntity(@ModelAttribute("areaRequest") AreaRequest areaRequest) {
+        service.createAreaEntity(areaRequest);
+        return "redirect:/allArea";
     }
 
-    @GetMapping("/area/showAll/{count}")
-    public List<AreaDTO> getAreaDTOsByCount(@PathVariable Integer count) {
-        return service.getAreaDTOsByCount(count);
+    @GetMapping("/area/delete")
+    public String deleteAreaEntity(@RequestParam Integer id) {
+        service.deleteAreaEntity(id);
+        return "redirect:/allArea";
+    }
+
+    @RequestMapping(value = "/area/update", method = RequestMethod.GET)
+    public String showUpdateAreaPage (Model model, @RequestParam Integer id) {
+        AreaDTO areaDTO = service.getAreaDTO(id);
+        model.addAttribute("areaDTO", areaDTO);
+        return "areaUpdateRequestPage";
+    }
+
+    @RequestMapping(value = "/area/update", method = RequestMethod.POST)
+    public String updateAreaEntity (@ModelAttribute("areaDTO") AreaDTO areaDTO, @RequestParam Integer id) {
+        service.updateAreaEntity(areaDTO, id);
+        return "redirect:/allArea";
     }
 }

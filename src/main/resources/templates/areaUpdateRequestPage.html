@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Изменение существующего участка</title>
+</head>
+<body>
+<form th:action="@{/area/update(id=${areaDTO.id})}" th:object="${areaDTO}" th:method="POST">
+  Полное название
+  <input type="text" th:field="*{areaFullName}" required>
+  </br>
+  Короткое название
+  <input type="text" th:field="*{areaShortName}">
+  </br>
+  Разговорное название
+  <input type="text" th:field="*{areaConversationalName}">
+  </br>
+  Принадлежность к цеху
+  <select name="sectionId">
+    <option value="1">Цех металлообработки</option>
+    <option value="2">Цех продольной резки рулонов #1</option>
+    <option value="3">Цех продольной резки рулонов #2</option>
+    <option value="4">Цех металлопроката</option>
+    <option value="5">Цех пресс-ножниц</option>
+    <option value="6">Цех порошковой окраски</option>
+    <option value="7">Цех горячего цинкования</option>
+  </select>
+  </br>
+  <input type="submit" value="Внести изменения">
+</form>
+</body>
+</html>

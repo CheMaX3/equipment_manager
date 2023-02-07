@@ -25,8 +25,7 @@ public class AreaEntity {
     @JoinColumn(name = "section_id")
     private SectionEntity sectionEntity;
 
-    @OneToMany
-    @JoinColumn(name = "areaEntity")
+    @OneToMany(mappedBy = "areaEntity")
     private List<EquipmentEntity> equipmentEntityList;
 
     public AreaEntity(String areaFullName, String areaShortName, String areaConversationalName) {
