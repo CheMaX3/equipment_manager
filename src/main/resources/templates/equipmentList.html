@@ -27,6 +27,10 @@
                     <option th:value="@{/equipment/update(id=${dto.id})}">Внести изменения</option>
                     <option th:value="@{/equipment/delete(id=${dto.id})}">Удалить единицу оборудования</option>
                 </select>
+                <form enctype="multipart/form-data" method="post">
+                    <p><input type="file" name="f">
+                        <input type="submit" value="Отправить"></p>
+                </form>
             </td>
             <td th:utext="${dto.manufacturerCountry}">...</td>
             <td th:utext="${dto.manufacturer}">...</td>
