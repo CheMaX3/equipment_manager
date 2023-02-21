@@ -1,7 +1,9 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.EquipmentDTO;
+import com.chemax.project.entities.Document;
 import com.chemax.project.request.EquipmentRequest;
+import com.chemax.project.service.DocumentService;
 import com.chemax.project.service.EquipmentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,29 +14,29 @@ import java.util.List;
 
 @Controller
 public class EquipmentRequestController {
-    private final EquipmentService service;
+    private final EquipmentService equipmentService;
 
-    public EquipmentRequestController(EquipmentService service) {
-        this.service = service;
+    public EquipmentRequestController(EquipmentService equipmentService) {
+        this.equipmentService = equipmentService;
     }
 
     @GetMapping("/allEquipment")
     public String getAll (Model model) {
-        List<EquipmentDTO> equipmentDTOList = service.getAllEquipmentDTOs();
+        List<EquipmentDTO> equipmentDTOList = equipmentService.getAllEquipmentDTOs();
         model.addAttribute("equipmentDTOs", equipmentDTOList);
         return "equipmentList";
     }
 
     @GetMapping("/allEquipmentByAreaId")
     public String getAllEquipmentSelectedArea (Model model, @RequestParam Integer id) {
-        List<EquipmentDTO> equipmentSelectedAreaDTOList = service.getAllEquipmentSelectedAreaDTOs(id);
+        List<EquipmentDTO> equipmentSelectedAreaDTOList = equipmentService.getAllEquipmentSelectedAreaDTOs(id);
         model.addAttribute("equipmentDTOs", equipmentSelectedAreaDTOList);
         return "equipmentList";
     }
 
     @GetMapping("/allEquipmentByMachineTypeId")
     public String getAllEquipmentSelectedMachineType (Model model, @RequestParam Integer id) {
-        List<EquipmentDTO> equipmentSelectedMachineTypeDTOList = service.getAllEquipmentSelectedMachineTypeDTOs(id);
+        List<EquipmentDTO> equipmentSelectedMachineTypeDTOList = equipmentService.getAllEquipmentSelectedMachineTypeDTOs(id);
         model.addAttribute("equipmentDTOs", equipmentSelectedMachineTypeDTOList);
         return "equipmentList";
     }
@@ -48,19 +50,19 @@ public class EquipmentRequestController {
 
     @RequestMapping(value = "/addEquipment", method = RequestMethod.POST)
     public String createEquipmentEntity(@ModelAttribute("equipmentRequest") EquipmentRequest equipmentRequest) {
-        service.createEquipmentEntity(equipmentRequest);
+        equipmentService.createEquipmentEntity(equipmentRequest);
         return "redirect:/allEquipment";
     }
 
     @GetMapping("/equipment/delete")
     public String deleteEquipmentEntity(@RequestParam Integer id) {
-        service.deleteEquipmentEntity(id);
+        equipmentService.deleteEquipmentEntity(id);
         return "redirect:/allEquipment";
     }
 
     @RequestMapping(value = "/equipment/update", method = RequestMethod.GET)
     public String showUpdateEquipmentPage (Model model, @RequestParam Integer id) {
-        EquipmentDTO equipmentDTO = service.getEquipmentDTO(id);
+        EquipmentDTO equipmentDTO = equipmentService.getEquipmentDTO(id);
         model.addAttribute("equipmentDTO", equipmentDTO);
         return "equipmentUpdateRequestPage";
     }
@@ -68,7 +70,7 @@ public class EquipmentRequestController {
     @RequestMapping(value = "/equipment/update", method = RequestMethod.POST)
     public String updateEquipmentEntity (@ModelAttribute("equipmentDTO") EquipmentDTO equipmentDTO,
                                          @RequestParam Integer id) {
-        service.updateEquipmentEntity(equipmentDTO, id);
+        equipmentService.updateEquipmentEntity(equipmentDTO, id);
         return "redirect:/allEquipment";
     }
 }

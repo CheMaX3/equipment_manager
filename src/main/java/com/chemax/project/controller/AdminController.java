@@ -1,6 +1,5 @@
 package com.chemax.project.controller;
 
-import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.dto.UserProfile;
 import com.chemax.project.entities.User;
 import com.chemax.project.service.UserService;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller

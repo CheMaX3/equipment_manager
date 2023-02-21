@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Прикрепление документа</title>
+</head>
+<body>
+<form method="POST" th:action="@{/equipment/addDocument(id=${equipmentDTO.id})}" th:object="${equipmentDTO}" enctype="multipart/form-data">
+    Title:<input type="text" name="name" />
+    <input type="text" th:field="*{id}" hidden>
+    File:<input type="file" name="file"/>
+    <input type="submit" value="Upload" />
+</form>
+</body>
+</html>

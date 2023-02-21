@@ -2,7 +2,6 @@ package com.chemax.project.service;
 
 import com.chemax.project.dto.EquipmentTypeDTO;
 import com.chemax.project.entities.EquipmentTypeEntity;
-import com.chemax.project.exceptions.EntityNotFoundException;
 import com.chemax.project.exceptions.NeedToMoveEntityException;
 import com.chemax.project.repository.EquipmentTypeEntityRepository;
 import com.chemax.project.request.EquipmentTypeRequest;
@@ -33,7 +32,7 @@ public class EquipmentTypeService {
         return convertEquipmentTypeEntityToDTO(equipmentTypeEntity);
     }
 
-    private EquipmentTypeEntity getEquipmentTypeEntity (Integer id) throws EntityNotFoundException {
+    private EquipmentTypeEntity getEquipmentTypeEntity (Integer id) {
         return equipmentTypeRepository.getReferenceById(id);
     }
 
