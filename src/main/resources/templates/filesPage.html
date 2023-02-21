@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Файловое хранилище</title>
+</head>
+<body>
+<span th:text="${equipmentDTO.machineModel}">name</span>
+<div>
+    <table border="1">
+        <tr>
+            <th>Id файла</th>
+            <th>Имя файла</th>
+            <th>Скачать</th>
+            <th>Удалить</th>
+        </tr>
+        <tr th:each ="document : ${documentList}">
+            <td th:utext="${document.id}">...</td>
+            <td th:utext="${document.name}">...</td>
+            <td> <a th:href="@{/files/(id=${document.id})}" download>Скачать файл</a>
+            <td> <a th:href="@{/files/delete(id=${document.id})}">Удалить</a></td>
+        </tr>
+    </table>
+    </br>
+    <a th:href="@{/equipment/addDocument(id=${equipmentDTO.id})}">Прикрепить новый документ</a>
+    </br>
+    <a th:href="@{/hello}">Перейти на главную страницу</a>
+</div>
+</body>
+</html>

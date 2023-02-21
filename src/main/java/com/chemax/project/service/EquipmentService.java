@@ -1,6 +1,5 @@
 package com.chemax.project.service;
 
-import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.dto.EquipmentDTO;
 import com.chemax.project.entities.AreaEntity;
 import com.chemax.project.entities.EquipmentEntity;
@@ -24,12 +23,14 @@ public class EquipmentService {
     private final AreaEntityRepository areaRepository;
     private final EquipmentTypeEntityRepository equipmentTypeRepository;
     private final EquipmentEntityRepository equipmentRepository;
+    private final DocumentService documentService;
 
     public EquipmentService(AreaEntityRepository areaRepository, EquipmentTypeEntityRepository equipmentTypeRepository,
-                            EquipmentEntityRepository equipmentRepository) {
+                            EquipmentEntityRepository equipmentRepository, DocumentService documentService) {
         this.areaRepository = areaRepository;
         this.equipmentTypeRepository = equipmentTypeRepository;
         this.equipmentRepository = equipmentRepository;
+        this.documentService = documentService;
     }
 
     public EquipmentDTO createEquipmentEntity(EquipmentRequest request) {
@@ -138,6 +139,7 @@ public class EquipmentService {
         equipmentDTO.setDetails(equipmentEntity.getDetails());
         equipmentDTO.setAreaId(equipmentEntity.getAreaEntity().getId());
         equipmentDTO.setMachineTypeId(equipmentEntity.getEquipmentTypeEntity().getId());
+        equipmentDTO.setFiles(documentService.getAllDocumentByEquipmentId(equipmentEntity.getId()));
         return equipmentDTO;
         }
 }

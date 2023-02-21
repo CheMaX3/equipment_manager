@@ -3,7 +3,6 @@ package com.chemax.project.service;
 import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.entities.AreaEntity;
 import com.chemax.project.entities.SectionEntity;
-import com.chemax.project.exceptions.EntityNotFoundException;
 import com.chemax.project.exceptions.NeedToMoveEntityException;
 import com.chemax.project.repository.AreaEntityRepository;
 import com.chemax.project.repository.SectionEntityRepository;
@@ -37,7 +36,7 @@ public class AreaService {
         return convertAreaEntityToDTO(areaEntity);
     }
 
-    private AreaEntity getAreaEntity (Integer id) throws EntityNotFoundException {
+    private AreaEntity getAreaEntity (Integer id) {
         return areaRepository.getReferenceById(id);
     }
 

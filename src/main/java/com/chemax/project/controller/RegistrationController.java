@@ -1,12 +1,10 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.entities.User;
-import com.chemax.project.request.SectionRequest;
 import com.chemax.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller

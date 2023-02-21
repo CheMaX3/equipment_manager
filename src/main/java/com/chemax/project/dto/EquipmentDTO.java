@@ -1,6 +1,9 @@
 package com.chemax.project.dto;
 
+import com.chemax.project.entities.Document;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class EquipmentDTO {
@@ -13,4 +16,5 @@ public class EquipmentDTO {
     private String details;
     private Integer machineTypeId;
     private Integer areaId;
+    private List<Document> files;
 }

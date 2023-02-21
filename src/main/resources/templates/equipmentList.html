@@ -17,6 +17,7 @@
             <th>Дополнительная информация</th>
             <th>Id типа оборудования</th>
             <th>Id участка</th>
+            <th>Файловое хранилище</th>
         </tr>
         <tr th:each ="dto : ${equipmentDTOs}">
             <td th:utext="${dto.id}">...</td>
@@ -26,7 +27,9 @@
                     <option value="">--Выберите необходимое действие--</option>
                     <option th:value="@{/equipment/update(id=${dto.id})}">Внести изменения</option>
                     <option th:value="@{/equipment/delete(id=${dto.id})}">Удалить единицу оборудования</option>
+                    <option th:value="@{/equipment/addDocument(id=${dto.id})}">Прикрепить документ</option>
                 </select>
+
             </td>
             <td th:utext="${dto.manufacturerCountry}">...</td>
             <td th:utext="${dto.manufacturer}">...</td>
@@ -35,6 +38,9 @@
             <td th:utext="${dto.details}">...</td>
             <td th:utext="${dto.machineTypeId}">...</td>
             <td th:utext="${dto.areaId}">...</td>
+            <td>
+                <a th:href="@{/equipment/showDocumentStorage(id=${dto.id})}">Открыть</a>
+            </td>
         </tr>
     </table>
     <div sec:authorize="hasRole('ADMIN')">

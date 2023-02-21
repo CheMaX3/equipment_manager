@@ -1,8 +1,6 @@
 package com.chemax.project.service;
 
-import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.dto.UserProfile;
-import com.chemax.project.entities.AreaEntity;
 import com.chemax.project.entities.Role;
 import com.chemax.project.entities.User;
 import com.chemax.project.repository.RoleRepository;
