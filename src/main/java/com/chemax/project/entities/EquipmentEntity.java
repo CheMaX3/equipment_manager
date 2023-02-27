@@ -21,7 +21,7 @@ public class EquipmentEntity {
     private String manufacturer;
 
     @Column(name = "manufacturing_year")
-    private Integer manufacturingYear;
+    private String manufacturingYear;
 
     @Column(name = "machine_number")
     private String machineNumber;
@@ -56,7 +56,7 @@ public class EquipmentEntity {
         this.equipmentTypeEntity = equipmentTypeEntity;
     }
 
-    public EquipmentEntity(Integer id, String machineModel, String manufacturerCountry, String manufacturer, Integer manufacturingYear, String machineNumber, String details, AreaEntity areaEntity) {
+    public EquipmentEntity(Integer id, String machineModel, String manufacturerCountry, String manufacturer, String manufacturingYear, String machineNumber, String details, AreaEntity areaEntity) {
         this.id = id;
         this.machineModel = machineModel;
         this.manufacturerCountry = manufacturerCountry;
@@ -99,11 +99,11 @@ public class EquipmentEntity {
         this.manufacturer = manufacturer;
     }
 
-    public Integer getManufacturingYear() {
+    public String getManufacturingYear() {
         return manufacturingYear;
     }
 
-    public void setManufacturingYear(Integer manufacturingYear) {
+    public void setManufacturingYear(String manufacturingYear) {
         this.manufacturingYear = manufacturingYear;
     }
 

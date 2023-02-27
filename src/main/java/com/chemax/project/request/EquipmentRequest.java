@@ -5,7 +5,7 @@ public class EquipmentRequest {
     private String machineModel;
     private String manufacturerCountry;
     private String manufacturer;
-    private Integer manufacturingYear;
+    private String manufacturingYear;
     private String machineNumber;
     private String details;
     private Integer machineTypeId;
@@ -35,11 +35,11 @@ public class EquipmentRequest {
         this.manufacturer = manufacturer;
     }
 
-    public Integer getManufacturingYear() {
+    public String getManufacturingYear() {
         return manufacturingYear;
     }
 
-    public void setManufacturingYear(Integer manufacturingYear) {
+    public void setManufacturingYear(String manufacturingYear) {
         this.manufacturingYear = manufacturingYear;
     }
 

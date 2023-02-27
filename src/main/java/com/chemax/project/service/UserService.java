@@ -3,6 +3,7 @@ package com.chemax.project.service;
 import com.chemax.project.dto.UserProfile;
 import com.chemax.project.entities.Role;
 import com.chemax.project.entities.User;
+import com.chemax.project.exceptions.UserAlreadyExistsException;
 import com.chemax.project.repository.RoleRepository;
 import com.chemax.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +34,9 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-
         if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("User with name: " + username + " not found");
         }
-
         return user;
     }
 
@@ -50,17 +49,15 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public boolean saveUser(User user) {
+    public void saveUser(User user) throws UserAlreadyExistsException {
         User userFromDB = userRepository.findByUsername(user.getUsername());
-
         if (userFromDB != null) {
-            return false;
+            throw new UserAlreadyExistsException(userFromDB.getUsername());
         }
 
         user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return true;
     }
 
     public boolean deleteUser(Integer userId) {
@@ -89,9 +86,26 @@ public class UserService implements UserDetailsService {
     public void updateUserProfile (UserProfile userProfile, Integer id) {
         User user = userRepository.getReferenceById(id);
         user.setUsername(Optional.ofNullable(userProfile.getUsername()).orElse(user.getUsername()));
-        user.setPassword(Optional.ofNullable(userProfile.getPassword()).orElse(user.getPassword()));
+        user.setPassword(Optional.ofNullable(bCryptPasswordEncoder.encode(userProfile.getPassword())).orElse(user.getPassword()));
         user.setRoles(Optional.ofNullable(userProfile.getRoles()).orElse(user.getRoles()));
         userRepository.save(user);
     }
+
+    public String passwordConfirmation(User user) {
+        String message = "";
+        if (!user.getPassword().equals(user.getPasswordConfirm())) {
+                message = "Пароли не совпадают";
+            }
+        return message;
+    }
+
+    public String userExists(User user) {
+        String message = "";
+        if (user.getUsername().equals(userRepository.findByUsername(user.getUsername()).getUsername())) {
+            message = "Пользователь с таким именем уже существует";
+        }
+        return message;
+    }
+
 
 }

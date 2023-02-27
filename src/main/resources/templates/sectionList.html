@@ -8,25 +8,25 @@
 <div>
    <table border="1">
       <tr>
-         <th>Id</th>
+         <th sec:authorize="hasRole('ADMIN')">Id</th>
          <th>Полное название</th>
          <th>Короткое название</th>
          <th>Разговорное название</th>
       </tr>
 
          <tr th:each ="dto : ${sectionDTOs}">
-         <td th:utext="${dto.id}">...</td>
+         <td sec:authorize="hasRole('ADMIN')" th:utext="${dto.id}">...</td>
          <td>
             <a th:utext="${dto.sectionFullName}"></a>
             <select onchange="top.location=this.value">
                <option value="">--Выберите необходимое действие--</option>
                <option th:value="@{/allAreaBySectionId(id=${dto.id})}">Показать список участков</option>
-               <option th:value="@{/section/update(id=${dto.id})}">Редактировать цех</option>
-               <option th:value="@{/section/delete(id=${dto.id})}">Удалить цех</option>
+               <option sec:authorize="hasRole('ADMIN')" th:value="@{/section/update(id=${dto.id})}">Редактировать цех</option>
+               <option sec:authorize="hasRole('ADMIN')" th:value="@{/section/delete(id=${dto.id})}">Удалить цех</option>
             </select>
          </td>
-         <td th:utext="${dto.sectionShortName}">...</td>
-         <td th:utext="${dto.sectionConversationalName}">...</td>
+         <td align="center" th:utext="${dto.sectionShortName}">...</td>
+         <td align="center" th:utext="${dto.sectionConversationalName}">...</td>
       </tr>
    </table>
    <div sec:authorize="hasRole('ADMIN')">

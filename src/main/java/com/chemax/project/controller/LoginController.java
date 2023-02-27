@@ -12,4 +12,9 @@ public class LoginController {
 
     @GetMapping("/loginSuccess")
     public String showSuccessLoginPage() {return "loginSuccess";}
+
+    @GetMapping("/loginFailure")
+    public String showFailureLoginPage() {
+        return "loginFailure";
+    }
 }

@@ -1,9 +1,7 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.EquipmentDTO;
-import com.chemax.project.entities.Document;
 import com.chemax.project.request.EquipmentRequest;
-import com.chemax.project.service.DocumentService;
 import com.chemax.project.service.EquipmentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

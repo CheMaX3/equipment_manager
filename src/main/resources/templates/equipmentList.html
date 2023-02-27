@@ -6,39 +6,39 @@
 </head>
 <body>
 <div>
-    <table border="1">
+    <table border="1" width="100%">
         <tr>
-            <th>Id</th>
-            <th>Модель</th>
-            <th>Страна производства</th>
-            <th>Фирма-производитель</th>
-            <th>Год производства</th>
-            <th>Заводской/серийный номер</th>
-            <th>Дополнительная информация</th>
-            <th>Id типа оборудования</th>
-            <th>Id участка</th>
-            <th>Файловое хранилище</th>
+            <th sec:authorize="hasRole('ADMIN')">Id</th>
+            <th width="500px">Модель</th>
+            <th width="50px">Страна производства</th>
+            <th width="100px">Фирма-производитель</th>
+            <th width="50px">Год производства</th>
+            <th width="150px">Заводской/серийный номер</th>
+            <th width="500px">Дополнительная информация</th>
+            <th width="50px" sec:authorize="hasRole('ADMIN')">Id типа оборудования</th>
+            <th width="50px" sec:authorize="hasRole('ADMIN')">Id участка</th>
+            <th width="75px">Файловое хранилище</th>
         </tr>
         <tr th:each ="dto : ${equipmentDTOs}">
-            <td th:utext="${dto.id}">...</td>
+            <td sec:authorize="hasRole('ADMIN')" th:utext="${dto.id}">...</td>
             <td>
                 <a th:utext="${dto.machineModel}"></a>
                 <select onchange="top.location=this.value">
                     <option value="">--Выберите необходимое действие--</option>
-                    <option th:value="@{/equipment/update(id=${dto.id})}">Внести изменения</option>
-                    <option th:value="@{/equipment/delete(id=${dto.id})}">Удалить единицу оборудования</option>
+                    <option sec:authorize="hasRole('ADMIN')" th:value="@{/equipment/update(id=${dto.id})}">Внести изменения</option>
+                    <option sec:authorize="hasRole('ADMIN')" th:value="@{/equipment/delete(id=${dto.id})}">Удалить единицу оборудования</option>
                     <option th:value="@{/equipment/addDocument(id=${dto.id})}">Прикрепить документ</option>
                 </select>
 
             </td>
-            <td th:utext="${dto.manufacturerCountry}">...</td>
-            <td th:utext="${dto.manufacturer}">...</td>
-            <td th:utext="${dto.manufacturingYear}">...</td>
-            <td th:utext="${dto.machineNumber}">...</td>
+            <td align="center" th:utext="${dto.manufacturerCountry}">...</td>
+            <td align="center" th:utext="${dto.manufacturer}">...</td>
+            <td align="center" th:utext="${dto.manufacturingYear}">...</td>
+            <td align="center" th:utext="${dto.machineNumber}">...</td>
             <td th:utext="${dto.details}">...</td>
-            <td th:utext="${dto.machineTypeId}">...</td>
-            <td th:utext="${dto.areaId}">...</td>
-            <td>
+            <td sec:authorize="hasRole('ADMIN')" th:utext="${dto.machineTypeId}">...</td>
+            <td sec:authorize="hasRole('ADMIN')" th:utext="${dto.areaId}">...</td>
+            <td align="center">
                 <a th:href="@{/equipment/showDocumentStorage(id=${dto.id})}">Открыть</a>
             </td>
         </tr>

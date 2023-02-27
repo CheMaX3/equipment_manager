@@ -5,6 +5,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
 
@@ -18,9 +20,13 @@ public class User implements UserDetails {
     @Column (name = "id")
     private Integer id;
 
+    @NotEmpty(message = "Имя пользователя не может быть пустым")
+    @Size(min = 4, max = 255)
     @Column (name = "username")
     private String username;
 
+    @NotEmpty(message = "Поле пароля не может быть пустым")
+    @Size(min = 4, max = 255)
     @Column (name = "password")
     private String password;
 

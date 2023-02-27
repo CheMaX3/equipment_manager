@@ -5,7 +5,11 @@ import com.chemax.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 public class RegistrationController {
@@ -13,16 +17,27 @@ public class RegistrationController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public String showRegistrationPage(Model model) {
-        User userForm = new User();
-        model.addAttribute("userForm", userForm);
+    @GetMapping("/registration")
+    public String showAddUserForm(User user) {
         return "registrationPage";
     }
 
-    @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String addUser(@ModelAttribute("userForm")User userForm, Model model) {
-        userService.saveUser(userForm);
+    @PostMapping("/registration")
+    public String addUser(@Valid User user, BindingResult result, Model model) {
+
+        String err = userService.passwordConfirmation(user) + userService.userExists(user);
+
+        if (!err.isEmpty()) {
+            ObjectError error = new ObjectError("globalError", err);
+            result.addError(error);
+        }
+
+        if (result.hasErrors()) {
+            return "registrationPage";
+        }
+
+        userService.saveUser(user);
+        model.addAttribute("users", userService.allUsers());
         return "redirect:/login";
     }
 }

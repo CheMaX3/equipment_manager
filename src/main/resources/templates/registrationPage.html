@@ -1,20 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<style>
+    .error
+        { color
+
+</style>
 <head>
     <meta charset="UTF-8">
     <title>Регистрация нового пользователя</title>
+    <style>
+           .error {
+           color: red;
+           }
+    </style>
 </head>
 <body>
-<form th:action="@{/registration}" th:object="${userForm}" th:method="POST">
-    Имя пользователя
-    <input type="text" th:field="*{username}" placeholder="Имя пользователя" required>
-    </br>
-    Пароль
-    <input type="text" th:field="*{password}" placeholder="Пароль" required>
-    </br>
-    Подтверждение пароля
-    <input type="text" th:field="*{passwordConfirm}" placeholder="Подтверждение пароля" required>
-    </br>
+<form th:action="@{/registration}" th:object="${user}" th:method="POST">
+    <div>
+        <label for="username">Имя пользователя</label> <input type="text" th:field="*{username}"
+                                                  id="username" placeholder="Имя пользователя">
+        <ul>
+            <li th:each="err : ${#fields.errors('username')}" th:text="${err}" class="error" />
+        </ul>
+    </div>
+    <div>
+        <label for="password">Пароль</label> <input type="password" th:field="*{password}"
+                                                              id="password" placeholder="Пароль">
+        <ul>
+            <li th:each="err : ${#fields.errors('password')}" th:text="${err}" class="error" />
+        </ul>
+    </div>
+    <div>
+        <label for="passwordConfirm">Подтверждение пароля</label> <input type="password" th:field="*{passwordConfirm}"
+                                                              id="passwordConfirm" placeholder="Подтверждение пароля">
+        <div th:if="${#fields.hasErrors('global')}">
+            <p th:each="err : ${#fields.errors('global')}" th:text="${err}" class="error" />
+        </div>
+    </div>
     <input type="submit" value="Зарегистрироваться">
 </form>
 </body>

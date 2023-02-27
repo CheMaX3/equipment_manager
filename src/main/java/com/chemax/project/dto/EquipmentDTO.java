@@ -11,7 +11,7 @@ public class EquipmentDTO {
     private String machineModel;
     private String manufacturerCountry;
     private String manufacturer;
-    private Integer manufacturingYear;
+    private String manufacturingYear;
     private String machineNumber;
     private String details;
     private Integer machineTypeId;
