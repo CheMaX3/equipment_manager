@@ -25,10 +25,16 @@ public class RegistrationController {
     @PostMapping("/registration")
     public String addUser(@Valid User user, BindingResult result, Model model) {
 
-        String err = userService.passwordConfirmation(user) + userService.userExists(user);
+        String userExistsError = userService.userExists(user);
+        String passwordConfirmError = userService.passwordConfirmation(user);
 
-        if (!err.isEmpty()) {
-            ObjectError error = new ObjectError("globalError", err);
+        if (!userExistsError.isEmpty()) {
+            ObjectError error = new ObjectError("globalError", userExistsError);
+            result.addError(error);
+        }
+
+        if (!passwordConfirmError.isEmpty()) {
+            ObjectError error = new ObjectError("globalError", passwordConfirmError);
             result.addError(error);
         }
 

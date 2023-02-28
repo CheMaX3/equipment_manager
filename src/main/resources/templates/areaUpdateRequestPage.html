@@ -17,13 +17,7 @@
   </br>
   Принадлежность к цеху
   <select name="sectionId">
-    <option value="1">Цех металлообработки</option>
-    <option value="2">Цех продольной резки рулонов #1</option>
-    <option value="3">Цех продольной резки рулонов #2</option>
-    <option value="4">Цех металлопроката</option>
-    <option value="5">Цех пресс-ножниц</option>
-    <option value="6">Цех порошковой окраски</option>
-    <option value="7">Цех горячего цинкования</option>
+    <option th:each="dto: ${sectionDTOList}" th:value="${dto.id}" th:label="${dto.sectionFullName}"></option>
   </select>
   </br>
   <input type="submit" value="Внести изменения">

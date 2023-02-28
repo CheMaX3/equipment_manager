@@ -39,7 +39,9 @@ public class SectionRequestController {
 
     @GetMapping("/section/delete")
     public String deleteSectionEntity(@RequestParam Integer id) {
-        service.deleteSectionEntity(id);
+        if (!service.deleteSectionEntity(id)) {
+            return "sectionDeleteFailure";
+        }
         return "redirect:/allSection";
     }
 

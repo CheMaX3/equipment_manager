@@ -71,12 +71,13 @@ public class AreaService {
         return areaDTOList.stream().limit(count).collect(Collectors.toList());
     }
 
-    public void deleteAreaEntity (Integer id) {
+    public boolean deleteAreaEntity (Integer id) {
         AreaEntity areaEntityToDelete = areaRepository.getReferenceById(id);
         if (areaEntityToDelete.getEquipmentList().isEmpty()) {
             areaRepository.delete(getAreaEntity(id));
+            return true;
         } else {
-            throw new NeedToMoveEntityException();
+            return false;
         }
     }
 

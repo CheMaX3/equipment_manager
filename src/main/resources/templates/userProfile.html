@@ -12,16 +12,11 @@
           <input type="text" th:field="*{password}">
           </br>
           <p sec:authorize="hasRole('ADMIN')">
-            Roles
-            <input type="text" th:field="*{roles}">
-            </br>
             Add role
-            <select name="roles">
-              <option value="1">User</option>
-              <option value="2">Admin</option>
+            <select multiple name="roles">
+              <option th:each="role: ${rolesList}" th:value="${role.id}" th:label="${role.name}"></option>
             </select>
           </p>
-          </br>
           <input type="submit" value="Внести изменения">
         </form>
   </body>

@@ -40,7 +40,9 @@ public class EquipmentTypeRequestController {
 
     @GetMapping("/equipmentType/delete")
     public String deleteEquipmentTypeEntity(@RequestParam Integer id) {
-        service.deleteEquipmentTypeEntity(id);
+        if (!service.deleteEquipmentTypeEntity(id)) {
+            return "deleteEquipmentTypeFailure";
+        }
         return "redirect:/allEquipmentType";
     }
 

@@ -1,6 +1,7 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.UserProfile;
+import com.chemax.project.entities.Role;
 import com.chemax.project.entities.User;
 import com.chemax.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,9 @@ public class AdminController {
     @RequestMapping(value = "/admin/update", method = RequestMethod.GET)
     public String showUserProfile (Model model, @RequestParam Integer id) {
         UserProfile userProfile = userService.getUserProfile(id);
+        List<Role> rolesList = userService.allRoles();
         model.addAttribute("userProfile", userProfile);
+        model.addAttribute("rolesList", rolesList);
         return "userProfile";
     }
 

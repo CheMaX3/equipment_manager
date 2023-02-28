@@ -56,12 +56,13 @@ public class EquipmentTypeService {
         return equipmentTypeDTOList.stream().limit(count).collect(Collectors.toList());
     }
 
-    public void deleteEquipmentTypeEntity (Integer id) {
+    public boolean deleteEquipmentTypeEntity (Integer id) {
         EquipmentTypeEntity equipmentTypeEntityToDelete = equipmentTypeRepository.getReferenceById(id);
         if (equipmentTypeEntityToDelete.getEquipmentList().isEmpty()) {
             equipmentTypeRepository.delete(getEquipmentTypeEntity(id));
+            return true;
         } else {
-            throw new NeedToMoveEntityException();
+            return false;
         }
     }
 

@@ -55,12 +55,13 @@ public class SectionService {
         return sectionDTOList.stream().limit(count).collect(Collectors.toList());
     }
 
-    public void deleteSectionEntity(Integer id) {
+    public boolean deleteSectionEntity(Integer id) {
         SectionEntity sectionEntityToDelete = sectionRepository.getReferenceById(id);
         if (sectionEntityToDelete.getAreaEntities().isEmpty()) {
             sectionRepository.delete(getSectionEntity(id));
+            return true;
         } else {
-            throw new NeedToMoveEntityException();
+            return false;
         }
     }
 

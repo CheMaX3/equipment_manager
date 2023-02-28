@@ -42,7 +42,7 @@ public class DocumentController {
     }
 
     @RequestMapping(value = "/equipment/showDocumentStorage", method = RequestMethod.GET)
-    public String openFilesPage(Model model, @RequestParam Integer id) {
+    public String showFilesPage(Model model, @RequestParam Integer id) {
         EquipmentDTO equipmentDTO = equipmentService.getEquipmentDTO(id);
         List<Document> documentList = documentService.getAllDocumentByEquipmentId(id);
         model.addAttribute("equipmentDTO", equipmentDTO);

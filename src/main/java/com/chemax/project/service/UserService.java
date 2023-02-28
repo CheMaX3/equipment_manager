@@ -49,12 +49,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public void saveUser(User user) throws UserAlreadyExistsException {
-        User userFromDB = userRepository.findByUsername(user.getUsername());
-        if (userFromDB != null) {
-            throw new UserAlreadyExistsException(userFromDB.getUsername());
-        }
+    public List<Role> allRoles() {return roleRepository.findAll(); }
 
+    public void saveUser(User user) {
         user.setRoles(Collections.singleton(new Role(1, "ROLE_USER")));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -101,7 +98,7 @@ public class UserService implements UserDetailsService {
 
     public String userExists(User user) {
         String message = "";
-        if (user.getUsername().equals(userRepository.findByUsername(user.getUsername()).getUsername())) {
+        if (userRepository.findByUsername(user.getUsername()) != null) {
             message = "Пользователь с таким именем уже существует";
         }
         return message;
