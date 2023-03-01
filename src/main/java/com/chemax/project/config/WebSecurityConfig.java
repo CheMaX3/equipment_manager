@@ -1,4 +1,4 @@
-package com.chemax.project.configs;
+package com.chemax.project.config;
 
 import com.chemax.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

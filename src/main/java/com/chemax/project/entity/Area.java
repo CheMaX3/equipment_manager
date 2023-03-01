@@ -1,11 +1,11 @@
-package com.chemax.project.entities;
+package com.chemax.project.entity;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "operational_area")
-public class AreaEntity {
+public class Area {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,40 +23,40 @@ public class AreaEntity {
 
     @ManyToOne
     @JoinColumn(name = "section_id")
-    private SectionEntity sectionEntity;
+    private Section section;
 
-    @OneToMany(mappedBy = "areaEntity")
-    private List<EquipmentEntity> equipmentEntityList;
+    @OneToMany(mappedBy = "area")
+    private List<Equipment> equipmentList;
 
-    public AreaEntity(String areaFullName, String areaShortName, String areaConversationalName) {
+    public Area(String areaFullName, String areaShortName, String areaConversationalName) {
         this.areaFullName = areaFullName;
         this.areaShortName = areaShortName;
         this.areaConversationalName = areaConversationalName;
     }
 
-    public SectionEntity getSectionEntity() {
-        return sectionEntity;
+    public Section getSectionEntity() {
+        return section;
     }
 
-    public void setSectionEntity(SectionEntity sectionEntity) {
-        this.sectionEntity = sectionEntity;
+    public void setSectionEntity(Section section) {
+        this.section = section;
     }
 
-    public List<EquipmentEntity> getEquipmentList() {
-        return equipmentEntityList;
+    public List<Equipment> getEquipmentList() {
+        return equipmentList;
     }
 
-    public void setEquipmentList(List<EquipmentEntity> equipmentEntityList) {
-        this.equipmentEntityList = equipmentEntityList;
+    public void setEquipmentList(List<Equipment> equipmentList) {
+        this.equipmentList = equipmentList;
     }
 
-    public AreaEntity(String fullName) {
+    public Area(String fullName) {
     }
 
-    public AreaEntity(String fullName, String conversationalName) {
+    public Area(String fullName, String conversationalName) {
     }
 
-    public AreaEntity() {
+    public Area() {
     }
 
     public Integer getId() {

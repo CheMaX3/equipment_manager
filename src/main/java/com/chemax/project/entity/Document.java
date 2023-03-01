@@ -1,4 +1,4 @@
-package com.chemax.project.entities;
+package com.chemax.project.entity;
 
 import lombok.Data;
 

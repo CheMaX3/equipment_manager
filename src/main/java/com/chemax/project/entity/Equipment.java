@@ -1,10 +1,10 @@
-package com.chemax.project.entities;
+package com.chemax.project.entity;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "equipment")
-public class EquipmentEntity {
+public class Equipment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +31,13 @@ public class EquipmentEntity {
 
     @ManyToOne
     @JoinColumn(name = "type_id")
-    private EquipmentTypeEntity equipmentTypeEntity;
+    private EquipmentType equipmentType;
 
     @ManyToOne
     @JoinColumn(name = "area_id")
-    private AreaEntity areaEntity;
+    private Area area;
 
-    public EquipmentEntity() {
+    public Equipment() {
     }
 
     public String getMachineNumber() {
@@ -48,15 +48,15 @@ public class EquipmentEntity {
         this.machineNumber = machineNumber;
     }
 
-    public EquipmentTypeEntity getEquipmentTypeEntity() {
-        return equipmentTypeEntity;
+    public EquipmentType getEquipmentTypeEntity() {
+        return equipmentType;
     }
 
-    public void setEquipmentType(EquipmentTypeEntity equipmentTypeEntity) {
-        this.equipmentTypeEntity = equipmentTypeEntity;
+    public void setEquipmentType(EquipmentType equipmentType) {
+        this.equipmentType = equipmentType;
     }
 
-    public EquipmentEntity(Integer id, String machineModel, String manufacturerCountry, String manufacturer, String manufacturingYear, String machineNumber, String details, AreaEntity areaEntity) {
+    public Equipment(Integer id, String machineModel, String manufacturerCountry, String manufacturer, String manufacturingYear, String machineNumber, String details, Area area) {
         this.id = id;
         this.machineModel = machineModel;
         this.manufacturerCountry = manufacturerCountry;
@@ -64,7 +64,7 @@ public class EquipmentEntity {
         this.manufacturingYear = manufacturingYear;
         this.machineNumber = machineNumber;
         this.details = details;
-        this.areaEntity = areaEntity;
+        this.area = area;
     }
 
     public Integer getId() {
@@ -115,11 +115,11 @@ public class EquipmentEntity {
         this.details = details;
     }
 
-    public AreaEntity getAreaEntity() {
-        return areaEntity;
+    public Area getAreaEntity() {
+        return area;
     }
 
-    public void setAreaEntity(AreaEntity areaEntity) {
-        this.areaEntity = areaEntity;
+    public void setAreaEntity(Area area) {
+        this.area = area;
     }
 }

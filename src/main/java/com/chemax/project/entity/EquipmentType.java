@@ -1,11 +1,11 @@
-package com.chemax.project.entities;
+package com.chemax.project.entity;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "equipment_type")
-public class EquipmentTypeEntity {
+public class EquipmentType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,8 +15,8 @@ public class EquipmentTypeEntity {
     @Column(name = "machine_type")
     private String machineType;
 
-    @OneToMany(mappedBy = "equipmentTypeEntity")
-    private List<EquipmentEntity> equipmentEntityList;
+    @OneToMany(mappedBy = "equipmentType")
+    private List<Equipment> equipmentList;
 
     public Integer getId() {
         return id;
@@ -34,21 +34,21 @@ public class EquipmentTypeEntity {
         this.machineType = machineType;
     }
 
-    public List<EquipmentEntity> getEquipmentList() {
-        return equipmentEntityList;
+    public List<Equipment> getEquipmentList() {
+        return equipmentList;
     }
 
-    public void setEquipmentList(List<EquipmentEntity> equipmentEntityList) {
-        this.equipmentEntityList = equipmentEntityList;
+    public void setEquipmentList(List<Equipment> equipmentList) {
+        this.equipmentList = equipmentList;
     }
 
-    public EquipmentTypeEntity(Integer id, String machineType, List<EquipmentEntity> equipmentEntityList) {
+    public EquipmentType(Integer id, String machineType, List<Equipment> equipmentList) {
         this.id = id;
         this.machineType = machineType;
-        this.equipmentEntityList = equipmentEntityList;
+        this.equipmentList = equipmentList;
     }
 
-    public EquipmentTypeEntity() {
+    public EquipmentType() {
 
     }
 }

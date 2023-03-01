@@ -1,4 +1,4 @@
-package com.chemax.project.exceptions;
+package com.chemax.project.exception;
 
 public class EntityNotFoundException extends RuntimeException {
     public EntityNotFoundException() {

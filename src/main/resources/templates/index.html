@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
    <meta charset="UTF-8">
    <title>ПК-ПИК</title>
@@ -18,6 +18,10 @@
 <p>
    <a th:href="@{/allEquipment}">Оборудование</a>
 </p>
+<div sec:authorize="hasRole('ADMIN')">
+   <a th:href="@{/admin}">Перейти в меню управления профилями пользователей</a>
+   </br>
+</div>
 <p>
    <a href="/logout">Выйти</a>
 </p>

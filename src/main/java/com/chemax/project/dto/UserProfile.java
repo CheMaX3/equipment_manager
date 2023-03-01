@@ -1,6 +1,6 @@
 package com.chemax.project.dto;
 
-import com.chemax.project.entities.Role;
+import com.chemax.project.entity.Role;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

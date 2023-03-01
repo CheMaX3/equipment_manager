@@ -3,8 +3,8 @@ package com.chemax.project.controller;
 import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.request.AreaRequest;
-import com.chemax.project.service.AreaService;
-import com.chemax.project.service.SectionService;
+import com.chemax.project.service.AreaServiceImpl;
+import com.chemax.project.service.SectionServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,25 +12,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-public class AreaRequestController {
-    private final AreaService areaService;
-    private final SectionService sectionService;
+public class AreaController {
+    private final AreaServiceImpl areaServiceImpl;
+    private final SectionServiceImpl sectionServiceImpl;
 
-    public AreaRequestController(AreaService areaService, SectionService sectionService) {
-        this.areaService = areaService;
-        this.sectionService = sectionService;
+    public AreaController(AreaServiceImpl areaServiceImpl, SectionServiceImpl sectionServiceImpl) {
+        this.areaServiceImpl = areaServiceImpl;
+        this.sectionServiceImpl = sectionServiceImpl;
     }
 
     @GetMapping("/allArea")
     public String getAll (Model model) {
-        List<AreaDTO> areaDTOList = areaService.getAllAreaDTOs();
+        List<AreaDTO> areaDTOList = areaServiceImpl.getAllAreaDTOs();
         model.addAttribute("areaDTOs", areaDTOList);
         return "areaList";
     }
 
     @GetMapping("/allAreaBySectionId")
     public String getAllAreaSelectedSection (Model model, @RequestParam Integer id) {
-        List<AreaDTO> areaSelectedSectionDTOList = areaService.getAllAreaSelectedSectionDTOs(id);
+        List<AreaDTO> areaSelectedSectionDTOList = areaServiceImpl.getAllAreaSelectedSectionDTOs(id);
         model.addAttribute("areaDTOs", areaSelectedSectionDTOList);
         return "areaList";
     }
@@ -38,7 +38,7 @@ public class AreaRequestController {
     @RequestMapping(value = "/addArea", method = RequestMethod.GET)
     public String showAddAreaPage(Model model) {
         AreaRequest areaRequest = new AreaRequest();
-        List<SectionDTO> sectionDTOList = sectionService.getAllSectionDTOs();
+        List<SectionDTO> sectionDTOList = sectionServiceImpl.getAllSectionDTOs();
         model.addAttribute("areaRequest", areaRequest);
         model.addAttribute("sectionDTOList", sectionDTOList);
         return "areaRequestPage";
@@ -46,13 +46,13 @@ public class AreaRequestController {
 
     @RequestMapping(value = "/addArea", method = RequestMethod.POST)
     public String createAreaEntity(@ModelAttribute("areaRequest") AreaRequest areaRequest, Model model) {
-        areaService.createAreaEntity(areaRequest);
+        areaServiceImpl.createAreaEntity(areaRequest);
         return "redirect:/allArea";
     }
 
     @GetMapping("/area/delete")
     public String deleteAreaEntity(@RequestParam Integer id) {
-        if (!areaService.deleteAreaEntity(id)) {
+        if (!areaServiceImpl.deleteAreaEntity(id)) {
             return "areaDeleteFailure";
         }
         return "redirect:/allArea";
@@ -60,8 +60,8 @@ public class AreaRequestController {
 
     @RequestMapping(value = "/area/update", method = RequestMethod.GET)
     public String showUpdateAreaPage (Model model, @RequestParam Integer id) {
-        AreaDTO areaDTO = areaService.getAreaDTO(id);
-        List<SectionDTO> sectionDTOList = sectionService.getAllSectionDTOs();
+        AreaDTO areaDTO = areaServiceImpl.getAreaDTO(id);
+        List<SectionDTO> sectionDTOList = sectionServiceImpl.getAllSectionDTOs();
         model.addAttribute("areaDTO", areaDTO);
         model.addAttribute("sectionDTOList", sectionDTOList);
         return "areaUpdateRequestPage";
@@ -69,7 +69,7 @@ public class AreaRequestController {
 
     @RequestMapping(value = "/area/update", method = RequestMethod.POST)
     public String updateAreaEntity (@ModelAttribute("areaDTO") AreaDTO areaDTO, @RequestParam Integer id) {
-        areaService.updateAreaEntity(areaDTO, id);
+        areaServiceImpl.updateAreaEntity(areaDTO, id);
         return "redirect:/allArea";
     }
 }

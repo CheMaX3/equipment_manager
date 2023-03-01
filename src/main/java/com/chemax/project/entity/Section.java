@@ -1,11 +1,11 @@
-package com.chemax.project.entities;
+package com.chemax.project.entity;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "operational_section")
-public class SectionEntity {
+public class Section {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,27 +21,27 @@ public class SectionEntity {
     @Column (name = "section_conversational_name")
     private String sectionConversationalName;
 
-    @OneToMany(mappedBy = "sectionEntity")
-    private List<AreaEntity> areaEntities;
+    @OneToMany(mappedBy = "section")
+    private List<Area> areaEntities;
 
-    public List<AreaEntity> getAreaEntities() {
+    public List<Area> getAreaEntities() {
         return areaEntities;
     }
 
-    public void setAreaEntities(List<AreaEntity> areaEntities) {
+    public void setAreaEntities(List<Area> areaEntities) {
         this.areaEntities = areaEntities;
     }
 
-    public SectionEntity (String fullName, String shortName, String conversationalName){
+    public Section(String fullName, String shortName, String conversationalName){
     }
 
-    public SectionEntity(String fullName) {
+    public Section(String fullName) {
     }
 
-    public SectionEntity(String fullName, String conversationalName) {
+    public Section(String fullName, String conversationalName) {
     }
 
-    public SectionEntity () {
+    public Section() {
     }
 
     public String getSectionFullName() {

@@ -1,6 +1,6 @@
 package com.chemax.project.dto;
 
-import com.chemax.project.entities.Document;
+import com.chemax.project.entity.Document;
 import lombok.Data;
 
 import java.util.List;

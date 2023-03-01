@@ -1,8 +1,8 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.UserProfile;
-import com.chemax.project.entities.Role;
-import com.chemax.project.entities.User;
+import com.chemax.project.entity.Role;
+import com.chemax.project.entity.User;
 import com.chemax.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

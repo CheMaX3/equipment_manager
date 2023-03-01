@@ -1,4 +1,4 @@
-package com.chemax.project.exceptions;
+package com.chemax.project.exception;
 
 public class NeedToMoveEntityException extends RuntimeException {
     public NeedToMoveEntityException() {

@@ -1,9 +1,9 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.EquipmentDTO;
-import com.chemax.project.entities.Document;
-import com.chemax.project.service.DocumentService;
-import com.chemax.project.service.EquipmentService;
+import com.chemax.project.entity.Document;
+import com.chemax.project.service.DocumentServiceImpl;
+import com.chemax.project.service.EquipmentServiceImpl;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,17 +17,17 @@ import java.util.List;
 
 @Controller
 public class DocumentController {
-    private final DocumentService documentService;
-    private final EquipmentService equipmentService;
+    private final DocumentServiceImpl documentServiceImpl;
+    private final EquipmentServiceImpl equipmentServiceImpl;
 
-    public DocumentController(DocumentService documentService, EquipmentService equipmentService) {
-        this.documentService = documentService;
-        this.equipmentService = equipmentService;
+    public DocumentController(DocumentServiceImpl documentServiceImpl, EquipmentServiceImpl equipmentServiceImpl) {
+        this.documentServiceImpl = documentServiceImpl;
+        this.equipmentServiceImpl = equipmentServiceImpl;
     }
 
     @RequestMapping(value = "/equipment/addDocument", method = RequestMethod.GET)
     public String showAddDocumentPage(Model model, @RequestParam Integer id) {
-        EquipmentDTO equipmentDTO = equipmentService.getEquipmentDTO(id);
+        EquipmentDTO equipmentDTO = equipmentServiceImpl.getEquipmentDTO(id);
         Document document = new Document();
         model.addAttribute("equipmentDTO", equipmentDTO);
         model.addAttribute("document", document);
@@ -36,15 +36,15 @@ public class DocumentController {
 
     @RequestMapping(value = "/equipment/addDocument", method = RequestMethod.POST)
     public String addFile(@RequestParam("file") MultipartFile file, Model model, @RequestParam Integer id) {
-        EquipmentDTO equipmentDTO = equipmentService.getEquipmentDTO(id);
-        String fileId = documentService.addFile(file, equipmentDTO.getId());
+        EquipmentDTO equipmentDTO = equipmentServiceImpl.getEquipmentDTO(id);
+        String fileId = documentServiceImpl.addFile(file, equipmentDTO.getId());
         return "redirect:/equipment/showDocumentStorage?id=" + equipmentDTO.getId();
     }
 
     @RequestMapping(value = "/equipment/showDocumentStorage", method = RequestMethod.GET)
     public String showFilesPage(Model model, @RequestParam Integer id) {
-        EquipmentDTO equipmentDTO = equipmentService.getEquipmentDTO(id);
-        List<Document> documentList = documentService.getAllDocumentByEquipmentId(id);
+        EquipmentDTO equipmentDTO = equipmentServiceImpl.getEquipmentDTO(id);
+        List<Document> documentList = documentServiceImpl.getAllDocumentByEquipmentId(id);
         model.addAttribute("equipmentDTO", equipmentDTO);
         model.addAttribute("documentList", documentList);
         return "filesPage";
@@ -52,13 +52,13 @@ public class DocumentController {
 
     @RequestMapping(value = "/files/delete", method = RequestMethod.GET)
     public String deleteFile(@RequestParam String id) {
-        documentService.deleteFile(id);
+        documentServiceImpl.deleteFile(id);
         return "redirect:/allEquipment";
     }
 
     @RequestMapping(value = "/files/", method = RequestMethod.GET)
     public ResponseEntity<ByteArrayResource> downloadDoc(@RequestParam String id) {
-        Document document = documentService.downloadFile(id);
+        Document document = documentServiceImpl.downloadFile(id);
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(document.getType() ))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + document.getName() + "\"")
                 .body(new ByteArrayResource(document.getContent()));

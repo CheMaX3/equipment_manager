@@ -1,10 +1,9 @@
 package com.chemax.project.repository;
 
-import com.chemax.project.entities.SectionEntity;
+import com.chemax.project.entity.EquipmentType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SectionEntityRepository extends JpaRepository<SectionEntity, Integer> {
-
+public interface EquipmentTypeRepository extends JpaRepository <EquipmentType, Integer> {
 }

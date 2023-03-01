@@ -2,7 +2,7 @@ package com.chemax.project.controller;
 
 import com.chemax.project.dto.EquipmentTypeDTO;
 import com.chemax.project.request.EquipmentTypeRequest;
-import com.chemax.project.service.EquipmentTypeService;
+import com.chemax.project.service.EquipmentTypeServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-public class EquipmentTypeRequestController {
-    private final EquipmentTypeService service;
+public class EquipmentTypeController {
+    private final EquipmentTypeServiceImpl service;
 
-    public EquipmentTypeRequestController(EquipmentTypeService service) {
+    public EquipmentTypeController(EquipmentTypeServiceImpl service) {
         this.service = service;
     }
 

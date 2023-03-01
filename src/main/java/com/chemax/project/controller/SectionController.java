@@ -2,7 +2,7 @@ package com.chemax.project.controller;
 
 import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.request.SectionRequest;
-import com.chemax.project.service.SectionService;
+import com.chemax.project.service.SectionServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-public class SectionRequestController {
-    private final SectionService service;
+public class SectionController {
+    private final SectionServiceImpl service;
 
-    public SectionRequestController(SectionService service) {
+    public SectionController(SectionServiceImpl service) {
         this.service = service;
     }
 

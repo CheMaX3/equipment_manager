@@ -1,6 +1,6 @@
 package com.chemax.project.repository;
 
-import com.chemax.project.entities.Role;
+import com.chemax.project.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
