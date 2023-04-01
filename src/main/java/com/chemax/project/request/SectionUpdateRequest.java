@@ -1,10 +1,27 @@
 package com.chemax.project.request;
 
 
-public class SectionRequest {
+public class SectionUpdateRequest {
+
+    private Integer sectionId;
     private String sectionFullName;
     private String sectionShortName;
     private String sectionConversationalName;
+
+    public SectionUpdateRequest(Integer sectionId) {
+        this.sectionId = sectionId;
+    }
+
+    public SectionUpdateRequest() {
+    }
+
+    public Integer getSectionId() {
+        return sectionId;
+    }
+
+    public void setSectionId(Integer sectionId) {
+        this.sectionId = sectionId;
+    }
 
     public String getSectionFullName() {
         return sectionFullName;
@@ -29,4 +46,5 @@ public class SectionRequest {
     public void setSectionConversationalName(String sectionConversationalName) {
         this.sectionConversationalName = sectionConversationalName;
     }
+
 }

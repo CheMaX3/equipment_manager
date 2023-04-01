@@ -4,17 +4,17 @@ import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.entity.Section;
 import com.chemax.project.exception.EntityNotFoundException;
 import com.chemax.project.repository.SectionRepository;
-import com.chemax.project.request.SectionRequest;
+import com.chemax.project.request.SectionCreateRequest;
+import com.chemax.project.request.SectionUpdateRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class SectionServiceImpl implements SectionService {
+
     private final SectionRepository sectionRepository;
     private final AreaServiceImpl areaServiceImpl;
 
@@ -23,78 +23,62 @@ public class SectionServiceImpl implements SectionService {
         this.areaServiceImpl = areaServiceImpl;
     }
 
-    public SectionDTO createSectionEntity(SectionRequest request) {
-        Section section = buildSectionEntityFromRequest(request);
-        sectionRepository.save(section);
-        return convertSectionEntityToDTO(section);
+    public void createSection(SectionCreateRequest sectionCreateRequest) {
+        sectionRepository.save(buildSectionEntityFromRequest(sectionCreateRequest));
     }
 
-    private Section getSectionEntity(Integer id) throws EntityNotFoundException {
-        Optional<Section> returnedEntity = sectionRepository.findById(id);
-        return returnedEntity.orElseThrow(EntityNotFoundException::new);
+    public SectionDTO getSectionDTO(Integer sectionId) {
+        return convertSectionToDTO(sectionId);
     }
-
-    public SectionDTO getSectionDTO(Integer id) {
-        return convertSectionEntityToDTO(getSectionEntity(id));
-    }
-
+    //TODO:Подумать
     public List<SectionDTO> getAllSectionDTOs() {
-        List<SectionDTO> sectionDTOList = new ArrayList<>();
-        for (Section s : sectionRepository.findAll()) {
-            sectionDTOList.add(convertSectionEntityToDTO(s));
-        }
-        return sectionDTOList;
+        return sectionRepository.findAll().stream().map(section -> convertSectionToDTO(section.getId()))
+                .collect(Collectors.toList());
     }
 
-    public List<SectionDTO> getSectionDTOsByCount(Integer count) {
-        List<SectionDTO> sectionDTOList = new ArrayList<>();
-        for (Section s : sectionRepository.findAll()) {
-            sectionDTOList.add(convertSectionEntityToDTO(s));
+    public boolean areaInclusionCheck(Integer sectionId) {
+        return sectionRepository.getReferenceById(sectionId).getAreas().isEmpty();
         }
-        return sectionDTOList.stream().limit(count).collect(Collectors.toList());
+
+    public void deleteSection(Integer sectionId) {
+        sectionRepository.delete(sectionRepository.getReferenceById(sectionId));
+    }
+    //TODO:Подумать
+    public void updateSection(SectionUpdateRequest sectionUpdateRequest) {
+        Section sectionFromDB = sectionRepository.findById(sectionUpdateRequest.getSectionId())
+                .orElseThrow(EntityNotFoundException::new);
+        sectionFromDB.setSectionFullName(Optional.ofNullable(sectionUpdateRequest.getSectionFullName())
+                .orElse(sectionFromDB.getSectionFullName()));
+        sectionFromDB.setSectionShortName(Optional.ofNullable(sectionUpdateRequest.getSectionShortName())
+                .orElse(sectionFromDB.getSectionShortName()));
+        sectionFromDB.setSectionConversationalName(Optional.ofNullable(sectionUpdateRequest
+                .getSectionConversationalName()).orElse(sectionFromDB.getSectionConversationalName()));
+        sectionRepository.save(sectionFromDB);
     }
 
-    public boolean deleteSectionEntity(Integer id) {
-        Section sectionToDelete = sectionRepository.getReferenceById(id);
-        if (sectionToDelete.getAreaEntities().isEmpty()) {
-            sectionRepository.delete(getSectionEntity(id));
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void updateSectionEntity(SectionDTO sectionDTO, Integer id) {
-        Optional<Section> returnedEntity = sectionRepository.findById(id);
-        Section entityToChange = returnedEntity.orElseThrow(EntityNotFoundException::new);
-        if (sectionDTO.getSectionFullName() != null) {
-            entityToChange.setSectionFullName(sectionDTO.getSectionFullName());
-        }
-        if (sectionDTO.getSectionShortName() != null) {
-            entityToChange.setSectionShortName(sectionDTO.getSectionShortName());
-        }
-        entityToChange.setSectionConversationalName(Optional.ofNullable(sectionDTO.getSectionConversationalName())
-                .orElse(entityToChange.getSectionConversationalName()));
-        sectionRepository.save(entityToChange);
-    }
-
-    private Section buildSectionEntityFromRequest(SectionRequest request) {
+    private Section buildSectionEntityFromRequest(SectionCreateRequest sectionCreateRequest) {
         Section builtSection = new Section();
-        builtSection.setSectionFullName(request.getSectionFullName());
-        builtSection.setSectionShortName(request.getSectionShortName());
-        builtSection.setSectionConversationalName((request.getSectionConversationalName()));
+        builtSection.setSectionFullName(sectionCreateRequest.getSectionFullName());
+        builtSection.setSectionShortName(sectionCreateRequest.getSectionShortName());
+        builtSection.setSectionConversationalName(sectionCreateRequest.getSectionConversationalName());
         return builtSection;
     }
 
-    public SectionDTO convertSectionEntityToDTO(Section sectionToConvert) {
+    private SectionDTO convertSectionToDTO(Integer sectionForConversionId) {
         SectionDTO sectionDTO = new SectionDTO();
-        sectionDTO.setId(sectionToConvert.getId());
-        sectionDTO.setSectionFullName(sectionToConvert.getSectionFullName());
-        sectionDTO.setSectionShortName(sectionToConvert.getSectionShortName());
-        sectionDTO.setSectionConversationalName(sectionToConvert.getSectionConversationalName());
-        sectionDTO.setAreaDTOList(areaServiceImpl.getAllAreaDTOs().stream().filter(areaDTO -> Objects.equals(areaDTO.getSectionId(), sectionToConvert.getId()))
+        Section sectionFromDB = getSection(sectionForConversionId);
+        sectionDTO.setId(sectionFromDB.getId());
+        sectionDTO.setSectionFullName(sectionFromDB.getSectionFullName());
+        sectionDTO.setSectionShortName(sectionFromDB.getSectionShortName());
+        sectionDTO.setSectionConversationalName(sectionFromDB.getSectionConversationalName());
+        //TODO:Подумать
+        sectionDTO.setAreaDTOList(sectionFromDB.getAreas().stream()
+                .map(areaServiceImpl::convertAreaEntityToDTO)
                 .collect(Collectors.toList()));
         return sectionDTO;
     }
 
+    private Section getSection(Integer sectionId) {
+        return sectionRepository.findById(sectionId).orElseThrow(EntityNotFoundException::new);
+    }
 }

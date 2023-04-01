@@ -5,7 +5,9 @@
     <title>Изменение существующего цеха</title>
 </head>
 <body>
-<form th:action="@{/section/update(id=${sectionDTO.id})}" th:object="${sectionDTO}" th:method="POST">
+<form th:action="@{/section/update(id=${id})}" th:object="${sectionUpdateRequest}" th:method="POST">
+    <label hidden>Id</label>
+    <input type="text" th:field="*{sectionId}" hidden>
     Полное название
     <input type="text" th:field="*{sectionFullName}" required>
     </br>

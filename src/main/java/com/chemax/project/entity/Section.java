@@ -22,26 +22,25 @@ public class Section {
     private String sectionConversationalName;
 
     @OneToMany(mappedBy = "section")
-    private List<Area> areaEntities;
+    private List<Area> areas;
 
-    public List<Area> getAreaEntities() {
-        return areaEntities;
-    }
 
-    public void setAreaEntities(List<Area> areaEntities) {
-        this.areaEntities = areaEntities;
-    }
-
-    public Section(String fullName, String shortName, String conversationalName){
-    }
-
-    public Section(String fullName) {
-    }
-
-    public Section(String fullName, String conversationalName) {
-    }
 
     public Section() {
+    }
+
+    public Section(String sectionFullName, String sectionShortName, String sectionConversationalName) {
+        this.sectionFullName = sectionFullName;
+        this.sectionShortName = sectionShortName;
+        this.sectionConversationalName = sectionConversationalName;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getSectionFullName() {
@@ -56,10 +55,6 @@ public class Section {
         return sectionShortName;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
     public void setSectionShortName(String sectionShortName) {
         this.sectionShortName = sectionShortName;
     }
@@ -72,9 +67,15 @@ public class Section {
         this.sectionConversationalName = sectionConversationalName;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public List<Area> getAreas() {
+        return areas;
     }
+
+    public void setAreas(List<Area> areas) {
+        this.areas = areas;
+    }
+
+
 
 }
 

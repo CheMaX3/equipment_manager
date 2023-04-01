@@ -13,6 +13,7 @@ import java.util.List;
 
 @Controller
 public class AdminController {
+
     @Autowired
     private UserService userService;
 
@@ -23,24 +24,8 @@ public class AdminController {
         return "admin";
     }
 
-    @PostMapping("/admin")
-    public String deleteUser(@RequestParam(required = true, defaultValue = "" ) Integer userId,
-                             @RequestParam(required = true, defaultValue = "" ) String action,
-                              Model model) {
-        if (action.equals("delete")){
-            userService.deleteUser(userId);
-        }
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/admin/get/{userId}")
-    public String  getUser(@PathVariable("userId") Integer userId, Model model) {
-        model.addAttribute("allUsers", userService.usergetList(userId));
-        return "admin";
-    }
-
     @GetMapping("/admin/delete")
-    public String deleteAreaEntity(@RequestParam Integer id) {
+    public String deleteUser(@RequestParam Integer id) {
         userService.deleteUser(id);
         return "redirect:/admin";
     }

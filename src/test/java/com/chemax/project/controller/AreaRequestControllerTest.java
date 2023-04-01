@@ -1,4 +1,5 @@
-package com.chemax.project.controller;
-
-public class AreaRequestControllerTest {
-}
+//package com.chemax.project.controller;
+//
+//public class AreaRequestControllerTest {
+//    MockMVC.perform
+//}

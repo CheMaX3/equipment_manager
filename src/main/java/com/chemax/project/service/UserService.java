@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User with name: " + username + " not found");
@@ -62,11 +62,6 @@ public class UserService implements UserDetailsService {
             return true;
         }
         return false;
-    }
-
-    public List<User> usergetList(Integer idMin) {
-        return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
-                .setParameter("paramId", idMin).getResultList();
     }
 
     public UserProfile getUserProfile (Integer id) {

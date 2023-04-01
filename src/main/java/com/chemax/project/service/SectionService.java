@@ -1,25 +1,23 @@
 package com.chemax.project.service;
 
 import com.chemax.project.dto.SectionDTO;
-import com.chemax.project.entity.Section;
-import com.chemax.project.request.SectionRequest;
+import com.chemax.project.request.SectionCreateRequest;
+import com.chemax.project.request.SectionUpdateRequest;
 
 import java.util.List;
 
 public interface SectionService {
 
-    SectionDTO createSectionEntity(SectionRequest request);
+    void createSection(SectionCreateRequest sectionCreateRequest);
 
-    SectionDTO getSectionDTO(Integer id);
+    SectionDTO getSectionDTO(Integer sectionId);
 
     List<SectionDTO> getAllSectionDTOs();
 
-    List<SectionDTO> getSectionDTOsByCount(Integer count);
+    boolean areaInclusionCheck(Integer sectionId);
 
-    boolean deleteSectionEntity(Integer id);
+    void deleteSection(Integer sectionId);
 
-    void updateSectionEntity(SectionDTO sectionDTO, Integer id);
-
-    SectionDTO convertSectionEntityToDTO(Section sectionToConvert);
+    void updateSection(SectionUpdateRequest sectionUpdateRequest);
 
 }
