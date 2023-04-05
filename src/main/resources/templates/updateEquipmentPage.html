@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Внесение изменений в единицу оборудования</title>
+</head>
+<body>
+<form th:action="@{/equipment/update(id=${id})}" th:object="${equipmentUpdateRequest}" th:method="POST">
+    <label hidden>Id</label>
+    <input type="text" th:field="*{equipmentId}" hidden>
+    Модель
+    <input type="text" th:field="${equipmentDTO.machineModel}" required>
+    </br>
+    Страна производства
+    <input type="text" th:field="${equipmentDTO.manufacturerCountry}">
+    </br>
+    Фирма-роизводитель
+    <input type="text" th:field="${equipmentDTO.manufacturer}">
+    </br>
+    Год производства
+    <input type="text" th:field="${equipmentDTO.manufacturingYear}">
+    </br>
+    Заводской/серийный номер
+    <input type="text" th:field="${equipmentDTO.machineNumber}">
+    </br>
+    Дополнительная информация
+    <input type="text" th:field="${equipmentDTO.details}">
+    </br>
+    Принадлежность к типу
+    <select name="equipmentType">
+        <option th:each="dto: ${equipmentTypeDTOList}" th:value="${dto.id}" th:label="${dto.machineType}"></option>
+    </select>
+    </br>
+    Принадлежность к участку
+    <select name="area">
+        <option th:each="dto: ${areaDTOList}" th:value="${dto.id}" th:label="${dto.areaFullName}"></option>
+    </select>
+    </br>
+    <input type="submit" value="Внести изменения">
+</form>
+</body>
+</html>

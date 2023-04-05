@@ -18,6 +18,9 @@ public class EquipmentType {
     @OneToMany(mappedBy = "equipmentType")
     private List<Equipment> equipmentList;
 
+    public EquipmentType() {
+    }
+
     public Integer getId() {
         return id;
     }
@@ -40,16 +43,6 @@ public class EquipmentType {
 
     public void setEquipmentList(List<Equipment> equipmentList) {
         this.equipmentList = equipmentList;
-    }
-
-    public EquipmentType(Integer id, String machineType, List<Equipment> equipmentList) {
-        this.id = id;
-        this.machineType = machineType;
-        this.equipmentList = equipmentList;
-    }
-
-    public EquipmentType() {
-
     }
 }
 

@@ -8,11 +8,11 @@ public class SectionUpdateRequest {
     private String sectionShortName;
     private String sectionConversationalName;
 
-    public SectionUpdateRequest(Integer sectionId) {
-        this.sectionId = sectionId;
+    public SectionUpdateRequest() {
     }
 
-    public SectionUpdateRequest() {
+    public SectionUpdateRequest(Integer sectionId) {
+        this.sectionId = sectionId;
     }
 
     public Integer getSectionId() {

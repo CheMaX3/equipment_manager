@@ -9,13 +9,13 @@
     <label hidden>Id</label>
     <input type="text" th:field="*{sectionId}" hidden>
     Полное название
-    <input type="text" th:field="*{sectionFullName}" required>
+    <input type="text" th:field="${sectionDTO.sectionFullName}" required>
     </br>
     Короткое название
-    <input type="text" th:field="*{sectionShortName}">
+    <input type="text" th:field="${sectionDTO.sectionShortName}">
     </br>
     Разговорное название
-    <input type="text" th:field="*{sectionConversationalName}">
+    <input type="text" th:field="${sectionDTO.sectionConversationalName}">
     </br>
     <input type="submit" value="Внести изменения">
 </form>

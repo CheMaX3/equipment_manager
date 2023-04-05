@@ -1,29 +1,25 @@
 package com.chemax.project.service;
 
 import com.chemax.project.dto.EquipmentDTO;
-import com.chemax.project.entity.Equipment;
-import com.chemax.project.request.EquipmentRequest;
+import com.chemax.project.request.EquipmentCreateRequest;
+import com.chemax.project.request.EquipmentUpdateRequest;
 
 import java.util.List;
 
 public interface EquipmentService {
 
-    EquipmentDTO createEquipmentEntity(EquipmentRequest request);
-
-    EquipmentDTO getEquipmentDTO (Integer id);
+    EquipmentDTO createEquipment(EquipmentCreateRequest equipmentCreateRequest);
 
     List<EquipmentDTO> getAllEquipmentDTOs();
 
-    List<EquipmentDTO> getEquipmentDTOsByCount (Integer count);
+    void deleteEquipment(Integer equipmentId);
 
-    List<EquipmentDTO> getAllEquipmentSelectedAreaDTOs(Integer id);
+    EquipmentDTO updateEquipment(EquipmentUpdateRequest equipmentUpdateRequest);
 
-    List<EquipmentDTO> getAllEquipmentSelectedMachineTypeDTOs(Integer id);
+    List<EquipmentDTO> getEquipmentListByAreaId(Integer areaId);
 
-    void deleteEquipmentEntity (Integer id);
+    List<EquipmentDTO> getEquipmentListByEquipmentTypeId(Integer equipmentTypeId);
 
-    void updateEquipmentEntity (EquipmentDTO equipmentDTO, Integer id);
-
-    EquipmentDTO convertEquipmentEntityToDTO(Equipment equipment);
+    EquipmentDTO getEquipmentDTO(Integer id);
 
 }

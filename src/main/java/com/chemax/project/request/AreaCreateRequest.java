@@ -1,10 +1,13 @@
 package com.chemax.project.request;
 
-public class AreaRequest {
+import com.chemax.project.entity.Section;
+
+public class AreaCreateRequest {
+
     private String areaFullName;
     private String areaShortName;
     private String areaConversationalName;
-    private Integer sectionId;
+    private Section section;
 
     public String getAreaFullName() {
         return areaFullName;
@@ -30,11 +33,21 @@ public class AreaRequest {
         this.areaConversationalName = areaConversationalName;
     }
 
-    public Integer getSectionId() {
-        return sectionId;
+    public Section getSection() {
+        return section;
     }
 
-    public void setSectionId(Integer sectionId) {
-        this.sectionId = sectionId;
+    public void setSection(Section section) {
+        this.section = section;
+    }
+
+    @Override
+    public String toString() {
+        return "AreaCreateRequest{" +
+                "areaFullName='" + areaFullName + '\'' +
+                ", areaShortName='" + areaShortName + '\'' +
+                ", areaConversationalName='" + areaConversationalName + '\'' +
+                ", section=" + section +
+                '}';
     }
 }

@@ -1,7 +1,8 @@
 package com.chemax.project.controller;
 
 import com.chemax.project.dto.EquipmentTypeDTO;
-import com.chemax.project.request.EquipmentTypeRequest;
+import com.chemax.project.request.EquipmentTypeCreateRequest;
+import com.chemax.project.request.EquipmentTypeUpdateRequest;
 import com.chemax.project.service.EquipmentTypeServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,52 +12,58 @@ import java.util.List;
 
 @Controller
 public class EquipmentTypeController {
-    private final EquipmentTypeServiceImpl service;
 
-    public EquipmentTypeController(EquipmentTypeServiceImpl service) {
-        this.service = service;
-    }
+    private final EquipmentTypeServiceImpl equipmentTypeService;
 
-    @GetMapping("/allEquipmentType")
-    public String getAll (Model model) {
-        List<EquipmentTypeDTO> equipmentTypeDTOList = service.getAllEquipmentTypeDTOs();
-        model.addAttribute("equipmentTypeDTOs", equipmentTypeDTOList);
-        return "equipmentTypeList";
+    public EquipmentTypeController(EquipmentTypeServiceImpl equipmentTypeService) {
+        this.equipmentTypeService = equipmentTypeService;
     }
 
     @RequestMapping(value = "/addEquipmentType", method = RequestMethod.GET)
-    public String showAddEquipmentTypePage(Model model) {
-        EquipmentTypeRequest equipmentTypeRequest = new EquipmentTypeRequest();
-        model.addAttribute("equipmentTypeRequest", equipmentTypeRequest);
-        return "equipmentTypeRequestPage";
+    public String showCreateEquipmentTypePage(Model model) {
+        EquipmentTypeCreateRequest equipmentTypeCreateRequest = new EquipmentTypeCreateRequest();
+        model.addAttribute("equipmentTypeCreateRequest", equipmentTypeCreateRequest);
+        return "createEquipmentTypePage";
     }
 
     @RequestMapping(value = "/addEquipmentType", method = RequestMethod.POST)
-    public String createEquipmentTypeEntity(@ModelAttribute("equipmentTypeRequest")
-                                                        EquipmentTypeRequest equipmentTypeRequest) {
-        service.createEquipmentTypeEntity(equipmentTypeRequest);
+    public String createEquipmentType(@ModelAttribute("equipmentTypeCreateRequest")
+                                                    EquipmentTypeCreateRequest equipmentTypeCreateRequest) {
+        equipmentTypeService.createEquipmentType(equipmentTypeCreateRequest);
         return "redirect:/allEquipmentType";
     }
 
+    @GetMapping("/allEquipmentType")
+    public String getAllEquipmentTypes(Model model) {
+        List<EquipmentTypeDTO> equipmentTypeDTOList = equipmentTypeService.getAllEquipmentTypeDTOs();
+        model.addAttribute("equipmentTypeDTOList", equipmentTypeDTOList);
+        return "equipmentTypeList";
+    }
+
     @GetMapping("/equipmentType/delete")
-    public String deleteEquipmentTypeEntity(@RequestParam Integer id) {
-        if (!service.deleteEquipmentTypeEntity(id)) {
+    public String deleteEquipmentType(@RequestParam Integer id) {
+        if (!equipmentTypeService.equipmentInclusionCheck(id)) {
             return "deleteEquipmentTypeFailure";
+        } else {
+            equipmentTypeService.deleteEquipmentType(id);
+            return "redirect:/allEquipmentType";
         }
-        return "redirect:/allEquipmentType";
     }
 
     @RequestMapping(value = "/equipmentType/update", method = RequestMethod.GET)
     public String showUpdateEquipmentTypePage (Model model, @RequestParam Integer id) {
-        EquipmentTypeDTO equipmentTypeDTO = service.getEquipmentTypeDTO(id);
+        EquipmentTypeUpdateRequest equipmentTypeUpdateRequest = new EquipmentTypeUpdateRequest(id);
+        EquipmentTypeDTO equipmentTypeDTO = equipmentTypeService.getEquipmentTypeDTOById(id);
+        model.addAttribute("equipmentTypeUpdateRequest", equipmentTypeUpdateRequest);
         model.addAttribute("equipmentTypeDTO", equipmentTypeDTO);
-        return "equipmentTypeUpdateRequestPage";
+        return "updateEquipmentTypePage";
     }
 
     @RequestMapping(value = "/equipmentType/update", method = RequestMethod.POST)
-    public String updateEquipmentTypeEntity (@ModelAttribute("equipmentTypeDTO") EquipmentTypeDTO equipmentTypeDTO,
-                                             @RequestParam Integer id) {
-        service.updateEquipmentTypeEntity(equipmentTypeDTO, id);
+    public String updateEquipmentType(@ModelAttribute("equipmentTypeUpdateRequest")
+                                                  EquipmentTypeUpdateRequest equipmentTypeUpdateRequest,
+                                      @ModelAttribute("equipmentTypeDTO") EquipmentTypeDTO equipmentTypeDTO) {
+        equipmentTypeService.updateEquipmentType(equipmentTypeUpdateRequest);
         return "redirect:/allEquipmentType";
     }
 }

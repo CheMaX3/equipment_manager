@@ -8,9 +8,7 @@ import java.util.List;
 
 public interface SectionService {
 
-    void createSection(SectionCreateRequest sectionCreateRequest);
-
-    SectionDTO getSectionDTO(Integer sectionId);
+    SectionDTO createSection(SectionCreateRequest sectionCreateRequest);
 
     List<SectionDTO> getAllSectionDTOs();
 
@@ -18,6 +16,7 @@ public interface SectionService {
 
     void deleteSection(Integer sectionId);
 
-    void updateSection(SectionUpdateRequest sectionUpdateRequest);
+    SectionDTO updateSection(SectionUpdateRequest sectionUpdateRequest);
 
+    SectionDTO getSectionDTOById(Integer sectionId);
 }

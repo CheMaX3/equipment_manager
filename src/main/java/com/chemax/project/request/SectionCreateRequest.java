@@ -31,4 +31,12 @@ public class SectionCreateRequest {
         this.sectionConversationalName = sectionConversationalName;
     }
 
+    @Override
+    public String toString() {
+        return "SectionCreateRequest{" +
+                "sectionFullName='" + sectionFullName + '\'' +
+                ", sectionShortName='" + sectionShortName + '\'' +
+                ", sectionConversationalName='" + sectionConversationalName + '\'' +
+                '}';
+    }
 }

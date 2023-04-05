@@ -1,51 +1,31 @@
-package com.chemax.project.entity;
+package com.chemax.project.request;
 
-import javax.persistence.*;
+import com.chemax.project.entity.Area;
+import com.chemax.project.entity.EquipmentType;
 
-@Entity
-@Table(name = "equipment")
-public class Equipment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+public class EquipmentUpdateRequest {
 
-    @Column(name = "machine_model")
+    private Integer equipmentId;
     private String machineModel;
-
-    @Column(name = "manufacturer_country")
     private String manufacturerCountry;
-
-    @Column(name = "manufacturer")
     private String manufacturer;
-
-    @Column(name = "manufacturing_year")
     private String manufacturingYear;
-
-    @Column(name = "machine_number")
     private String machineNumber;
-
-    @Column(name = "details")
     private String details;
-
-    @ManyToOne
-    @JoinColumn(name = "type_id")
     private EquipmentType equipmentType;
-
-    @ManyToOne
-    @JoinColumn(name = "area_id")
     private Area area;
 
-    public Equipment() {
+    public EquipmentUpdateRequest(Integer equipmentId) {
+        this.equipmentId = equipmentId;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getEquipmentId() {
+        return equipmentId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setEquipmentId(Integer equipmentId) {
+        this.equipmentId = equipmentId;
     }
 
     public String getMachineModel() {

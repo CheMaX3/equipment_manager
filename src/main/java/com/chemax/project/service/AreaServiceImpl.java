@@ -3,116 +3,130 @@ package com.chemax.project.service;
 import com.chemax.project.dto.AreaDTO;
 import com.chemax.project.entity.Area;
 import com.chemax.project.entity.Section;
+import com.chemax.project.exception.EntityNotFoundException;
 import com.chemax.project.repository.AreaRepository;
-import com.chemax.project.repository.SectionRepository;
-import com.chemax.project.request.AreaRequest;
+import com.chemax.project.request.AreaCreateRequest;
+import com.chemax.project.request.AreaUpdateRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class AreaServiceImpl implements AreaService {
 
     private final AreaRepository areaRepository;
-    private final SectionRepository sectionRepository;
-    private final EquipmentServiceImpl equipmentServiceImpl;
+    private final EquipmentServiceImpl equipmentService;
 
-
-    public AreaServiceImpl(AreaRepository areaRepository, SectionRepository sectionRepository, EquipmentServiceImpl equipmentServiceImpl) {
+    public AreaServiceImpl(AreaRepository areaRepository, EquipmentServiceImpl equipmentService) {
         this.areaRepository = areaRepository;
-        this.sectionRepository = sectionRepository;
-        this.equipmentServiceImpl = equipmentServiceImpl;
+        this.equipmentService = equipmentService;
     }
 
-    public AreaDTO createAreaEntity(AreaRequest request) {
-        Section section = sectionRepository.getReferenceById(request.getSectionId());
-        Area area = buildAreaEntityFromRequest(request, section);
-        areaRepository.save(area);
-        return convertAreaEntityToDTO(area);
-    }
-
-    private Area getAreaEntity (Integer id) {
-        return areaRepository.getReferenceById(id);
-    }
-
-    public AreaDTO getAreaDTO (Integer id) {
-        return convertAreaEntityToDTO(getAreaEntity(id));
+    public AreaDTO createArea(AreaCreateRequest areaCreateRequest) {
+        AreaDTO areaDTO = new AreaDTO();
+        try {
+            Section section = areaCreateRequest.getSection();
+            Area area = areaRepository.save(buildAreaFromRequest(areaCreateRequest, section));
+            areaDTO = convertAreaToDTO(area);
+        } catch (Exception ex) {
+            log.error("Can't save object " + areaCreateRequest.toString());
+        }
+        return areaDTO;
     }
 
     public List<AreaDTO> getAllAreaDTOs() {
         List<AreaDTO> areaDTOList = new ArrayList<>();
-        for (Area a: areaRepository.findAll()) {
-            areaDTOList.add(convertAreaEntityToDTO(a));
+        try {
+            areaDTOList = areaRepository.findAll().stream()
+                    .map(this::convertAreaToDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            log.error("Can't retrieve objects from DB");
         }
         return areaDTOList;
     }
 
-    public List<AreaDTO> getAllAreaSelectedSectionDTOs(Integer id) {
-        List<AreaDTO> areaDTOList = getAllAreaDTOs();
-        List<AreaDTO> areaSelectedSectionDTOList = new ArrayList<>();
-        for (AreaDTO a: areaDTOList) {
-            if (Objects.equals(a.getSectionId(), id)) {
-                areaSelectedSectionDTOList.add(a);
-            }
+    public boolean equipmentInclusionCheck(Integer areaId) {
+        boolean areaIncludesEquipment = false;
+        try {
+            areaIncludesEquipment = equipmentService.getEquipmentListByAreaId(areaId).isEmpty();
+        } catch (Exception ex) {
+            log.error("Can't check equipment objects inclusion in area with id=" + areaId);
         }
-        return areaSelectedSectionDTOList;
+        return areaIncludesEquipment;
     }
 
-    public List<AreaDTO> getAreaDTOsByCount (Integer count) {
+    public void deleteArea(Integer areaId) {
+        try {
+            areaRepository.delete(areaRepository.getReferenceById(areaId));
+        } catch (Exception ex) {
+            log.error("Can't delete object with id=" + areaId);
+        }
+    }
+
+    public AreaDTO updateArea(AreaUpdateRequest areaUpdateRequest) {
+        AreaDTO areaDTO = new AreaDTO();
+        try {
+            Area areaFromDB = areaRepository.findById(areaUpdateRequest.getAreaId())
+                    .orElseThrow(EntityNotFoundException::new);
+            areaFromDB.setAreaFullName(Optional.ofNullable(areaUpdateRequest.getAreaFullName())
+                    .orElse(areaFromDB.getAreaFullName()));
+            areaFromDB.setAreaShortName(Optional.ofNullable(areaUpdateRequest.getAreaShortName())
+                    .orElse(areaFromDB.getAreaShortName()));
+            areaFromDB.setAreaConversationalName(Optional.ofNullable(areaUpdateRequest
+                    .getAreaConversationalName()).orElse(areaFromDB.getAreaConversationalName()));
+            areaRepository.save(areaFromDB);
+            areaDTO = convertAreaToDTO(areaFromDB);
+        } catch (Exception ex) {
+            log.error("Can't save object with id=" + areaUpdateRequest.getAreaId());
+        }
+        return areaDTO;
+    }
+
+    public List<AreaDTO> getAreaListBySectionId(Integer sectionId) {
         List<AreaDTO> areaDTOList = new ArrayList<>();
-        for (Area a: areaRepository.findAll()) {
-            areaDTOList.add(convertAreaEntityToDTO(a));
+        try {
+            areaDTOList = areaRepository.findBySectionId(sectionId).stream()
+                    .map(this::convertAreaToDTO).collect(Collectors.toList());
+        } catch (Exception ex) {
+            log.error("Can't retrieve objects from DB with sectionId=" + sectionId);
         }
-        return areaDTOList.stream().limit(count).collect(Collectors.toList());
+        return areaDTOList;
     }
 
-    public boolean deleteAreaEntity (Integer id) {
-        Area areaToDelete = areaRepository.getReferenceById(id);
-        if (areaToDelete.getEquipmentList().isEmpty()) {
-            areaRepository.delete(getAreaEntity(id));
-            return true;
-        } else {
-            return false;
+    public AreaDTO getAreaDTOById(Integer areaId) {
+        AreaDTO areaDTO = new AreaDTO();
+        try {
+            areaDTO = convertAreaToDTO(areaRepository.getReferenceById(areaId));
         }
+        catch (Exception ex) {
+            log.error("Can't retrieve object from DB with id=" + areaId);
+        }
+        return areaDTO;
     }
 
-    public void updateAreaEntity (AreaDTO areaDTO, Integer id) {
-        Area area = areaRepository.getReferenceById(id);
-        area.setAreaFullName(Optional.ofNullable(areaDTO.getAreaFullName()).orElse(area.getAreaFullName()));
-        area.setAreaShortName(Optional.ofNullable(areaDTO.getAreaShortName()).orElse(area.getAreaShortName()));
-        area.setAreaConversationalName(Optional.ofNullable(areaDTO.getAreaConversationalName()).orElse(area.getAreaConversationalName()));
-        if (areaDTO.getSectionId() != null) {
-            area.setSectionEntity(sectionRepository.getReferenceById(areaDTO.getSectionId()));
-        } else {
-            area.setSectionEntity(area.getSectionEntity());
-        }
-        areaRepository.save(area);
-    }
-
-    private Area buildAreaEntityFromRequest(AreaRequest request, Section section) {
+    private Area buildAreaFromRequest(AreaCreateRequest areaCreateRequest, Section section) {
         Area builtArea = new Area();
-        builtArea.setAreaFullName(request.getAreaFullName());
-        builtArea.setAreaShortName(request.getAreaShortName());
-        builtArea.setAreaConversationalName(request.getAreaConversationalName());
-        builtArea.setSectionEntity(section);
+        builtArea.setAreaFullName(areaCreateRequest.getAreaFullName());
+        builtArea.setAreaShortName(areaCreateRequest.getAreaShortName());
+        builtArea.setAreaConversationalName(areaCreateRequest.getAreaConversationalName());
+        builtArea.setSection(section);
         return builtArea;
     }
 
-    protected AreaDTO convertAreaEntityToDTO (Area area) {
+        AreaDTO convertAreaToDTO(Area area) {
         AreaDTO areaDTO = new AreaDTO();
         areaDTO.setId(area.getId());
         areaDTO.setAreaFullName(area.getAreaFullName());
         areaDTO.setAreaShortName(area.getAreaShortName());
         areaDTO.setAreaConversationalName(area.getAreaConversationalName());
-        areaDTO.setSectionId(area.getSectionEntity().getId());
-        areaDTO.setEquipmentDTOList(equipmentServiceImpl.getAllEquipmentDTOs().stream().filter(equipmentDTO -> Objects.equals(equipmentDTO.getAreaId(), area.getId()))
-                .collect(Collectors.toList()));
-        areaDTO.setSectionFullName(sectionRepository.getReferenceById(areaDTO.getSectionId()).getSectionFullName());
+        areaDTO.setSection(area.getSection());
+        areaDTO.setEquipmentDTOList(equipmentService.getEquipmentListByAreaId(area.getId()));
         return areaDTO;
     }
-
 }

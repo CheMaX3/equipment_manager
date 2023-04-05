@@ -10,6 +10,7 @@ import java.util.Set;
 
 @Data
 public class UserProfile implements UserDetails {
+
     private Integer id;
     private String username;
     private String password;

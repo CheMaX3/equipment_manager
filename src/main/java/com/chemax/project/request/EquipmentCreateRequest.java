@@ -1,6 +1,9 @@
 package com.chemax.project.request;
 
-public class EquipmentRequest {
+import com.chemax.project.entity.Area;
+import com.chemax.project.entity.EquipmentType;
+
+public class EquipmentCreateRequest {
 
     private String machineModel;
     private String manufacturerCountry;
@@ -8,8 +11,8 @@ public class EquipmentRequest {
     private String manufacturingYear;
     private String machineNumber;
     private String details;
-    private Integer machineTypeId;
-    private Integer areaId;
+    private EquipmentType equipmentType;
+    private Area area;
 
     public String getMachineModel() {
         return machineModel;
@@ -59,19 +62,33 @@ public class EquipmentRequest {
         this.details = details;
     }
 
-    public Integer getMachineTypeId() {
-        return machineTypeId;
+    public EquipmentType getEquipmentType() {
+        return equipmentType;
     }
 
-    public void setMachineTypeId(Integer machineTypeId) {
-        this.machineTypeId = machineTypeId;
+    public void setEquipmentType(EquipmentType equipmentType) {
+        this.equipmentType = equipmentType;
     }
 
-    public Integer getAreaId() {
-        return areaId;
+    public Area getArea() {
+        return area;
     }
 
-    public void setAreaId(Integer areaId) {
-        this.areaId = areaId;
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
+    @Override
+    public String toString() {
+        return "EquipmentCreateRequest{" +
+                "machineModel='" + machineModel + '\'' +
+                ", manufacturerCountry='" + manufacturerCountry + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", manufacturingYear='" + manufacturingYear + '\'' +
+                ", machineNumber='" + machineNumber + '\'' +
+                ", details='" + details + '\'' +
+                ", equipmentType=" + equipmentType +
+                ", area=" + area +
+                '}';
     }
 }

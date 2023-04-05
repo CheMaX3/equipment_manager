@@ -6,13 +6,16 @@ import com.chemax.project.exception.EntityNotFoundException;
 import com.chemax.project.repository.SectionRepository;
 import com.chemax.project.request.SectionCreateRequest;
 import com.chemax.project.request.SectionUpdateRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class SectionServiceImpl implements SectionService {
 
     private final SectionRepository sectionRepository;
@@ -23,40 +26,78 @@ public class SectionServiceImpl implements SectionService {
         this.areaServiceImpl = areaServiceImpl;
     }
 
-    public void createSection(SectionCreateRequest sectionCreateRequest) {
-        sectionRepository.save(buildSectionEntityFromRequest(sectionCreateRequest));
+    public SectionDTO createSection(SectionCreateRequest sectionCreateRequest) {
+        SectionDTO sectionDTO = new SectionDTO();
+        try {
+            Section section = sectionRepository.save(buildSectionFromRequest(sectionCreateRequest));
+            sectionDTO = convertSectionToDTO(section);
+        } catch (Exception ex) {
+            log.error("Can't save object " + sectionCreateRequest.toString());
+        }
+        return sectionDTO;
     }
 
-    public SectionDTO getSectionDTO(Integer sectionId) {
-        return convertSectionToDTO(sectionId);
-    }
-    //TODO:Подумать
     public List<SectionDTO> getAllSectionDTOs() {
-        return sectionRepository.findAll().stream().map(section -> convertSectionToDTO(section.getId()))
-                .collect(Collectors.toList());
+        List<SectionDTO> sectionDTOListFromDB = new ArrayList<>();
+        try {
+            sectionDTOListFromDB = sectionRepository.findAll().stream()
+                    .map(this::convertSectionToDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            log.error("Can't retrieve objects from DB");
+        }
+        return sectionDTOListFromDB;
     }
 
     public boolean areaInclusionCheck(Integer sectionId) {
-        return sectionRepository.getReferenceById(sectionId).getAreas().isEmpty();
+        boolean sectionIncludesAreas = false;
+        try {
+            sectionIncludesAreas = sectionRepository.getReferenceById(sectionId).getAreas().isEmpty();
+        } catch (Exception ex) {
+            log.error("Can't check area objects inclusion in section with id=" + sectionId);
         }
+        return sectionIncludesAreas;
+    }
 
     public void deleteSection(Integer sectionId) {
-        sectionRepository.delete(sectionRepository.getReferenceById(sectionId));
-    }
-    //TODO:Подумать
-    public void updateSection(SectionUpdateRequest sectionUpdateRequest) {
-        Section sectionFromDB = sectionRepository.findById(sectionUpdateRequest.getSectionId())
-                .orElseThrow(EntityNotFoundException::new);
-        sectionFromDB.setSectionFullName(Optional.ofNullable(sectionUpdateRequest.getSectionFullName())
-                .orElse(sectionFromDB.getSectionFullName()));
-        sectionFromDB.setSectionShortName(Optional.ofNullable(sectionUpdateRequest.getSectionShortName())
-                .orElse(sectionFromDB.getSectionShortName()));
-        sectionFromDB.setSectionConversationalName(Optional.ofNullable(sectionUpdateRequest
-                .getSectionConversationalName()).orElse(sectionFromDB.getSectionConversationalName()));
-        sectionRepository.save(sectionFromDB);
+        try {
+            sectionRepository.delete(sectionRepository.getReferenceById(sectionId));
+        } catch (Exception ex) {
+            log.error("Can't delete object with id=" + sectionId);
+        }
     }
 
-    private Section buildSectionEntityFromRequest(SectionCreateRequest sectionCreateRequest) {
+    public SectionDTO updateSection(SectionUpdateRequest sectionUpdateRequest) {
+        SectionDTO sectionDTO = new SectionDTO();
+        try {
+            Section sectionFromDB = sectionRepository.findById(sectionUpdateRequest.getSectionId())
+                    .orElseThrow(EntityNotFoundException::new);
+            sectionFromDB.setSectionFullName(Optional.ofNullable(sectionUpdateRequest.getSectionFullName())
+                    .orElse(sectionFromDB.getSectionFullName()));
+            sectionFromDB.setSectionShortName(Optional.ofNullable(sectionUpdateRequest.getSectionShortName())
+                    .orElse(sectionFromDB.getSectionShortName()));
+            sectionFromDB.setSectionConversationalName(Optional.ofNullable(sectionUpdateRequest
+                    .getSectionConversationalName()).orElse(sectionFromDB.getSectionConversationalName()));
+            sectionRepository.save(sectionFromDB);
+            sectionDTO = convertSectionToDTO(sectionFromDB);
+        } catch (Exception ex) {
+            log.error("Can't save object with id=" + sectionUpdateRequest.getSectionId());
+        }
+        return sectionDTO;
+    }
+
+    public SectionDTO getSectionDTOById(Integer sectionId) {
+        SectionDTO sectionDTO = new SectionDTO();
+        try {
+            sectionDTO = convertSectionToDTO(sectionRepository.getReferenceById(sectionId));
+        }
+        catch (Exception ex) {
+            log.error("Can't retrieve object from DB with id=" + sectionId);
+        }
+        return sectionDTO;
+    }
+
+    private Section buildSectionFromRequest(SectionCreateRequest sectionCreateRequest) {
         Section builtSection = new Section();
         builtSection.setSectionFullName(sectionCreateRequest.getSectionFullName());
         builtSection.setSectionShortName(sectionCreateRequest.getSectionShortName());
@@ -64,21 +105,15 @@ public class SectionServiceImpl implements SectionService {
         return builtSection;
     }
 
-    private SectionDTO convertSectionToDTO(Integer sectionForConversionId) {
+    private SectionDTO convertSectionToDTO(Section section) {
         SectionDTO sectionDTO = new SectionDTO();
-        Section sectionFromDB = getSection(sectionForConversionId);
-        sectionDTO.setId(sectionFromDB.getId());
-        sectionDTO.setSectionFullName(sectionFromDB.getSectionFullName());
-        sectionDTO.setSectionShortName(sectionFromDB.getSectionShortName());
-        sectionDTO.setSectionConversationalName(sectionFromDB.getSectionConversationalName());
-        //TODO:Подумать
-        sectionDTO.setAreaDTOList(sectionFromDB.getAreas().stream()
-                .map(areaServiceImpl::convertAreaEntityToDTO)
+        sectionDTO.setId(section.getId());
+        sectionDTO.setSectionFullName(section.getSectionFullName());
+        sectionDTO.setSectionShortName(section.getSectionShortName());
+        sectionDTO.setSectionConversationalName(section.getSectionConversationalName());
+        sectionDTO.setAreaDTOList(section.getAreas().stream()
+                .map(areaServiceImpl::convertAreaToDTO)
                 .collect(Collectors.toList()));
         return sectionDTO;
-    }
-
-    private Section getSection(Integer sectionId) {
-        return sectionRepository.findById(sectionId).orElseThrow(EntityNotFoundException::new);
     }
 }

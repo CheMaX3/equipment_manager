@@ -28,37 +28,6 @@ public class Area {
     @OneToMany(mappedBy = "area")
     private List<Equipment> equipmentList;
 
-    public Area(String areaFullName, String areaShortName, String areaConversationalName) {
-        this.areaFullName = areaFullName;
-        this.areaShortName = areaShortName;
-        this.areaConversationalName = areaConversationalName;
-    }
-
-    public Section getSectionEntity() {
-        return section;
-    }
-
-    public void setSectionEntity(Section section) {
-        this.section = section;
-    }
-
-    public List<Equipment> getEquipmentList() {
-        return equipmentList;
-    }
-
-    public void setEquipmentList(List<Equipment> equipmentList) {
-        this.equipmentList = equipmentList;
-    }
-
-    public Area(String fullName) {
-    }
-
-    public Area(String fullName, String conversationalName) {
-    }
-
-    public Area() {
-    }
-
     public Integer getId() {
         return id;
     }
@@ -89,5 +58,21 @@ public class Area {
 
     public void setAreaConversationalName(String areaConversationalName) {
         this.areaConversationalName = areaConversationalName;
+    }
+
+    public Section getSection() {
+        return section;
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
+    }
+
+    public List<Equipment> getEquipmentList() {
+        return equipmentList;
+    }
+
+    public void setEquipmentList(List<Equipment> equipmentList) {
+        this.equipmentList = equipmentList;
     }
 }

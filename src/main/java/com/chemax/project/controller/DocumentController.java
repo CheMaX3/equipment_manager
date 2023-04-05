@@ -17,6 +17,7 @@ import java.util.List;
 
 @Controller
 public class DocumentController {
+
     private final DocumentServiceImpl documentServiceImpl;
     private final EquipmentServiceImpl equipmentServiceImpl;
 

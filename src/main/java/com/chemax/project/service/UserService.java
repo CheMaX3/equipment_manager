@@ -21,6 +21,7 @@ import java.util.Optional;
 @Service
 
 public class UserService implements UserDetailsService {
+
     @PersistenceContext
     private EntityManager em;
     @Autowired
@@ -97,6 +98,4 @@ public class UserService implements UserDetailsService {
         }
         return message;
     }
-
-
 }

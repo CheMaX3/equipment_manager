@@ -11,13 +11,13 @@
       <th sec:authorize="hasRole('ADMIN')">Id</th>
       <th>Тип оборудования</th>
     </tr>
-    <tr th:each ="dto : ${equipmentTypeDTOs}">
+    <tr th:each ="dto : ${equipmentTypeDTOList}">
       <td sec:authorize="hasRole('ADMIN')" th:utext="${dto.id}">...</td>
       <td>
         <a th:utext="${dto.machineType}"></a>
         <select onchange="top.location=this.value">
           <option value="">--Выберите необходимое действие--</option>
-          <option th:value="@{/allEquipmentByMachineTypeId(id=${dto.id})}">Показать список оборудования этого типа</option>
+          <option th:value="@{/allEquipmentByEquipmentTypeId(id=${dto.id})}">Показать список оборудования этого типа</option>
           <option sec:authorize="hasRole('ADMIN')" th:value="@{/equipmentType/update(id=${dto.id})}">Редактировать тип</option>
           <option sec:authorize="hasRole('ADMIN')" th:value="@{/equipmentType/delete(id=${dto.id})}">Удалить тип</option>
         </select>

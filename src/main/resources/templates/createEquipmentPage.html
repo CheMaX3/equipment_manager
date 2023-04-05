@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Внесение изменений в единицу оборудования</title>
+    <title>Ввод новой единицы оборудования</title>
 </head>
 <body>
-<form th:action="@{/equipment/update(id=${equipmentDTO.id})}" th:object="${equipmentDTO}" th:method="POST">
+<form th:action="@{/addEquipment}" th:object="${equipmentCreateRequest}" th:method="POST">
     Модель
     <input type="text" th:field="*{machineModel}" required>
     </br>
@@ -25,16 +25,16 @@
     <input type="text" th:field="*{details}">
     </br>
     Принадлежность к типу
-    <select name="machineTypeId">
+    <select name="equipmentType">
         <option th:each="dto: ${equipmentTypeDTOList}" th:value="${dto.id}" th:label="${dto.machineType}"></option>
     </select>
     </br>
     Принадлежность к участку
-    <select name="areaId">
+    <select name="area">
         <option th:each="dto: ${areaDTOList}" th:value="${dto.id}" th:label="${dto.areaFullName}"></option>
     </select>
     </br>
-    <input type="submit" value="Внести изменения">
+    <input type="submit" value="Создать">
 </form>
 </body>
 </html>

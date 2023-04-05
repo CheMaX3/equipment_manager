@@ -13,10 +13,10 @@ import java.util.List;
 @Controller
 public class SectionController {
 
-    private final SectionServiceImpl service;
+    private final SectionServiceImpl sectionService;
 
-    public SectionController(SectionServiceImpl service) {
-        this.service = service;
+    public SectionController(SectionServiceImpl sectionService) {
+        this.sectionService = sectionService;
     }
 
     @RequestMapping(value = "/addSection", method = RequestMethod.GET)
@@ -28,23 +28,23 @@ public class SectionController {
 
     @RequestMapping(value = "/addSection", method = RequestMethod.POST)
     public String createSection(@ModelAttribute("sectionCreateRequest") SectionCreateRequest sectionCreateRequest) {
-        service.createSection(sectionCreateRequest);
+        sectionService.createSection(sectionCreateRequest);
         return "redirect:/allSection";
     }
 
     @GetMapping("/allSection")
-    public String getAll (Model model) {
-        List<SectionDTO> sectionDTOList = service.getAllSectionDTOs();
+    public String getAllSections(Model model) {
+        List<SectionDTO> sectionDTOList = sectionService.getAllSectionDTOs();
         model.addAttribute("sectionDTOs", sectionDTOList);
         return "sectionList";
     }
 
     @GetMapping("/section/delete")
     public String deleteSection(@RequestParam Integer id) {
-        if (!service.areaInclusionCheck(id)) {
+        if (!sectionService.areaInclusionCheck(id)) {
             return "sectionDeleteFailure";
         } else {
-            service.deleteSection(id);
+            sectionService.deleteSection(id);
             return "redirect:/allSection";
         }
     }
@@ -52,13 +52,16 @@ public class SectionController {
     @RequestMapping(value = "/section/update", method = RequestMethod.GET)
     public String showUpdateSectionPage (Model model, @RequestParam Integer id) {
         SectionUpdateRequest sectionUpdateRequest = new SectionUpdateRequest(id);
+        SectionDTO sectionDTO = sectionService.getSectionDTOById(id);
         model.addAttribute("sectionUpdateRequest", sectionUpdateRequest);
+        model.addAttribute("sectionDTO", sectionDTO);
         return "updateSectionPage";
     }
 
     @RequestMapping(value = "/section/update", method = RequestMethod.POST)
-    public String updateSection (@ModelAttribute("sectionUpdateRequest") SectionUpdateRequest sectionUpdateRequest) {
-        service.updateSection(sectionUpdateRequest);
+    public String updateSection (@ModelAttribute("sectionUpdateRequest") SectionUpdateRequest sectionUpdateRequest,
+                                 @ModelAttribute("sectionDTO") SectionDTO sectionDTO) {
+        sectionService.updateSection(sectionUpdateRequest);
         return "redirect:/allSection";
     }
 }

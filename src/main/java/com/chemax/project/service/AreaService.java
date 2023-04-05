@@ -1,24 +1,25 @@
 package com.chemax.project.service;
 
 import com.chemax.project.dto.AreaDTO;
-import com.chemax.project.request.AreaRequest;
+import com.chemax.project.request.AreaCreateRequest;
+import com.chemax.project.request.AreaUpdateRequest;
 
 import java.util.List;
 
 public interface AreaService {
 
-    AreaDTO createAreaEntity(AreaRequest request);
-
-    AreaDTO getAreaDTO (Integer id);
+    AreaDTO createArea(AreaCreateRequest areaCreateRequest);
 
     List<AreaDTO> getAllAreaDTOs();
 
-    List<AreaDTO> getAllAreaSelectedSectionDTOs(Integer id);
+    boolean equipmentInclusionCheck(Integer areaId);
 
-    List<AreaDTO> getAreaDTOsByCount(Integer count);
+    void deleteArea(Integer areaId);
 
-    boolean deleteAreaEntity (Integer id);
+    AreaDTO updateArea(AreaUpdateRequest areaUpdateRequest);
 
-    void updateAreaEntity (AreaDTO areaDTO, Integer id);
+    List<AreaDTO> getAreaListBySectionId(Integer sectionId);
+
+    AreaDTO getAreaDTOById(Integer areaId);
 
 }

@@ -5,7 +5,7 @@
     <title>Добавление нового типа оборудования</title>
 </head>
 <body>
-<form th:action="@{/addEquipmentType}" th:object="${equipmentTypeRequest}" th:method="POST">
+<form th:action="@{/addEquipmentType}" th:object="${equipmentTypeCreateRequest}" th:method="POST">
     Тип оборудования
     <input type="text" th:field="*{machineType}" required>
     </br>

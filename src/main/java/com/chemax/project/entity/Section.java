@@ -24,15 +24,7 @@ public class Section {
     @OneToMany(mappedBy = "section")
     private List<Area> areas;
 
-
-
     public Section() {
-    }
-
-    public Section(String sectionFullName, String sectionShortName, String sectionConversationalName) {
-        this.sectionFullName = sectionFullName;
-        this.sectionShortName = sectionShortName;
-        this.sectionConversationalName = sectionConversationalName;
     }
 
     public Integer getId() {
@@ -74,8 +66,5 @@ public class Section {
     public void setAreas(List<Area> areas) {
         this.areas = areas;
     }
-
-
-
 }
 

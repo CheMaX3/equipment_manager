@@ -1,6 +1,7 @@
 package com.chemax.project.request;
 
-public class EquipmentTypeRequest {
+public class EquipmentTypeCreateRequest {
+
     private String machineType;
 
     public String getMachineType() {
@@ -11,11 +12,13 @@ public class EquipmentTypeRequest {
         this.machineType = machineType;
     }
 
-    public EquipmentTypeRequest(String machineType) {
-        this.machineType = machineType;
+    public EquipmentTypeCreateRequest() {
     }
 
-    public EquipmentTypeRequest () {
-
+    @Override
+    public String toString() {
+        return "EquipmentTypeCreateRequest{" +
+                "machineType='" + machineType + '\'' +
+                '}';
     }
 }

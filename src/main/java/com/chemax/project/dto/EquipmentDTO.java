@@ -1,12 +1,15 @@
 package com.chemax.project.dto;
 
+import com.chemax.project.entity.Area;
 import com.chemax.project.entity.Document;
+import com.chemax.project.entity.EquipmentType;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class EquipmentDTO {
+
     private Integer id;
     private String machineModel;
     private String manufacturerCountry;
@@ -14,7 +17,7 @@ public class EquipmentDTO {
     private String manufacturingYear;
     private String machineNumber;
     private String details;
-    private Integer machineTypeId;
-    private Integer areaId;
+    private EquipmentType equipmentType;
+    private Area area;
     private List<Document> files;
 }

@@ -1,91 +1,114 @@
 package com.chemax.project.service;
 
+
 import com.chemax.project.dto.EquipmentTypeDTO;
 import com.chemax.project.entity.EquipmentType;
+import com.chemax.project.exception.EntityNotFoundException;
 import com.chemax.project.repository.EquipmentTypeRepository;
-import com.chemax.project.request.EquipmentTypeRequest;
+import com.chemax.project.request.EquipmentTypeCreateRequest;
+import com.chemax.project.request.EquipmentTypeUpdateRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class EquipmentTypeServiceImpl implements EquipmentTypeService {
 
     private final EquipmentTypeRepository equipmentTypeRepository;
-    private final EquipmentServiceImpl equipmentServiceImpl;
+    private final EquipmentServiceImpl equipmentService;
 
     public EquipmentTypeServiceImpl(EquipmentTypeRepository equipmentTypeRepository,
-                                    EquipmentServiceImpl equipmentServiceImpl) {
+                                    EquipmentServiceImpl equipmentService) {
         this.equipmentTypeRepository = equipmentTypeRepository;
-        this.equipmentServiceImpl = equipmentServiceImpl;
+        this.equipmentService = equipmentService;
     }
 
-
-    public EquipmentTypeDTO createEquipmentTypeEntity (EquipmentTypeRequest request) {
-        EquipmentType equipmentType = buildEquipmentTypeEntityFromRequest(request);
-        equipmentTypeRepository.save(equipmentType);
-        return convertEquipmentTypeEntityToDTO(equipmentType);
-    }
-
-    private EquipmentType getEquipmentTypeEntity (Integer id) {
-        return equipmentTypeRepository.getReferenceById(id);
-    }
-
-    public EquipmentTypeDTO getEquipmentTypeDTO (Integer id) {
-        return convertEquipmentTypeEntityToDTO(getEquipmentTypeEntity(id));
-    }
-
-    public List<EquipmentTypeDTO> getAllEquipmentTypeDTOs() {
-        List<EquipmentTypeDTO> equipmentTypeDTOList = new ArrayList<>();
-        for (EquipmentType et: equipmentTypeRepository.findAll()) {
-            equipmentTypeDTOList.add(convertEquipmentTypeEntityToDTO(et));
-        }
-        return equipmentTypeDTOList;
-    }
-
-    public List<EquipmentTypeDTO> getEquipmentTypeDTOsByCount (Integer count) {
-        List<EquipmentTypeDTO> equipmentTypeDTOList = new ArrayList<>();
-        for (EquipmentType et: equipmentTypeRepository.findAll()) {
-            equipmentTypeDTOList.add(convertEquipmentTypeEntityToDTO(et));
-        }
-        return equipmentTypeDTOList.stream().limit(count).collect(Collectors.toList());
-    }
-
-    public boolean deleteEquipmentTypeEntity (Integer id) {
-        EquipmentType equipmentTypeToDelete = equipmentTypeRepository.getReferenceById(id);
-        if (equipmentTypeToDelete.getEquipmentList().isEmpty()) {
-            equipmentTypeRepository.delete(getEquipmentTypeEntity(id));
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void updateEquipmentTypeEntity (EquipmentTypeDTO equipmentTypeDTO, Integer id) {
-        EquipmentType equipmentType = equipmentTypeRepository.getReferenceById(id);
-        equipmentType.setMachineType(Optional.ofNullable(equipmentTypeDTO.getMachineType())
-                .orElse(equipmentType.getMachineType()));
-        equipmentTypeRepository.save(equipmentType);
-    }
-
-    private EquipmentType buildEquipmentTypeEntityFromRequest(EquipmentTypeRequest request) {
-        EquipmentType builtEquipmentType = new EquipmentType();
-        builtEquipmentType.setMachineType(request.getMachineType());
-        return builtEquipmentType;
-    }
-
-    public EquipmentTypeDTO convertEquipmentTypeEntityToDTO (EquipmentType equipmentTypeToConvert) {
+    public EquipmentTypeDTO createEquipmentType(EquipmentTypeCreateRequest equipmentTypeCreateRequest) {
         EquipmentTypeDTO equipmentTypeDTO = new EquipmentTypeDTO();
-        equipmentTypeDTO.setId(equipmentTypeToConvert.getId());
-        equipmentTypeDTO.setMachineType(equipmentTypeToConvert.getMachineType());
-        equipmentTypeDTO.setEquipmentDTOList(equipmentServiceImpl.getAllEquipmentDTOs().stream()
-                .filter(equipmentDTO -> Objects.equals(equipmentDTO.getMachineTypeId(), equipmentTypeToConvert
-                        .getId())).collect(Collectors.toList()));
+        try {
+            EquipmentType equipmentType = equipmentTypeRepository
+                    .save(buildEquipmentTypeFromRequest(equipmentTypeCreateRequest));
+            equipmentTypeDTO = convertEquipmentTypeToDTO(equipmentType);
+        }catch (Exception ex) {
+            log.error("Can't save object " + equipmentTypeCreateRequest.toString());
+        }
         return equipmentTypeDTO;
     }
 
+    public List<EquipmentTypeDTO> getAllEquipmentTypeDTOs() {
+        List<EquipmentTypeDTO> equipmentTypeDTOListFromDB = new ArrayList<>();
+        try {
+            equipmentTypeDTOListFromDB = equipmentTypeRepository.findAll().stream()
+                    .map(this::convertEquipmentTypeToDTO)
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            log.error("Can't retrieve objects from DB");
+        }
+        return equipmentTypeDTOListFromDB;
+    }
+
+    public boolean equipmentInclusionCheck(Integer equipmentTypeId) {
+        boolean equipmentTypeIncludesEquipment = false;
+        try {
+            equipmentTypeIncludesEquipment = equipmentService
+                    .getEquipmentListByEquipmentTypeId(equipmentTypeId).isEmpty();
+        } catch (Exception ex) {
+            log.error("Can't check equipment objects inclusion in equipmentType with id=" + equipmentTypeId);
+        }
+        return equipmentTypeIncludesEquipment;
+    }
+
+    public void deleteEquipmentType(Integer equipmentTypeId) {
+        try {
+            equipmentTypeRepository.delete(equipmentTypeRepository.getReferenceById(equipmentTypeId));
+        } catch (Exception ex) {
+            log.error("Can't delete object with id=" + equipmentTypeId);
+        }
+    }
+
+    public EquipmentTypeDTO updateEquipmentType(EquipmentTypeUpdateRequest equipmentTypeUpdateRequest) {
+        EquipmentTypeDTO equipmentTypeDTO = new EquipmentTypeDTO();
+        try {
+            EquipmentType equipmentTypeFromDB = equipmentTypeRepository.findById(equipmentTypeUpdateRequest
+                            .getEquipmentTypeId()).orElseThrow(EntityNotFoundException::new);
+            equipmentTypeFromDB.setMachineType(Optional.ofNullable(equipmentTypeUpdateRequest.getMachineType())
+                    .orElse(equipmentTypeFromDB.getMachineType()));
+            equipmentTypeRepository.save(equipmentTypeFromDB);
+            equipmentTypeDTO = convertEquipmentTypeToDTO(equipmentTypeFromDB);
+        } catch (Exception ex) {
+            log.error("Can't save object with id=" + equipmentTypeUpdateRequest.getEquipmentTypeId());
+        }
+        return equipmentTypeDTO;
+    }
+
+    public EquipmentTypeDTO getEquipmentTypeDTOById(Integer equipmentTypeId) {
+        EquipmentTypeDTO equipmentTypeDTO = new EquipmentTypeDTO();
+        try {
+            equipmentTypeDTO = convertEquipmentTypeToDTO(equipmentTypeRepository.getReferenceById(equipmentTypeId));
+        }
+        catch (Exception ex) {
+            log.error("Can't retrieve object from DB with id=" + equipmentTypeId);
+        }
+        return equipmentTypeDTO;
+    }
+
+    private EquipmentType buildEquipmentTypeFromRequest(EquipmentTypeCreateRequest equipmentTypeCreateRequest) {
+        EquipmentType builtEquipmentType = new EquipmentType();
+        builtEquipmentType.setMachineType(equipmentTypeCreateRequest.getMachineType());
+        return builtEquipmentType;
+    }
+
+    private EquipmentTypeDTO convertEquipmentTypeToDTO(EquipmentType equipmentType) {
+        EquipmentTypeDTO equipmentTypeDTO = new EquipmentTypeDTO();
+        equipmentTypeDTO.setId(equipmentType.getId());
+        equipmentTypeDTO.setMachineType(equipmentType.getMachineType());
+        equipmentTypeDTO.setEquipmentDTOList(equipmentType.getEquipmentList().stream()
+                .map(equipmentService::convertEquipmentToDTO).collect(Collectors.toList()));
+        return equipmentTypeDTO;
+    }
 }

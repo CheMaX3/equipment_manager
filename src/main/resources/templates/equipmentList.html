@@ -19,7 +19,7 @@
             <th width="50px" sec:authorize="hasRole('ADMIN')">Id участка</th>
             <th width="75px">Файловое хранилище</th>
         </tr>
-        <tr th:each ="dto : ${equipmentDTOs}">
+        <tr th:each ="dto : ${equipmentDTOList}">
             <td sec:authorize="hasRole('ADMIN')" th:utext="${dto.id}">...</td>
             <td>
                 <a th:utext="${dto.machineModel}"></a>
@@ -29,15 +29,14 @@
                     <option sec:authorize="hasRole('ADMIN')" th:value="@{/equipment/delete(id=${dto.id})}">Удалить единицу оборудования</option>
                     <option th:value="@{/equipment/addDocument(id=${dto.id})}">Прикрепить документ</option>
                 </select>
-
             </td>
             <td align="center" th:utext="${dto.manufacturerCountry}">...</td>
             <td align="center" th:utext="${dto.manufacturer}">...</td>
             <td align="center" th:utext="${dto.manufacturingYear}">...</td>
             <td align="center" th:utext="${dto.machineNumber}">...</td>
             <td th:utext="${dto.details}">...</td>
-            <td sec:authorize="hasRole('ADMIN')" th:utext="${dto.machineTypeId}">...</td>
-            <td sec:authorize="hasRole('ADMIN')" th:utext="${dto.areaId}">...</td>
+            <td sec:authorize="hasRole('ADMIN')" th:utext="${dto.equipmentType.id}">...</td>
+            <td sec:authorize="hasRole('ADMIN')" th:utext="${dto.area.id}">...</td>
             <td align="center">
                 <a th:href="@{/equipment/showDocumentStorage(id=${dto.id})}">Открыть</a>
             </td>
