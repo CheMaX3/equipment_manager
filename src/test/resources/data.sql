@@ -1,8 +1,8 @@
-create database testdb;
-use testdb;
+--create database testdb;
+--use testdb;
 
-create table operational_section (id INT auto_increment primary key, section_full_name VARCHAR(255), section_short_name VARCHAR(255), section_conversational_name varchar(255));
-insert into operational_section (section_full_name, section_short_name, section_conversational_name) values ("TestSectionFullName1", "TestSectionShortName1", "TestSectionConversationalName1"), 
+create table operational_section (id INT AUTO_INCREMENT primary key, section_full_name VARCHAR(255), section_short_name VARCHAR(255), section_conversational_name varchar(255));
+insert into operational_section (section_full_name, section_short_name, section_conversational_name) values (TestSectionFullName1, TestSectionShortName1, TestSectionConversationalName1),
 ("TestSectionFullName2", "TestSectionShortName2", "TestSectionConversationalName2"),
 ("TestSectionFullName3", "TestSectionShortName3", "TestSectionConversationalName3");
 
