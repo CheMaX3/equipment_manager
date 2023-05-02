@@ -9,6 +9,7 @@ import com.chemax.project.request.SectionUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -111,9 +112,11 @@ public class SectionServiceImpl implements SectionService {
         sectionDTO.setSectionFullName(section.getSectionFullName());
         sectionDTO.setSectionShortName(section.getSectionShortName());
         sectionDTO.setSectionConversationalName(section.getSectionConversationalName());
-        sectionDTO.setAreaDTOList(section.getAreas().stream()
-                .map(areaServiceImpl::convertAreaToDTO)
-                .collect(Collectors.toList()));
+        if (section.getAreas() != null) {
+            sectionDTO.setAreaDTOList(section.getAreas().stream()
+                    .map(areaServiceImpl::convertAreaToDTO)
+                    .collect(Collectors.toList()));
+        }
         return sectionDTO;
     }
 }
