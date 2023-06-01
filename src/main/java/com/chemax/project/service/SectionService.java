@@ -12,8 +12,6 @@ public interface SectionService {
 
     List<SectionDTO> getAllSectionDTOs();
 
-    boolean areaInclusionCheck(Integer sectionId);
-
     void deleteSection(Integer sectionId);
 
     SectionDTO updateSection(SectionUpdateRequest sectionUpdateRequest);

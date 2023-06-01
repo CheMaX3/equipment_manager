@@ -119,7 +119,7 @@ public class AreaServiceImpl implements AreaService {
         return builtArea;
     }
 
-        AreaDTO convertAreaToDTO(Area area) {
+    public AreaDTO convertAreaToDTO(Area area) {
         AreaDTO areaDTO = new AreaDTO();
         areaDTO.setId(area.getId());
         areaDTO.setAreaFullName(area.getAreaFullName());
