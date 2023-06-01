@@ -4,8 +4,6 @@ import com.chemax.project.dto.SectionDTO;
 import com.chemax.project.repository.SectionRepository;
 import com.chemax.project.request.SectionCreateRequest;
 import com.chemax.project.request.SectionUpdateRequest;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
